@@ -29,6 +29,13 @@
 		description: '',
 		keywords: ''
 	}
+
+	const projectMeta = {
+		sectionTitle: 'Featured Projects',
+		subtitle: 'Intentional Work',
+		description: 'Bigger and better ideas, check back frequently as they listed will change periodically.',
+		keywords: ''
+	}
 </script>
 
 <!-- hero section-->
@@ -68,13 +75,31 @@
 		</div>
 	</section>
 
-	<section id="benefit">
+	<section id="benefit" class="h-[60vh]">
 		<SectionTitle {...valueMeta}/>
+		<ul>
+			<li>
+				<h3>Code that Performs</h3>
+				<p>I write production-ready code in <strong>Javascript, C#, Java, Python and Ruby</strong> using frameworks like React, ASP.NET, Spring Boot and Rails to build responsive, secure and scalable applications.</p>
+			</li>
+			<li>
+				<h3>Data-Driven Thinking</h3>
+				<p>My background in analytics gives me an edge in designing systems that are not just functional but optimized for performance and usability.</p>
+			</li>
+			<li>
+				<h3>Relentless Learning</h3>
+				<p>With over <strong>360 Technical Certifications</strong>, I stay ahead of the curve - continuosly sharpening my skills and adapting to new technologies.</p>
+			</li>
+			<li>
+				<h3>Focused Execution</h3>
+				<p>I target roles and projects that align with my strengths and deliver measurable results.</p>
+			</li>
+		</ul>
 	</section>
 </div>
 
-<section id="projects">
-	<h2>Projects</h2>
+<section id="projects" class="h-[80vh]">
+	<SectionTitle {...projectMeta}/>
 	<article>
 		<h3>Project One</h3>
 		<p>Brief description of the project, what it does, and technologies used.</p>
