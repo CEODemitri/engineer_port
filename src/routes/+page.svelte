@@ -10,10 +10,21 @@
 	};
 </script>
 
-<section>
-	<SectionTitle {...homeMeta} />
+<!-- hero section-->
+<section class="h-[80vh] flex flex-col gap-8 pb-8 pl-8">
+	<div class="mt-auto">
+		<h1 class="text-6xl">Hallo, ich heiBe Demitri.</h1>
+		<p class="text-sm">Your Neighborhood Software Developer</p>
+	</div>
+
+	<div class="flex gap-12">
+		<a href="#" class="bg-black text-white p-1 px-4 b">Projects</a>
+		<a href="#">Resume</a>
+	</div>
 </section>
 
+<!-- Test -->
+<!--<SectionTitle {...homeMeta} /> -->
 <div>
 	<section id="about">
 		<h2>About Me</h2>
