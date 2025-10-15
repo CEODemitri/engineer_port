@@ -52,7 +52,7 @@
 			<p class="text-sm">Your Neighborhood Software Developer</p>
 		</article>
 
-		<p>
+		<p class="text-sm">
 			I am a results driven software developer with a deep foundation in web development, OOP, and
 			data analytics. I specialize in building scalable, maintainable applications using
 			technologies like Javascript, React, C#, and Java. My background in operations analytics
@@ -76,8 +76,8 @@
 
 <!-- about me section -->
 <div>
-	<section id="about" class="h-[70vh]">
-		<h2 class="text-4xl font-bold">About Me</h2>
+	<section id="about" class="min-h-[70vh]">
+		<h2 class="text-4xl font-bold my-4">About Me</h2>
 		<div class="grid grid-cols-8 gap-8">
 			<div class="col-span-4">
 				<SectionTitle {...meOneMeta} />
