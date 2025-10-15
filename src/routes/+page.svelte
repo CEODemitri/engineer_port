@@ -1,5 +1,6 @@
 <script>
 	import Footer from '../components/Footer.svelte';
+	import ProjectCard from '../components/ProjectCard.svelte';
 	import SectionTitle from '../components/SectionTitle.svelte';
 
 	const homeMeta = {
@@ -40,6 +41,22 @@
 		keywords: ''
 	};
 
+	const projectOne = {
+		alt: '',
+		src: '',
+		projectTitle: 'Project One',
+		techStack: '',
+		description: 'A long project practicing the best of the best'
+	};
+
+	const projectTwo = {
+		alt: '',
+		src: '',
+		projectTitle: 'Project One',
+		techStack: '',
+		description: 'A long project practicing the best of the best'
+	};
+
 	let email = '';
 	let message = '';
 </script>
@@ -77,13 +94,13 @@
 <!-- about me section -->
 <div>
 	<section id="about" class="min-h-[70vh]">
-		<h2 class="text-4xl font-bold my-4">About Me</h2>
+		<h2 class="my-4 text-4xl font-bold">About Me</h2>
 		<div class="grid grid-cols-8 gap-8">
 			<div class="col-span-4">
 				<SectionTitle {...meOneMeta} />
 			</div>
 
-			<div class="col-start-5 col-span-3">
+			<div class="col-span-3 col-start-5">
 				<SectionTitle {...meTwoMeta} />
 				<ul>
 					<li>Programming: Python, C++, JavaScript</li>
@@ -130,16 +147,17 @@
 	</section>
 </div>
 
-<section id="projects" class="h-[90vh]">
+<!-- projects -->
+<section id="projects" class="min-h-[90vh]">
 	<SectionTitle {...projectMeta} />
-	<article>
-		<h3>Project One</h3>
-		<p>Brief description of the project, what it does, and technologies used.</p>
-	</article>
-	<article>
-		<h3>Project Two</h3>
-		<p>Another project description with highlights and purpose.</p>
-	</article>
+	<div class="flex flex-col md:flex-col flex-wrap gap-8">
+		<article class="bg-stone-400 w-fit m-auto rounded-sm">
+			<ProjectCard {...projectOne} />
+		</article>
+		<article class="bg-blue-400 w-fit m-auto rounded-sm">
+			<ProjectCard {...projectTwo} />
+		</article>
+	</div>
 </section>
 
 <hr />
