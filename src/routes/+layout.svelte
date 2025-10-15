@@ -11,4 +11,6 @@
 </svelte:head>
 
 <Navbar />
-{@render children?.()}
+<div class="p-8">
+	{@render children?.()}
+</div>
