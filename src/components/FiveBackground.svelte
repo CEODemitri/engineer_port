@@ -70,7 +70,7 @@
 <style>
 	.p5-container {
 		width: 100%;
-		height: 100vh;
+		height: 30vh;
 		touch-action: none;
 		overflow: hidden;
 		border-radius: 20px; /* Rounded corners */

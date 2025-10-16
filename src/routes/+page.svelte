@@ -73,10 +73,10 @@
 
 <!-- hero section-->
 <section
-	class="relative flex h-[90vh] flex-col justify-between overflow-hidden px-6 py-10 md:px-20 md:py-16"
+	class="flex min-h-[90vh] flex-col justify-between overflow-hidden px-6 py-10 md:px-20 md:py-16"
 >
 	<!-- Background Layer -->
-	<div class="absolute inset-0 -z-10">
+	<div class="inset-0 -z-10">
 		<FiveBackground />
 	</div>
 
