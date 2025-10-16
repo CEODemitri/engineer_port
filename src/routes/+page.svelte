@@ -96,11 +96,11 @@
 	<section id="about" class="min-h-[70vh]">
 		<h2 class="my-4 text-4xl font-bold">About Me</h2>
 		<div class="grid grid-cols-8 gap-8">
-			<div class="col-span-4">
+			<div class="col-span-full md:col-span-4">
 				<SectionTitle {...meOneMeta} />
 			</div>
 
-			<div class="col-span-3 col-start-5">
+			<div class="col-span-full md:col-span-3 md:col-start-5">
 				<SectionTitle {...meTwoMeta} />
 				<ul>
 					<li>Programming: Python, C++, JavaScript</li>
@@ -113,6 +113,7 @@
 	</section>
 
 	<section id="benefit" class="h-[90vh]">
+		<h2 class="mt-20 text-4xl font-bold md:my-4">How I can help</h2>
 		<SectionTitle {...valueMeta} />
 		<ul class="mt-8 flex flex-col gap-4">
 			<li>
@@ -149,12 +150,13 @@
 
 <!-- projects -->
 <section id="projects" class="min-h-[90vh]">
+	<h2 class="mt-8 text-4xl font-bold md:my-4">Showcase</h2>
 	<SectionTitle {...projectMeta} />
-	<div class="flex flex-col md:flex-col flex-wrap gap-8">
-		<article class="bg-stone-400 w-fit m-auto rounded-sm">
+	<div class="flex flex-col flex-wrap gap-8 md:flex-col">
+		<article class="m-auto w-fit rounded-sm bg-stone-400">
 			<ProjectCard {...projectOne} />
 		</article>
-		<article class="bg-blue-400 w-fit m-auto rounded-sm">
+		<article class="m-auto w-fit rounded-sm bg-blue-400">
 			<ProjectCard {...projectTwo} />
 		</article>
 	</div>
