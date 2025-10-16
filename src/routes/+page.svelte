@@ -60,6 +60,15 @@
 
 	let email = '';
 	let message = '';
+
+	function handleSubmit() {
+		// Example: log the form data, replace with your own logic
+		console.log('Email:', email);
+		console.log('Message:', message);
+		// Optionally, reset the form
+		email = '';
+		message = '';
+	}
 </script>
 
 <!-- hero section-->
@@ -67,7 +76,9 @@
 	class="relative flex h-[90vh] flex-col justify-between overflow-hidden px-6 py-10 md:px-20 md:py-16"
 >
 	<!-- Background Layer -->
-	<FiveBackground class="absolute inset-0 -z-10" />
+	<div class="absolute inset-0 -z-10">
+		<FiveBackground />
+	</div>
 
 	<!-- Main Content -->
 	<div class="md:mt-auto md:space-y-8">

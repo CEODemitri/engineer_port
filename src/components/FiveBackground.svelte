@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 	import P5 from 'p5-svelte';
 	import { onMount } from 'svelte';
 
-	let container;
+	let container: HTMLDivElement;
 	let canvasWidth = 0;
 	let canvasHeight = 0;
 
@@ -19,7 +19,9 @@
 		return () => window.removeEventListener('resize', setCanvasSize);
 	});
 
-	const sketch = (p) => {
+	import type p5 from 'p5';
+
+	const sketch = (p: p5) => {
 		let x = 0;
 		let y = 0;
 		let baseSize = 80;
