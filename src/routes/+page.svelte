@@ -81,24 +81,27 @@
 	</div>
 
 	<!-- Main Content -->
-	<div class="md:mt-auto md:space-y-8">
+	<div class="space-y-8 md:mt-auto">
 		<article class="max-w-4xl">
 			<h1 class="text-5xl leading-tight font-bold tracking-tight md:text-7xl">
-				Hallo, ich heiBe Demitri.
+				😁 Hallo, ich heiße Demitri.
 			</h1>
-			<p class="text-base text-gray-600 md:text-lg">Your Neighborhood Software Developer</p>
+			<p
+				class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-base text-transparent md:text-lg"
+			>
+				Your Neighborhood Software Developer
+			</p>
 		</article>
-
 		<p class="mt-6 max-w-3xl font-mono text-sm leading-relaxed text-gray-700 md:text-base">
-			I am a results-driven software developer with a strong foundation in web development, OOP, and
-			data analytics, specializing in scalable and maintainable applications using JavaScript,
-			React, C#, and Java. My background in operations analytics helps me take a data-informed
-			approach to build efficient and impactful solutions. Before starting my Bachelor's in Software
+			Dedicated, results-driven software developer with a strong foundation in web development, OOP,
+			and data analytics, specializing in scalable and maintainable applications using JavaScript,
+			React, C#, and Java. My work in operations analytics inspires me take a data-informed approach
+			to build efficient and impactful solutions. Before starting my Bachelor's in Software
 			Engineering, I earned over 360 technical certifications from Google, IBM, and LinkedIn
-			Learning, showing my commitment to continuous growth.
+			Learning, illustrating my commitment to continuous growth.
 		</p>
 
-		<!-- Call To Actions -->
+		<!-- Call To Action -->
 		<div class="flex flex-wrap gap-6 pt-4">
 			<a href="#" class="rounded bg-black px-6 py-2 text-white transition hover:bg-gray-800">
 				Projects
@@ -109,12 +112,11 @@
 		</div>
 	</div>
 
-	<!-- Optional: Scroll Hint -->
-	<div class="absolute bottom-4 left-1/2 -translate-x-1/2 animate-bounce text-xs text-gray-400">
+	<div class="bottom-4 left-1/2 -translate-x-1/2 animate-bounce text-xs text-gray-400 md:absolute">
 		<span>Scroll</span>
 	</div>
 
-	<hr class="absolute bottom-0 left-0 w-full border-t border-gray-300" />
+	<hr class="bottom-0 left-0 w-full border-t border-gray-300 md:absolute" />
 </section>
 
 <!-- ABOUT ME -->
@@ -201,14 +203,22 @@
 			<ProjectCard {...projectTwo} />
 		</article>
 	</div>
+
+	<!-- i could add another page, but for why? right now, let's get the landing page gody -->
+	<!-- <a href="/catalog">View Catalog</a> -->
 </section>
 
 <hr class="my-12 border-gray-300" />
 
 <!-- CONTACT -->
 <section
+	id="contact"
 	class="flex min-h-screen flex-col items-center justify-center bg-white px-6 py-20 text-black"
 >
+	<article class="mb-8 text-center">
+		<h2 class="text-4xl font-bold">Get in Touch</h2>
+		<p>No idea is to big or small, let's make magic together.</p>
+	</article>
 	<form
 		on:submit|preventDefault={handleSubmit}
 		class="w-full max-w-md space-y-6"

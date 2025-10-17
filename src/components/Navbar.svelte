@@ -10,14 +10,18 @@
 	<ul class="ml-6 hidden gap-6 text-base font-medium tracking-wide md:flex">
 		<li><a href="#" class="transition hover:uppercase">/console</a></li>
 		<li><a href="#about" class="transition hover:uppercase">/stack</a></li>
-		<li><a href="#contact" class="transition hover:uppercase">/value</a></li>
+		<li><a href="#benefit" class="transition hover:uppercase">/value</a></li>
 		<li><a href="#projects" class="transition hover:uppercase">/build</a></li>
 		<li><a href="#blog" class="transition hover:uppercase">/git</a></li>
 		<li><a href="#contact" class="transition hover:uppercase">/ping</a></li>
 	</ul>
 
 	<!-- Name -->
-	<div class="mr-4 text-lg font-semibold tracking-tight md:mr-6">Demitri Echols</div>
+	<div
+		class="mr-4 bg-gradient-to-r from-blue-900 to-purple-900 bg-clip-text text-base text-lg font-semibold tracking-tight text-transparent md:mr-6 md:text-lg"
+	>
+		Demitri Echols
+	</div>
 
 	<!-- Mobile Menu Button -->
 	<button
@@ -31,7 +35,7 @@
 
 <!-- Mobile Sidebar Menu -->
 <div
-	class="fixed top-0 right-0 z-40 h-full w-64 transform bg-gray-900 text-white transition-transform duration-300 ease-in-out md:hidden"
+	class="fixed top-0 right-0 z-40 h-full w-64 transform bg-blue-900 text-white transition-transform duration-300 ease-in-out md:hidden"
 	class:translate-x-0={mobileMenuOpen}
 	class:translate-x-full={!mobileMenuOpen}
 >
