@@ -6,29 +6,29 @@
 		},
 		{
 			title: '/contact',
-			content: 'Email: testerand@example.com\nPhone: (123) 456-7890'
+			content: 'Email: iprogramidesign@gmail.com\nPhone: (615) 935-1925'
 		},
 		{
 			title: '/social',
 			links: [
 				{
 					name: 'GitHub',
-					href: 'https://github.com/yourusername',
+					href: 'https://github.com/ceodemitri',
 					icon: 'fa-brands fa-github'
 				},
 				{
 					name: 'CodePen',
-					href: 'https://codepen.io/yourusername',
+					href: 'https://codepen.io/CEODemitri',
 					icon: 'fa-brands fa-codepen'
 				},
 				{
 					name: 'LinkedIn',
-					href: 'https://linkedin.com/in/yourusername',
+					href: 'https://www.linkedin.com/in/demitri-echols-391225282/',
 					icon: 'fa-brands fa-linkedin'
 				},
 				{
 					name: 'Twitter',
-					href: 'https://twitter.com/yourusername',
+					href: 'https://x.com/iprogramidesign',
 					icon: 'fa-brands fa-x-twitter'
 				}
 			]

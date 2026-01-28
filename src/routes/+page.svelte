@@ -322,7 +322,7 @@
 					<div class="mb-4 text-xs tracking-wide text-black/60 uppercase">Find me online</div>
 					<div class="flex gap-6 text-xl">
 						<a
-							href="https://github.com/yourusername"
+							href="https://github.com/ceodemitri"
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="GitHub"
@@ -331,7 +331,7 @@
 							<i class="fab fa-github"></i>
 						</a>
 						<a
-							href="https://linkedin.com/in/yourusername"
+							href="https://www.linkedin.com/in/demitri-echols-391225282/"
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="LinkedIn"
@@ -340,7 +340,7 @@
 							<i class="fab fa-linkedin"></i>
 						</a>
 						<a
-							href="https://twitter.com/yourusername"
+							href="https://x.com/iprogramidesign"
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Twitter"
