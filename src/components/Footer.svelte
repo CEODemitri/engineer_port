@@ -40,7 +40,7 @@
 	];
 </script>
 
-<footer class="border-t border-black bg-gray-200 px-6 py-12 text-black">
+<footer class="border-t border-black bg-slate-200 px-6 py-12 text-black">
 	<div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 text-sm sm:grid-cols-2 md:grid-cols-4">
 		{#each sections as section}
 			<div class="space-y-3">

@@ -85,7 +85,7 @@
 			😁 Hallo, ich heiße Demitri.
 		</h1>
 		<p
-			class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-base text-transparent md:text-lg"
+			class="bg-gradient-to-r from-slate-700 to-slate-300 bg-clip-text text-base text-transparent md:text-lg"
 		>
 			Your Neighborhood Software Developer
 		</p>

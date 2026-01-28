@@ -4,7 +4,7 @@
 
 <!-- Main Nav -->
 <nav
-	class="relative z-50 flex items-center justify-between bg-gray-100 p-4 font-mono shadow-md md:p-6"
+	class="relative z-50 flex items-center justify-between bg-slate-100 p-4 font-mono shadow-md md:p-6"
 >
 	<!-- Left menu (desktop) -->
 	<ul class="ml-6 hidden gap-6 text-base font-medium tracking-wide md:flex">
@@ -18,7 +18,7 @@
 
 	<!-- Name -->
 	<div
-		class="mr-4 bg-gradient-to-r from-blue-900 to-purple-900 bg-clip-text text-base text-lg font-semibold tracking-tight text-transparent md:mr-6 md:text-lg"
+		class="mr-4 bg-gradient-to-r from-slate-900 to-slate-500 bg-clip-text text-base text-lg font-semibold tracking-tight text-transparent md:mr-6 md:text-lg"
 	>
 		Demitri Echols
 	</div>
@@ -35,7 +35,7 @@
 
 <!-- Mobile Sidebar Menu -->
 <div
-	class="fixed top-0 right-0 z-40 h-full w-64 transform bg-blue-900 text-white transition-transform duration-300 ease-in-out md:hidden"
+	class="fixed top-0 right-0 z-40 h-full w-64 transform bg-slate-900 text-white transition-transform duration-300 ease-in-out md:hidden"
 	class:translate-x-0={mobileMenuOpen}
 	class:translate-x-full={!mobileMenuOpen}
 >
