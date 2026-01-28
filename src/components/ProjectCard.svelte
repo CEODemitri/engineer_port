@@ -1,21 +1,56 @@
 <script>
-    export let src;
-    export let alt;
-    export let projectTitle;
-    export let techStack;
-    export let description;
+	export let src;
+	export let alt;
+	export let projectTitle;
+	export let techStack;
+	export let description;
 </script>
 
-<div class="h-[475px] w-[325px] grid grid-cols-6 grid-rows-7 m-auto px-2">
-    <div class="flex col-span-full justify-between row-start-1">
-        <a href="#" class="bg-stone-900 h-fit p-2 text-white">Live Site</a>
-        <a href="#" class="h-fit p-2 bg-stone-500">View Repo</a>
-    </div>
+<div
+	class="relative m-auto h-[475px] w-[350px] rounded-2xl border border-black/10 bg-white p-4 shadow-sm transition hover:shadow-lg"
+>
+	<!-- Top Actions -->
+	<div class="absolute top-4 right-4 left-4 z-10 flex justify-between">
+		<a
+			href="#"
+			class="rounded-full border border-black/20 bg-white/80 px-4 py-1 text-xs font-medium backdrop-blur transition hover:border-black hover:bg-black hover:text-white"
+		>
+			Live
+		</a>
+		<a
+			href="#"
+			class="rounded-full border border-black/20 bg-white/80 px-4 py-1 text-xs font-medium backdrop-blur transition hover:border-black hover:bg-black hover:text-white"
+		>
+			Repo
+		</a>
+	</div>
 
-    <h4 class="row-start-2">Stack: {techStack}</h4>
-    
-    <img {src} {alt} class="project_bg col-span-full row-start-3 bg-red-400 h-16 w-16 m-auto"/>
-    
-    <h3 class="w-full text-center text-3xl font-bold row-start-4 mt-4 col-start-2 col-span-4">{projectTitle}</h3>    
-    <p class="row-start-6 col-span-full">{description}</p>  
+	<!-- Image / Hero -->
+	<div class="h-[200px] w-full overflow-hidden rounded-xl border border-black/10">
+		<img {src} {alt} class="h-full w-full object-cover transition duration-500 hover:scale-105" />
+	</div>
+
+	<!-- Content -->
+	<div class="mt-5 space-y-4">
+		<!-- Title -->
+		<h3 class="text-xl leading-tight font-semibold tracking-tight">
+			{projectTitle}
+		</h3>
+
+		<!-- Stack Pills -->
+		<div class="flex flex-wrap gap-2">
+			{#each techStack.split(',') as tech}
+				<span
+					class="rounded-full border border-black/15 px-3 py-1 text-xs font-medium text-black/80"
+				>
+					{tech.trim()}
+				</span>
+			{/each}
+		</div>
+
+		<!-- Description -->
+		<p class="text-sm leading-relaxed text-black/70">
+			{description}
+		</p>
+	</div>
 </div>

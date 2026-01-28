@@ -1,79 +1,82 @@
 <script lang="ts">
-	import P5 from 'p5-svelte';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 
-	let container: HTMLDivElement;
-	let canvasWidth = 0;
-	let canvasHeight = 0;
+	let container: HTMLDivElement | null = null;
+	let sketch: any = null;
 
-	const setCanvasSize = () => {
-		if (container) {
-			canvasWidth = container.clientWidth;
-			canvasHeight = container.clientHeight;
-		}
-	};
+	onMount(async () => {
+		const p5 = (await import('p5')).default;
 
-	onMount(() => {
-		setCanvasSize();
-		window.addEventListener('resize', setCanvasSize);
-		return () => window.removeEventListener('resize', setCanvasSize);
+		sketch = new p5((p) => {
+			let rocketY: number;
+			let stars: { x: number; y: number; r: number }[] = [];
+
+			p.setup = () => {
+				const h = window.innerHeight * 0.4;
+				p.createCanvas(window.innerWidth, h).parent(container!);
+				rocketY = p.height * 0.7;
+
+				for (let i = 0; i < 120; i++) {
+					stars.push({
+						x: p.random(p.width),
+						y: p.random(p.height),
+						r: p.random(1, 2.5)
+					});
+				}
+			};
+
+			p.windowResized = () => {
+				p.resizeCanvas(window.innerWidth, window.innerHeight * 0.4);
+			};
+
+			p.draw = () => {
+				p.background(0);
+
+				// stars
+				p.fill(255);
+				p.noStroke();
+				stars.forEach((s) => p.circle(s.x, s.y, s.r));
+
+				// planet
+				p.noFill();
+				p.stroke(255);
+				p.strokeWeight(2);
+				p.circle(p.width * 0.8, p.height * 0.3, 90);
+
+				// rocket
+				rocketY -= 0.3;
+				if (rocketY < p.height * 0.3) rocketY = p.height * 0.7;
+
+				p.push();
+				p.translate(p.width * 0.3, rocketY);
+
+				p.fill(255);
+				p.noStroke();
+				p.rect(-10, -30, 20, 60, 5);
+				p.triangle(-10, -30, 10, -30, 0, -50);
+				p.triangle(-10, 20, -25, 35, -10, 35);
+				p.triangle(10, 20, 25, 35, 10, 35);
+
+				const flame = p.random(10, 18);
+				p.triangle(-8, 30, 8, 30, 0, 30 + flame);
+
+				p.pop();
+			};
+		});
 	});
 
-	import type p5 from 'p5';
-
-	const sketch = (p: p5) => {
-		let x = 0;
-		let y = 0;
-		let baseSize = 80;
-
-		p.setup = () => {
-			p.createCanvas(canvasWidth, canvasHeight);
-		};
-
-		p.windowResized = () => {
-			p.resizeCanvas(container.clientWidth, container.clientHeight);
-		};
-
-		p.draw = () => {
-			// Background color based on position – purple to blue
-			const hue = p.map(x, 0, p.width, 250, 280); // blue to purple
-			const sat = p.map(y, 0, p.height, 60, 100);
-			p.colorMode(p.HSL, 360, 100, 100);
-			p.background(hue, sat, 40);
-
-			// Ease the circle toward the mouse/finger
-			let targetX = p.mouseX || x;
-			let targetY = p.mouseY || y;
-			x += (targetX - x) * 0.1;
-			y += (targetY - y) * 0.1;
-
-			// Draw the ball
-			p.fill(300, 80, 80); // soft pinkish-purple
-			p.noStroke();
-			p.ellipse(x, y, baseSize, baseSize);
-		};
-
-		p.touchMoved = () => {
-			x = p.mouseX;
-			y = p.mouseY;
-			return false;
-		};
-	};
+	onDestroy(() => {
+		sketch?.remove();
+	});
 </script>
 
-<div class="p5-container" bind:this={container}>
-	{#if canvasWidth && canvasHeight}
-		<P5 {sketch} />
-	{/if}
-</div>
+<div bind:this={container} class="scene"></div>
 
 <style>
-	.p5-container {
-		width: 100%;
-		height: 30vh;
-		touch-action: none;
+	.scene {
+		width: 100vw;
+		height: 40vh;
+		background: black;
 		overflow: hidden;
-		border-radius: 20px; /* Rounded corners */
-		box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 	}
 </style>
