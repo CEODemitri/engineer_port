@@ -55,36 +55,40 @@
 	// What I do — four cards, each with a CNBC color
 	const services = [
 		{
-			color: 'var(--color-orange)',
-			dim:   'var(--color-orange-dim)',
-			icon:  'fa-solid fa-brain',
-			title: 'AI & Automation',
-			blurb: 'I build AI systems that actually work in production — not just demos. LLM pipelines, intelligent agents, and automation workflows that cut real operational costs and replace repetitive manual work.',
-			tags:  ['LLMs', 'AI Agents', 'RAG', 'Automation']
+			color:   'var(--color-orange)',
+			dim:     'var(--color-orange-dim)',
+			icon:    'fa-solid fa-brain',
+			title:   'AI & Automation',
+			blurb:   'I build AI systems that actually work in production — not just demos. LLM pipelines, intelligent agents, and automation workflows that cut real operational costs and replace repetitive manual work.',
+			benefit: 'Reduce customer wait times, automate repetitive workflows, and cut operational overhead — without adding headcount.',
+			tags:    ['LLMs', 'AI Agents', 'RAG', 'Automation']
 		},
 		{
-			color: 'var(--color-blue)',
-			dim:   'var(--color-blue-dim)',
-			icon:  'fa-solid fa-code',
-			title: 'Full-Stack Apps',
-			blurb: 'From database to UI, I deliver complete production-ready applications. You get one engineer who owns the whole stack — no handoff gaps, no finger-pointing between teams.',
-			tags:  ['React', 'Node.js', 'C#', 'Python', 'TypeScript']
+			color:   'var(--color-blue)',
+			dim:     'var(--color-blue-dim)',
+			icon:    'fa-solid fa-code',
+			title:   'Full-Stack Apps',
+			blurb:   'From database to UI, I deliver complete production-ready applications. You get one engineer who owns the whole stack — no handoff gaps, no finger-pointing between teams.',
+			benefit: 'Build your app, website, or internal software tool from scratch — one engineer, one timeline, no agency markup.',
+			tags:    ['React', 'Node.js', 'C#', 'Python', 'TypeScript']
 		},
 		{
-			color: 'var(--color-green)',
-			dim:   'var(--color-green-dim)',
-			icon:  'fa-solid fa-chart-line',
-			title: 'Data & Analytics',
-			blurb: 'Operations analytics is where I started. I turn raw event streams and database records into dashboards and KPIs your executives can actually act on — in real time.',
-			tags:  ['Analytics', 'Dashboards', 'SQL', 'KPIs']
+			color:   'var(--color-green)',
+			dim:     'var(--color-green-dim)',
+			icon:    'fa-solid fa-chart-line',
+			title:   'Data & Analytics',
+			blurb:   'Operations analytics is where I started. I turn raw event streams and database records into dashboards and KPIs your executives can actually act on — in real time.',
+			benefit: 'Turn scattered data into clear decisions — know which products, customers, and processes are actually making you money.',
+			tags:    ['Analytics', 'Dashboards', 'SQL', 'KPIs']
 		},
 		{
-			color: 'var(--color-yellow)',
-			dim:   'var(--color-yellow-dim)',
-			icon:  'fa-solid fa-server',
-			title: 'Cloud & DevOps',
-			blurb: 'Cloud-native architecture, containerization, and CI/CD pipelines. I build systems that survive traffic spikes and 3am on-call alerts without needing an emergency rewrite.',
-			tags:  ['Docker', 'Linux', 'APIs', 'CI/CD']
+			color:   'var(--color-yellow)',
+			dim:     'var(--color-yellow-dim)',
+			icon:    'fa-solid fa-server',
+			title:   'Cloud & DevOps',
+			blurb:   'Cloud-native architecture, containerization, and CI/CD pipelines. I build systems that survive traffic spikes and 3am on-call alerts without needing an emergency rewrite.',
+			benefit: 'Keep your platform online, fast, and scalable — so a big launch or sudden traffic surge never takes you down.',
+			tags:    ['Docker', 'Linux', 'APIs', 'CI/CD']
 		}
 	];
 
@@ -368,9 +372,18 @@
 					>{s.title}</h3>
 
 					<p
-						class="text-sm leading-relaxed flex-1"
+						class="text-sm leading-relaxed"
 						style="color: var(--color-fg-2);"
 					>{s.blurb}</p>
+
+					<p
+						class="text-xs font-semibold leading-relaxed px-3 py-2 rounded-sm"
+						style="
+							color: {s.color};
+							background: {s.dim};
+							border-left: 2px solid {s.color};
+						"
+					>{s.benefit}</p>
 
 					<div class="flex flex-wrap gap-1.5 mt-auto">
 						{#each s.tags as tag}
@@ -395,7 +408,7 @@
 ══════════════════════════════════════════════════════════ -->
 <ProjectsSection />
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ════════════════��═════════════════════════════════════════
      WHY HIRE ME — plain prose, no buzzwords
 ══════════════════════════════════════════════════════════ -->
 <section class="py-28 px-6 md:px-10" style="background: var(--color-bg-2);">
