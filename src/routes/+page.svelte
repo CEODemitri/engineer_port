@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import FiveBackground from '../components/FiveBackground.svelte';
 	import Footer from '../components/Footer.svelte';
+	import ProjectsSection from '../components/ProjectsSection.svelte';
 
 	onMount(() => {
 		const els = document.querySelectorAll('.reveal');
@@ -87,40 +88,7 @@
 		}
 	];
 
-	const projects = [
-		{
-			color: 'var(--color-orange)',
-			label: 'AI Application',
-			title: 'Neural Commerce Platform',
-			what: 'An AI layer for e-commerce that predicts inventory, personalizes storefronts, and automates customer interactions — built on LLM agents.',
-			result: '40% efficiency gain, 80% of customer interactions automated.',
-			stack: ['Python', 'React', 'OpenAI', 'PostgreSQL']
-		},
-		{
-			color: 'var(--color-blue)',
-			label: 'SaaS Platform',
-			title: 'DataSync Suite',
-			what: 'Enterprise data synchronization across 30+ integrations with real-time webhooks, error recovery, and an executive analytics dashboard.',
-			result: '99.9% uptime across 30+ live integrations.',
-			stack: ['Node.js', 'C#', 'Docker', 'REST APIs']
-		},
-		{
-			color: 'var(--color-green)',
-			label: 'Developer Tools',
-			title: 'Intelligent Dev Toolkit',
-			what: 'AI-powered developer productivity suite: automated code review, documentation generation, and smart refactoring — runs in any CLI.',
-			result: '5 hours saved per developer per week.',
-			stack: ['TypeScript', 'Python', 'LLMs', 'CLI']
-		},
-		{
-			color: 'var(--color-yellow)',
-			label: 'Enterprise',
-			title: 'Operations Analytics Engine',
-			what: 'Real-time ops platform that turns raw event streams into executive KPIs with predictive alerting and sub-2-second alert latency.',
-			result: '10,000+ data points/sec, alerts in under 2 seconds.',
-			stack: ['Java', 'Spring', 'SQL', 'Dashboards']
-		}
-	];
+
 
 	const skills = [
 		{ label: 'Languages',  items: ['JavaScript', 'TypeScript', 'Python', 'C#', 'Java', 'C++'] },
@@ -416,106 +384,7 @@
 <!-- ══════════════════════════════════════════════════════════
      PROJECTS
 ══════════════════════════════════════════════════════════ -->
-<section id="projects" class="py-28 px-6 md:px-10">
-	<div class="mx-auto max-w-6xl">
-		<hr class="section-rule mb-12" />
-
-		<div class="reveal mb-12">
-			<p
-				class="mb-3 text-xs font-semibold tracking-widest uppercase"
-				style="color: var(--color-green); font-family: var(--font-mono);"
-			>03 — Projects</p>
-			<h2
-				class="text-4xl font-bold tracking-tight text-balance md:text-5xl"
-				style="font-family: var(--font-sans); color: var(--color-fg);"
-			>Real problems.<br />Real solutions.</h2>
-		</div>
-
-		<div class="grid gap-6 md:grid-cols-2">
-			{#each projects as p, i}
-				<article
-					class="reveal glass-2 rounded-sm overflow-hidden group"
-					style="animation-delay: {i * 0.1}s;"
-				>
-					<!-- Color bar + label -->
-					<div
-						class="px-7 py-4 flex items-center justify-between"
-						style="background: {p.color}14; border-bottom: 1px solid {p.color}28;"
-					>
-						<span
-							class="text-xs font-semibold tracking-widest uppercase"
-							style="color: {p.color}; font-family: var(--font-mono);"
-						>{p.label}</span>
-						<div class="flex gap-3">
-							<a
-								href="https://github.com/ceodemitri"
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label="View on GitHub"
-								class="transition-opacity hover:opacity-60"
-								style="color: var(--color-fg-3);"
-							>
-								<i class="fab fa-github text-sm"></i>
-							</a>
-						</div>
-					</div>
-
-					<div class="p-7">
-						<h3
-							class="mb-3 text-xl font-bold"
-							style="font-family: var(--font-sans); color: var(--color-fg);"
-						>{p.title}</h3>
-
-						<!-- Plain-English what -->
-						<p
-							class="mb-2 text-sm leading-relaxed"
-							style="color: var(--color-fg-2);"
-						>{p.what}</p>
-
-						<!-- Result — the part clients care about -->
-						<p
-							class="mb-5 text-sm font-semibold"
-							style="color: {p.color};"
-						>
-							<i class="fas fa-check-circle mr-1.5 text-xs"></i>{p.result}
-						</p>
-
-						<div class="flex flex-wrap gap-2">
-							{#each p.stack as tech}
-								<span
-									class="text-xs px-2.5 py-1 rounded-sm"
-									style="
-										background: var(--color-bg-3);
-										color: var(--color-fg-3);
-										border: 1px solid var(--color-border);
-										font-family: var(--font-mono);
-									"
-								>{tech}</span>
-							{/each}
-						</div>
-					</div>
-				</article>
-			{/each}
-		</div>
-
-		<div class="reveal mt-10 text-center">
-			<a
-				href="https://github.com/ceodemitri"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-sm transition-opacity hover:opacity-70"
-				style="
-					border: 1px solid var(--color-border-2);
-					color: var(--color-fg-2);
-					font-family: var(--font-sans);
-				"
-			>
-				<i class="fab fa-github"></i>
-				More on GitHub
-			</a>
-		</div>
-	</div>
-</section>
+<ProjectsSection />
 
 <!-- ══════════════════════════════════════════════════════════
      WHY HIRE ME — plain prose, no buzzwords
