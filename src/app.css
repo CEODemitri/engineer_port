@@ -1,1 +1,135 @@
 @import 'tailwindcss';
+
+@theme inline {
+	--font-sans: 'Space Grotesk', 'ui-sans-serif', system-ui;
+	--font-body: 'Inter', 'ui-sans-serif', system-ui;
+	--font-mono: 'Fira Code', 'ui-monospace', 'SFMono-Regular';
+
+	/* Dark mode tokens (default) */
+	--color-bg:        #0a0a0a;
+	--color-bg-2:      #111111;
+	--color-bg-3:      #1a1a1a;
+	--color-border:    rgba(255,255,255,0.08);
+	--color-border-2:  rgba(255,255,255,0.15);
+	--color-fg:        #f5f5f5;
+	--color-fg-2:      #a0a0a0;
+	--color-fg-3:      #555555;
+
+	/* CNBC-inspired brand palette */
+	--color-orange:    #FF6B00;
+	--color-yellow:    #FFD000;
+	--color-blue:      #0066FF;
+	--color-green:     #00C851;
+	--color-orange-dim: rgba(255,107,0,0.12);
+	--color-yellow-dim: rgba(255,208,0,0.12);
+	--color-blue-dim:   rgba(0,102,255,0.12);
+	--color-green-dim:  rgba(0,200,81,0.12);
+
+	--radius: 0.5rem;
+}
+
+/* ─── Light mode override ─── */
+html.light {
+	--color-bg:       #f8f7f4;
+	--color-bg-2:     #f0ede8;
+	--color-bg-3:     #e8e4dc;
+	--color-border:   rgba(0,0,0,0.08);
+	--color-border-2: rgba(0,0,0,0.15);
+	--color-fg:       #111111;
+	--color-fg-2:     #555555;
+	--color-fg-3:     #999999;
+}
+
+/* ─── Base ─── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+	scroll-behavior: smooth;
+	background-color: var(--color-bg);
+	color: var(--color-fg);
+}
+
+body {
+	background-color: var(--color-bg);
+	color: var(--color-fg);
+	font-family: var(--font-body);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-orange); border-radius: 2px; }
+
+/* ─── Glass panels ─── */
+.glass {
+	background: rgba(255,255,255,0.03);
+	backdrop-filter: blur(24px);
+	-webkit-backdrop-filter: blur(24px);
+	border: 1px solid var(--color-border);
+}
+html.light .glass {
+	background: rgba(255,255,255,0.7);
+	border-color: rgba(0,0,0,0.08);
+}
+
+.glass-2 {
+	background: rgba(255,255,255,0.06);
+	backdrop-filter: blur(32px);
+	-webkit-backdrop-filter: blur(32px);
+	border: 1px solid var(--color-border-2);
+}
+html.light .glass-2 {
+	background: rgba(255,255,255,0.9);
+	border-color: rgba(0,0,0,0.12);
+}
+
+/* ─── Scroll reveal ─── */
+.reveal {
+	opacity: 0;
+	transform: translateY(24px);
+	transition:
+		opacity 0.65s cubic-bezier(0.16,1,0.3,1),
+		transform 0.65s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ─── Ticker ─── */
+@keyframes ticker {
+	from { transform: translateX(0); }
+	to   { transform: translateX(-50%); }
+}
+.ticker { animation: ticker 28s linear infinite; }
+
+/* ─── Pulse dot ─── */
+@keyframes pulse-dot {
+	0%, 100% { opacity: 1; transform: scale(1); }
+	50%       { opacity: 0.5; transform: scale(1.4); }
+}
+.pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+/* ─── Hero name shimmer ─── */
+@keyframes shimmer {
+	0%   { background-position: -400px 0; }
+	100% { background-position: 400px 0; }
+}
+
+/* ─── Colored accent borders for cards ─── */
+.card-orange { border-top: 2px solid var(--color-orange); }
+.card-yellow { border-top: 2px solid var(--color-yellow); }
+.card-blue   { border-top: 2px solid var(--color-blue); }
+.card-green  { border-top: 2px solid var(--color-green); }
+
+/* ─── Section divider line ─── */
+.section-rule {
+	border: none;
+	border-top: 1px solid var(--color-border);
+	margin: 0;
+}
+
+/* ─── Theme transition ─── */
+*, *::before, *::after {
+	transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
