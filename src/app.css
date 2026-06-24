@@ -1,1 +1,171 @@
 @import 'tailwindcss';
+
+@theme inline {
+	/* Typography */
+	--font-sans: 'Space Grotesk', 'DM Sans', 'ui-sans-serif', system-ui;
+	--font-body: 'Inter', 'DM Sans', 'ui-sans-serif', system-ui;
+	--font-mono: 'Fira Code', 'ui-monospace', 'SFMono-Regular';
+
+	/* Color Palette — Deep Obsidian Premium Dark */
+	--color-background: #080a0f;
+	--color-surface: #0e1018;
+	--color-surface-elevated: #13161f;
+	--color-border: rgba(255, 255, 255, 0.07);
+	--color-border-strong: rgba(255, 255, 255, 0.14);
+
+	/* Text */
+	--color-foreground: #f0f2f7;
+	--color-muted: #6b7280;
+	--color-subtle: #9ca3af;
+
+	/* Brand Accents */
+	--color-cyan: #00d4ff;
+	--color-cyan-dim: rgba(0, 212, 255, 0.12);
+	--color-cyan-glow: rgba(0, 212, 255, 0.25);
+	--color-platinum: #e8ecf4;
+	--color-gold: #c9a84c;
+
+	/* Radius */
+	--radius: 0.75rem;
+}
+
+/* Base resets */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+	background-color: var(--color-background);
+}
+
+body {
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+	font-family: var(--font-body);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	width: 4px;
+}
+::-webkit-scrollbar-track {
+	background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+	background: rgba(0, 212, 255, 0.3);
+	border-radius: 2px;
+}
+
+/* Scan line overlay */
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	background: repeating-linear-gradient(
+		0deg,
+		transparent,
+		transparent 2px,
+		rgba(0, 0, 0, 0.03) 2px,
+		rgba(0, 0, 0, 0.03) 4px
+	);
+	pointer-events: none;
+	z-index: 9999;
+}
+
+/* Glassmorphism utility */
+.glass {
+	background: rgba(255, 255, 255, 0.03);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	border: 1px solid var(--color-border);
+}
+
+.glass-strong {
+	background: rgba(255, 255, 255, 0.06);
+	backdrop-filter: blur(32px);
+	-webkit-backdrop-filter: blur(32px);
+	border: 1px solid var(--color-border-strong);
+}
+
+/* Cyan glow text */
+.text-cyan-glow {
+	color: var(--color-cyan);
+	text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+/* Reveal animation */
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(32px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.reveal {
+	animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.reveal-delay-1 {
+	animation-delay: 0.1s;
+}
+.reveal-delay-2 {
+	animation-delay: 0.2s;
+}
+.reveal-delay-3 {
+	animation-delay: 0.35s;
+}
+.reveal-delay-4 {
+	animation-delay: 0.5s;
+}
+
+/* Grid lines background */
+.grid-bg {
+	background-image:
+		linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+	background-size: 60px 60px;
+}
+
+/* Ticker animation */
+@keyframes ticker {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+.animate-ticker {
+	animation: ticker 30s linear infinite;
+}
+
+/* Pulse ring */
+@keyframes pulse-ring {
+	0% {
+		transform: scale(0.9);
+		opacity: 0.8;
+	}
+	50% {
+		transform: scale(1.05);
+		opacity: 0.4;
+	}
+	100% {
+		transform: scale(0.9);
+		opacity: 0.8;
+	}
+}
+
+.pulse-ring {
+	animation: pulse-ring 3s ease-in-out infinite;
+}
