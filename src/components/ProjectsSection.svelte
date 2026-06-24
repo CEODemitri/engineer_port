@@ -30,8 +30,8 @@
 			label:    'Gaming Platform',
 			title:    'Kaeps',
 			subtitle: 'Cosmic Blackjack & Badge System',
-			overview: 'A full-featured gaming platform built around Cosmic Blackjack — a space-themed card game with a live 5-tier badge progression system. Players earn Space → Bronze → Metallic → Legendary → Nova badges as they play and win.',
-			value:    'Demonstrates full-stack TypeScript at scale — auth, real-time game logic, a PostgreSQL badge engine, and a polished UI all shipping together in one repo.',
+			overview: 'A full-featured gaming platform built around Cosmic Blackjack — a space-themed card game with a live 5-tier badge progression system. Players earn Space → Bronze → Metallic → Legendary → Nova badges as they play and win. The badge engine tracks performance across sessions and unlocks cosmetic rewards tied to skill milestones.',
+			value:    'Demonstrates full-stack TypeScript at scale — user auth, real-time game logic, a PostgreSQL badge engine, and a polished animated UI all shipping together in one production-grade repo. Shows the ability to combine game design, database architecture, and frontend polish into a single cohesive product.',
 			valueIcon: 'fa-solid fa-trophy',
 			images:   ['/projects/kaeps-1.png', '/projects/kaeps-2.png'],
 			stack: [
@@ -55,8 +55,8 @@
 			label:    'Space Explorer',
 			title:    'Mika',
 			subtitle: 'Kosmos Exploration App',
-			overview: 'A space exploration companion app built for friends who want to understand the cosmos. Features an interactive moon map, unified lunar calendar and moon phases view, and live astronomical data.',
-			value:    'Proves the ability to turn complex scientific data (moon phases, orbital cycles) into an interface anyone can actually enjoy — a skill that translates directly to dashboards and data products.',
+			overview: 'A space exploration companion app built for anyone curious about the cosmos. Features an interactive moon map you can click and explore, a unified lunar calendar with moon phase visualization, and live astronomical data pulled in real time. Built as a personal project that turned into a fully-shipped product.',
+			value:    'Proves the ability to take complex, intimidating scientific data — moon phases, orbital cycles, astronomical coordinates — and turn it into an interface anyone can enjoy without a science degree. That same skill applies directly to enterprise dashboards, analytics platforms, and any domain where data clarity drives decisions.',
 			valueIcon: 'fa-solid fa-moon',
 			images:   ['/projects/mika-1.png', '/projects/mika-2.png'],
 			stack: [
@@ -79,8 +79,8 @@
 			label:    'Productivity Tool',
 			title:    'Streak Engine',
 			subtitle: 'Python Habit Tracker',
-			overview: 'A Python-powered habit and streak tracking CLI engine. Reads and writes CSV-based records, lets users add new entries interactively, and computes current streaks and historical stats.',
-			value:    'Clean example of Python scripting done right — data validation, file I/O, and user-facing CLI with no unnecessary dependencies. Lightweight and portable.',
+			overview: 'A Python-powered habit and streak tracking engine built for the command line. It reads and writes CSV-based records, lets users add new entries interactively, computes current streaks, and surfaces historical statistics — all without needing a database or a UI framework.',
+			value:    'A clean example of Python scripting done right: proper data validation, safe file I/O, a user-facing CLI that feels intuitive, and zero unnecessary dependencies. Small scope, high craft. Shows that I build with intention at every level — not just in large frameworks.',
 			valueIcon: 'fa-solid fa-fire',
 			images:   ['/projects/streak-1.png'],
 			stack: [
@@ -104,8 +104,8 @@
 			label:    'EdTech App',
 			title:    'Echora',
 			subtitle: 'Typing & Language Practice',
-			overview: 'A language learning web app focused on typing practice. Features multiple lesson types including a new "type words" mode, per-lesson progress tracking, and a visual progress page.',
-			value:    'EdTech is a UX-hard domain. Building something learners actually use daily requires clean state management, responsive feedback loops, and accessibility — all demonstrated here.',
+			overview: 'A language learning web app built around typing practice as the primary learning mechanism. Features multiple lesson types — including a "type words" mode — per-lesson progress tracking, streak counters, and a visual progress page that shows how far you\'ve come. Designed for daily use, not one-time visits.',
+			value:    'EdTech is one of the hardest UX domains to get right. Building something learners actually return to every day requires clean state management, immediate and satisfying feedback loops, accessibility for all users, and a UI that feels rewarding rather than punishing. All of that is demonstrated here — and it all translates directly to SaaS and productivity tooling.',
 			valueIcon: 'fa-solid fa-keyboard',
 			images:   ['/projects/echora-1.png', '/projects/echora-2.png'],
 			stack: [
@@ -612,7 +612,7 @@
 		background: var(--color-orange);
 	}
 
-	/* ── Detail card ─────────────────────────────────────── */
+	/* ── Detail card ────────────────────��────────────────── */
 	.detail-card {
 		border-radius: 4px;
 		overflow: hidden;

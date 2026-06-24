@@ -59,7 +59,7 @@
 			dim:   'var(--color-orange-dim)',
 			icon:  'fa-solid fa-brain',
 			title: 'AI & Automation',
-			blurb: 'I build AI systems that actually work in production — LLM pipelines, intelligent agents, and automation workflows that cut real operational costs.',
+			blurb: 'I build AI systems that actually work in production — not just demos. LLM pipelines, intelligent agents, and automation workflows that cut real operational costs and replace repetitive manual work.',
 			tags:  ['LLMs', 'AI Agents', 'RAG', 'Automation']
 		},
 		{
@@ -67,7 +67,7 @@
 			dim:   'var(--color-blue-dim)',
 			icon:  'fa-solid fa-code',
 			title: 'Full-Stack Apps',
-			blurb: 'From database to UI — I deliver complete, production-ready applications built with JavaScript, Python, C#, and modern frameworks.',
+			blurb: 'From database to UI, I deliver complete production-ready applications. You get one engineer who owns the whole stack — no handoff gaps, no finger-pointing between teams.',
 			tags:  ['React', 'Node.js', 'C#', 'Python', 'TypeScript']
 		},
 		{
@@ -75,7 +75,7 @@
 			dim:   'var(--color-green-dim)',
 			icon:  'fa-solid fa-chart-line',
 			title: 'Data & Analytics',
-			blurb: "My operations analytics background means I don't just build systems — I build systems optimized for measurable revenue and efficiency gains.",
+			blurb: 'Operations analytics is where I started. I turn raw event streams and database records into dashboards and KPIs your executives can actually act on — in real time.',
 			tags:  ['Analytics', 'Dashboards', 'SQL', 'KPIs']
 		},
 		{
@@ -83,7 +83,7 @@
 			dim:   'var(--color-yellow-dim)',
 			icon:  'fa-solid fa-server',
 			title: 'Cloud & DevOps',
-			blurb: 'Cloud-native architecture, containerization, and CI/CD pipelines. Systems built to scale to 10x load without a rewrite.',
+			blurb: 'Cloud-native architecture, containerization, and CI/CD pipelines. I build systems that survive traffic spikes and 3am on-call alerts without needing an emergency rewrite.',
 			tags:  ['Docker', 'Linux', 'APIs', 'CI/CD']
 		}
 	];
@@ -263,15 +263,24 @@
 				>
 					I&apos;m Demitri — a software engineer based in the United States. Before starting my
 					Bachelor&apos;s in Software Engineering, I earned over 360 technical certifications from
-					Google, IBM, and LinkedIn Learning.
+					Google, IBM, and LinkedIn Learning. I didn&apos;t wait for a degree to start learning — I
+					started building.
 				</p>
 				<p
-					class="mb-8 text-base leading-relaxed"
+					class="mb-5 text-base leading-relaxed"
 					style="color: var(--color-fg-2);"
 				>
 					My background in operations analytics means I approach every project from the angle that
 					matters most to you: <strong style="color: var(--color-fg);">measurable results.</strong>
 					I don&apos;t just write code — I solve the business problem behind it.
+				</p>
+				<p
+					class="mb-8 text-base leading-relaxed"
+					style="color: var(--color-fg-2);"
+				>
+					Whether you&apos;re a startup that needs a full product built fast, or an established team
+					that needs AI integrated into existing systems, I&apos;m the person who ships it — and
+					stays to make sure it works.
 				</p>
 				<a
 					href="#contact"
@@ -331,9 +340,9 @@
 					style="font-family: var(--font-sans); color: var(--color-fg);"
 				>Four things I do<br />exceptionally well.</h2>
 				<p
-					class="max-w-xs text-sm"
+					class="max-w-sm text-sm leading-relaxed"
 					style="color: var(--color-fg-3);"
-				>Every engagement is focused on shipping results — not activity.</p>
+				>Every engagement is focused on shipping results — not activity. These are the four areas where I have the deepest expertise and the most real-world impact.</p>
 			</div>
 		</div>
 
@@ -407,13 +416,19 @@
 				</h2>
 				<p class="text-base leading-relaxed mb-5" style="color: var(--color-fg-2);">
 					Most engineers can write code. Fewer can explain what that code does for your
-					bottom line. I&apos;ve worked in operations analytics — so I know how to measure
+					bottom line. I&apos;ve worked in operations analytics — so I understand revenue,
+					efficiency, and what "better" actually means in a business context. I measure
 					impact, not just ship features.
 				</p>
-				<p class="text-base leading-relaxed mb-8" style="color: var(--color-fg-2);">
+				<p class="text-base leading-relaxed mb-5" style="color: var(--color-fg-2);">
 					360+ certifications from Google and IBM aren&apos;t trophies. They&apos;re evidence
-					that I learn fast, go deep, and show up prepared. Every project gets my full
-					attention — from the first conversation to the final deploy.
+					that I learn fast, go deep, and show up prepared. I didn&apos;t collect them
+					for a resume — I used every one to build something real.
+				</p>
+				<p class="text-base leading-relaxed mb-8" style="color: var(--color-fg-2);">
+					Every project gets my full attention — from the first conversation to the
+					final deploy. I write the docs. I test the edge cases. I&apos;m reachable
+					when something breaks at 2am. That&apos;s the standard I hold myself to.
 				</p>
 				<a
 					href="#contact"
@@ -428,10 +443,10 @@
 			<!-- Right: four honest differentiators -->
 			<div class="reveal grid gap-4">
 				{#each [
-					{ color: 'var(--color-orange)', icon: 'fa-solid fa-bolt', title: 'Fast', body: 'I ramp up quickly. No hand-holding, no lengthy onboarding. I read docs, ask smart questions, and start shipping.' },
-					{ color: 'var(--color-blue)',   icon: 'fa-solid fa-link', title: 'Clear', body: 'I write technical docs your whole team can read. No jargon walls. You always know what I built and why.' },
-					{ color: 'var(--color-green)',  icon: 'fa-solid fa-chart-line', title: 'Measurable', body: 'Every system I build ships with metrics. You can see the before and after — in dollars, hours, or errors.' },
-					{ color: 'var(--color-yellow)', icon: 'fa-solid fa-shield-halved', title: 'Reliable', body: "I don't disappear. I test, document, and deploy properly. Then I stay available for what comes next." }
+					{ color: 'var(--color-orange)', icon: 'fa-solid fa-bolt', title: 'Fast to ramp', body: 'No hand-holding, no lengthy onboarding process. I read the docs, ask the right questions on day one, and start making commits that matter within the first week.' },
+					{ color: 'var(--color-blue)',   icon: 'fa-solid fa-link', title: 'Speaks plain English', body: 'I write technical documentation your whole team — engineers and non-engineers alike — can read and act on. You always know exactly what was built and why it matters.' },
+					{ color: 'var(--color-green)',  icon: 'fa-solid fa-chart-line', title: 'Measurable output', body: 'Every system I ship comes with metrics baked in. You can see the before and after clearly — in dollars saved, hours reclaimed, or errors eliminated.' },
+					{ color: 'var(--color-yellow)', icon: 'fa-solid fa-shield-halved', title: 'Reliable partner', body: "I don't disappear after deploy. I test edge cases, write proper documentation, and stay available. When something breaks at 3am, I'm the engineer who already wrote the runbook." }
 				] as item}
 					<div
 						class="glass rounded-sm px-5 py-4 flex items-start gap-4"
