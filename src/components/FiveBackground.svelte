@@ -20,8 +20,8 @@
 			}
 
 			const particles: Particle[] = [];
-			const PARTICLE_COUNT = 80;
-			const CONNECTION_DIST = 140;
+			const PARTICLE_COUNT = 50;
+			const CONNECTION_DIST = 90;
 
 			p.setup = () => {
 				const canvas = p.createCanvas(window.innerWidth, window.innerHeight);
@@ -38,21 +38,23 @@
 			function createParticle(p: any): Particle {
 				const rand = Math.random();
 				let color: [number, number, number];
-				if (rand < 0.6) {
-					color = [0, 212, 255]; // cyan
-				} else if (rand < 0.8) {
-					color = [200, 210, 240]; // platinum
+				if (rand < 0.30) {
+					color = [255, 107, 0];   // orange
+				} else if (rand < 0.55) {
+					color = [255, 208, 0];   // yellow
+				} else if (rand < 0.78) {
+					color = [0, 102, 255];   // blue
 				} else {
-					color = [201, 168, 76]; // gold
+					color = [0, 200, 81];    // green
 				}
 				return {
 					x: p.random(p.width),
 					y: p.random(p.height),
-					vx: p.random(-0.3, 0.3),
-					vy: p.random(-0.3, 0.3),
-					size: p.random(1, 3),
-					alpha: p.random(20, 120),
-					alphaSpeed: p.random(0.3, 0.8) * (Math.random() > 0.5 ? 1 : -1),
+					vx: p.random(-0.25, 0.25),
+					vy: p.random(-0.25, 0.25),
+					size: p.random(0.8, 2),
+					alpha: p.random(15, 80),
+					alphaSpeed: p.random(0.2, 0.5) * (Math.random() > 0.5 ? 1 : -1),
 					color
 				};
 			}

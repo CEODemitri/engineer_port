@@ -1,202 +1,166 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	let mobileMenuOpen = $state(false);
-	let scrolled = $state(false);
+	let mobileOpen = $state(false);
+	let scrolled   = $state(false);
+	let dark       = $state(true);
 
-	const navLinks = [
-		{ href: '#about', label: 'About' },
-		{ href: '#intelligence', label: 'Capabilities' },
+	const links = [
+		{ href: '#about',    label: 'About' },
+		{ href: '#work',     label: 'What I Do' },
 		{ href: '#projects', label: 'Projects' },
-		{ href: '#value', label: 'Value' },
-		{ href: '#contact', label: 'Contact' }
+		{ href: '#contact',  label: 'Contact' }
 	];
 
+	function toggleTheme() {
+		dark = !dark;
+		if (dark) {
+			document.documentElement.classList.remove('light');
+		} else {
+			document.documentElement.classList.add('light');
+		}
+	}
+
 	onMount(() => {
-		const handleScroll = () => {
-			scrolled = window.scrollY > 40;
-		};
-		window.addEventListener('scroll', handleScroll, { passive: true });
-		return () => window.removeEventListener('scroll', handleScroll);
+		const onScroll = () => { scrolled = window.scrollY > 48; };
+		window.addEventListener('scroll', onScroll, { passive: true });
+		return () => window.removeEventListener('scroll', onScroll);
 	});
 </script>
 
 <header
 	class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
-	class:scrolled-nav={scrolled}
+	style="
+		background: {scrolled ? 'rgba(10,10,10,0.9)' : 'transparent'};
+		backdrop-filter: {scrolled ? 'blur(20px)' : 'none'};
+		border-bottom: {scrolled ? '1px solid var(--color-border)' : '1px solid transparent'};
+	"
 >
 	<nav
 		class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10"
 		aria-label="Primary navigation"
 	>
-		<!-- Logo / Name -->
-		<a href="#" class="group flex items-center gap-3" aria-label="Demitri Echols home">
+		<!-- Logo -->
+		<a href="#" class="flex items-center gap-3 group" aria-label="Demitri Echols — home">
 			<div
-				class="relative flex h-8 w-8 items-center justify-center rounded-full border border-cyan-400/30 bg-cyan-400/10 transition-all duration-300 group-hover:border-cyan-400/60 group-hover:bg-cyan-400/20"
-			>
-				<span class="text-xs font-bold text-cyan-400 font-mono">DE</span>
-				<span
-					class="absolute inset-0 rounded-full border border-cyan-400/20 pulse-ring pointer-events-none"
-				></span>
-			</div>
+				class="h-8 w-8 rounded-sm flex items-center justify-center text-xs font-bold transition-all duration-300"
+				style="
+					background: var(--color-orange);
+					color: #fff;
+					font-family: var(--font-sans);
+					font-size: 0.7rem;
+					letter-spacing: 0.05em;
+				"
+			>DE</div>
 			<span
-				class="text-sm font-semibold tracking-widest text-platinum/80 uppercase transition-colors duration-300 group-hover:text-platinum"
-				style="font-family: var(--font-sans);"
-			>
-				Demitri Echols
-			</span>
+				class="text-sm font-semibold tracking-wide hidden sm:block transition-colors duration-200"
+				style="color: var(--color-fg); font-family: var(--font-sans);"
+			>Demitri Echols</span>
 		</a>
 
-		<!-- Desktop Nav Links -->
-		<ul class="hidden items-center gap-8 md:flex" role="list">
-			{#each navLinks as link}
+		<!-- Desktop links -->
+		<ul class="hidden md:flex items-center gap-8" role="list">
+			{#each links as link}
 				<li>
 					<a
 						href={link.href}
-						class="relative text-sm font-medium tracking-wide text-white/50 transition-colors duration-300 hover:text-cyan-400 nav-link"
-					>
-						{link.label}
-					</a>
+						class="text-sm font-medium transition-colors duration-200 nav-link"
+						style="color: var(--color-fg-2); font-family: var(--font-sans);"
+					>{link.label}</a>
 				</li>
 			{/each}
 		</ul>
 
-		<!-- CTA Button -->
-		<div class="hidden items-center gap-4 md:flex">
+		<!-- Right controls -->
+		<div class="flex items-center gap-3">
+			<!-- Theme toggle -->
+			<button
+				onclick={toggleTheme}
+				class="h-8 w-8 rounded-full flex items-center justify-center transition-colors duration-200"
+				style="background: var(--color-bg-3); color: var(--color-fg-2); border: 1px solid var(--color-border);"
+				aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+			>
+				{#if dark}
+					<i class="fas fa-sun text-xs" style="color: var(--color-yellow);"></i>
+				{:else}
+					<i class="fas fa-moon text-xs" style="color: var(--color-blue);"></i>
+				{/if}
+			</button>
+
+			<!-- CTA -->
 			<a
 				href="#contact"
-				class="group relative overflow-hidden rounded-full border border-cyan-400/40 px-5 py-2 text-sm font-medium text-cyan-400 transition-all duration-300 hover:border-cyan-400 hover:text-background"
-				style="font-family: var(--font-sans);"
+				class="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-sm text-sm font-semibold transition-all duration-200"
+				style="
+					background: var(--color-orange);
+					color: #fff;
+					font-family: var(--font-sans);
+				"
 			>
-				<span
-					class="absolute inset-0 -translate-x-full bg-cyan-400 transition-transform duration-300 group-hover:translate-x-0"
-				></span>
-				<span class="relative z-10">Let&apos;s Talk</span>
+				Hire Me
 			</a>
-		</div>
 
-		<!-- Mobile Menu Toggle -->
-		<button
-			class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:border-cyan-400/40 md:hidden"
-			onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
-			aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-			aria-expanded={mobileMenuOpen}
-		>
-			{#if mobileMenuOpen}
-				<i class="fas fa-times text-sm text-cyan-400"></i>
-			{:else}
-				<i class="fas fa-bars text-sm text-white/70"></i>
-			{/if}
-		</button>
+			<!-- Mobile hamburger -->
+			<button
+				class="md:hidden h-8 w-8 rounded-full flex items-center justify-center"
+				style="background: var(--color-bg-3); border: 1px solid var(--color-border); color: var(--color-fg-2);"
+				onclick={() => (mobileOpen = !mobileOpen)}
+				aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+				aria-expanded={mobileOpen}
+			>
+				<i class="fas {mobileOpen ? 'fa-times' : 'fa-bars'} text-xs"></i>
+			</button>
+		</div>
 	</nav>
 </header>
 
-<!-- Mobile Menu Overlay -->
-{#if mobileMenuOpen}
+<!-- Mobile overlay -->
+{#if mobileOpen}
 	<div
-		class="fixed inset-0 z-40 md:hidden"
+		class="fixed inset-0 z-40 md:hidden flex flex-col"
+		style="background: var(--color-bg);"
 		role="dialog"
 		aria-modal="true"
 		aria-label="Mobile navigation"
 	>
-		<!-- Backdrop -->
-		<button
-			class="absolute inset-0 w-full h-full bg-background/95 backdrop-blur-2xl border-0 cursor-default"
-			onclick={() => (mobileMenuOpen = false)}
-			aria-label="Close menu"
-			tabindex="-1"
-		></button>
+		<div class="flex items-center justify-between px-6 py-4" style="border-bottom: 1px solid var(--color-border);">
+			<span class="text-sm font-semibold" style="color: var(--color-fg); font-family: var(--font-sans);">Menu</span>
+			<button
+				onclick={() => (mobileOpen = false)}
+				class="h-8 w-8 flex items-center justify-center rounded-full"
+				style="background: var(--color-bg-3); border: 1px solid var(--color-border); color: var(--color-fg-2);"
+				aria-label="Close menu"
+			>
+				<i class="fas fa-times text-xs"></i>
+			</button>
+		</div>
 
-		<!-- Menu Content -->
-		<div class="relative flex h-full flex-col items-center justify-center gap-8 p-8">
-			<ul class="flex flex-col items-center gap-6" role="list">
-				{#each navLinks as link, i}
-					<li style="animation-delay: {i * 0.06}s" class="reveal">
-						<a
-							href={link.href}
-							onclick={() => (mobileMenuOpen = false)}
-							class="text-3xl font-semibold tracking-tight text-white/70 transition-colors duration-200 hover:text-cyan-400"
-							style="font-family: var(--font-sans);"
-						>
-							{link.label}
-						</a>
-					</li>
-				{/each}
-			</ul>
+		<nav class="flex flex-col gap-2 p-6 flex-1">
+			{#each links as link}
+				<a
+					href={link.href}
+					onclick={() => (mobileOpen = false)}
+					class="py-4 text-2xl font-bold transition-colors duration-200 border-b"
+					style="
+						color: var(--color-fg);
+						border-color: var(--color-border);
+						font-family: var(--font-sans);
+					"
+				>{link.label}</a>
+			{/each}
+		</nav>
 
+		<div class="p-6">
 			<a
 				href="#contact"
-				onclick={() => (mobileMenuOpen = false)}
-				class="mt-4 rounded-full border border-cyan-400/40 px-8 py-3 text-sm font-medium text-cyan-400 transition hover:bg-cyan-400/10"
-				style="font-family: var(--font-sans);"
-			>
-				Let&apos;s Talk
-			</a>
-
-			<div class="mt-8 flex gap-6 text-white/40">
-				<a
-					href="https://github.com/ceodemitri"
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label="GitHub"
-					class="transition hover:text-cyan-400"
-				>
-					<i class="fab fa-github text-lg"></i>
-				</a>
-				<a
-					href="https://www.linkedin.com/in/demitri-echols-391225282/"
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label="LinkedIn"
-					class="transition hover:text-cyan-400"
-				>
-					<i class="fab fa-linkedin text-lg"></i>
-				</a>
-				<a
-					href="https://x.com/iprogramidesign"
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label="X / Twitter"
-					class="transition hover:text-cyan-400"
-				>
-					<i class="fab fa-x-twitter text-lg"></i>
-				</a>
-			</div>
+				onclick={() => (mobileOpen = false)}
+				class="flex items-center justify-center gap-2 w-full py-3.5 text-sm font-semibold rounded-sm"
+				style="background: var(--color-orange); color: #fff; font-family: var(--font-sans);"
+			>Hire Me</a>
 		</div>
 	</div>
 {/if}
 
 <style>
-	header {
-		background: transparent;
-	}
-
-	header.scrolled-nav {
-		background: rgba(8, 10, 15, 0.85);
-		backdrop-filter: blur(24px);
-		-webkit-backdrop-filter: blur(24px);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-	}
-
-	.nav-link::after {
-		content: '';
-		position: absolute;
-		bottom: -4px;
-		left: 0;
-		width: 0;
-		height: 1px;
-		background: var(--color-cyan);
-		transition: width 0.3s ease;
-	}
-
-	.nav-link:hover::after {
-		width: 100%;
-	}
-
-	:global(.text-background) {
-		color: var(--color-background);
-	}
-	:global(.bg-background) {
-		background-color: var(--color-background);
-	}
+	.nav-link:hover { color: var(--color-fg) !important; }
 </style>
