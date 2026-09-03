@@ -1,0 +1,9 @@
+export { default as Menu } from './Menu.svelte';
+export { default as X } from './X.svelte';
+export { default as Github } from './Github.svelte';
+export { default as Linkedin } from './Linkedin.svelte';
+export { default as Twitter } from './Twitter.svelte';
+export { default as Mail } from './Mail.svelte';
+export { default as Phone } from './Phone.svelte';
+export { default as ExternalLink } from './ExternalLink.svelte';
+export { default as ArrowUpRight } from './ArrowUpRight.svelte';
