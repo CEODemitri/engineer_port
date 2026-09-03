@@ -2,6 +2,28 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
+		<script>
+			// Guard against getter-only window.fetch in restricted iframe/extension environments
+			(function () {
+				try {
+					var rawFetch = window.fetch;
+					var currentFetch = rawFetch;
+					Object.defineProperty(window, 'fetch', {
+						get: function () {
+							return currentFetch;
+						},
+						set: function (fn) {
+							currentFetch = fn;
+						},
+						configurable: true,
+						enumerable: true
+					});
+				} catch (e) {
+					// Silent fallback
+				}
+			})();
+		</script>
+
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>DEMITRI — Creative Developer</title>
 		<meta
