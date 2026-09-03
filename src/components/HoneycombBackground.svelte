@@ -12,10 +12,10 @@
 	let animId: number = 0;
 	let prefersReducedMotion = $state(false);
 
-	// Hexagon dimensions
-	const R = 28; // Radius of outer circumscribed circle
-	const W = Math.sqrt(3) * R; // Width between adjacent column centers (~48.5px)
-	const vertDist = 1.5 * R; // Vertical distance between adjacent rows (42px)
+	// Hexagon dimensions — enlarged for architectural scale and elegance
+	const R = 54; // Radius of outer circumscribed circle (creates ~93.5px wide hexagons)
+	const W = Math.sqrt(3) * R; // Width between adjacent column centers (~93.53px)
+	const vertDist = 1.5 * R; // Vertical distance between adjacent rows (81px)
 
 	// Precomputed corner offsets for pointy-topped hexagon (6 vertices)
 	const hexCornerOffsets: [number, number][] = [];
@@ -147,16 +147,17 @@
 		let isRunning = true;
 
 		// Color transition:
-		// Entering / Decompressing tail: Refined architectural slate-charcoal rgb(60, 68, 80)
-		// Peak height: Warm luminous gold rgb(212, 175, 55)
-		const BASE_R = 70,
-			BASE_G = 80,
-			BASE_B = 95;
+		// Entering / Decompressing tail: Muted neutral warm grey rgb(205, 208, 214)
+		// Peak height: Sophisticated champagne gold rgb(212, 175, 55)
+		const BASE_R = 205,
+			BASE_G = 208,
+			BASE_B = 214;
 		const GOLD_R = 212,
 			GOLD_G = 175,
 			GOLD_B = 55;
 
-		const hoverRadius = width < 640 ? 165 : 230;
+		const hoverRadius = width < 640 ? 220 : 320;
+		const maxLift = 16; // Maximum vertical rise in pixels for the 3D center elevation
 
 		function render(now: number) {
 			if (!ctx || !isRunning) return;
@@ -164,12 +165,12 @@
 			const dt = Math.min((now - lastTime) / 16.666, 2.5);
 			lastTime = now;
 
-			// If no pointer move in 2.5 seconds, deactivate pointer
-			if (isPointerActive && now - lastMoveTime > 2500) {
+			// If no pointer move in 3 seconds, deactivate pointer
+			if (isPointerActive && now - lastMoveTime > 3000) {
 				isPointerActive = false;
 			}
 
-			// 1. Update cell activation and decompression
+			// 1. Update cell activation and smooth rise/fall elevation
 			const activeCells: HexCell[] = [];
 
 			for (let i = 0; i < cells.length; i++) {
@@ -183,37 +184,37 @@
 
 					if (dist < hoverRadius) {
 						const norm = Math.max(0, 1 - dist / hoverRadius);
-						// High contrast activation curve
-						const targetAct = Math.pow(norm, 1.25);
-						if (targetAct > cell.activation) {
-							cell.activation = targetAct;
-						}
+						// Smooth organic falloff curve (raised dome profile)
+						const targetAct = norm * norm * (3 - 2 * norm);
+						// Graceful rising ease-in
+						cell.activation += (targetAct - cell.activation) * (0.09 * dt);
+					} else {
+						// Graceful falling ease-out
+						cell.activation -= 0.0035 * dt;
+						cell.activation *= Math.pow(0.978, dt);
 					}
 
-					// Interpolate with previous mouse position for fast sweeps
+					// Interpolate with previous mouse position for continuous wave trail
 					if (prevMouseX > -100 && (prevMouseX !== mouseX || prevMouseY !== mouseY)) {
 						const midX = (mouseX + prevMouseX) / 2;
 						const midY = (mouseY + prevMouseY) / 2;
 						const dMid = Math.hypot(cell.cx - midX, cell.cy - midY);
 						if (dMid < hoverRadius) {
 							const normMid = Math.max(0, 1 - dMid / hoverRadius);
-							const midTargetAct = Math.pow(normMid, 1.25);
-							if (midTargetAct > cell.activation) {
-								cell.activation = midTargetAct;
-							}
+							const midTargetAct = normMid * normMid * (3 - 2 * normMid);
+							cell.activation += (midTargetAct - cell.activation) * (0.075 * dt);
 						}
 					}
+				} else {
+					// Gracefully sink back to base when pointer is idle
+					cell.activation -= 0.0035 * dt;
+					cell.activation *= Math.pow(0.978, dt);
 				}
 
-				// Smooth decompression transition: decay activation gracefully
-				if (cell.activation > 0) {
-					cell.activation -= 0.012 * dt;
-					cell.activation *= Math.pow(0.965, dt);
-					if (cell.activation < 0.005) {
-						cell.activation = 0;
-					} else {
-						activeCells.push(cell);
-					}
+				if (cell.activation < 0.002) {
+					cell.activation = 0;
+				} else {
+					activeCells.push(cell);
 				}
 			}
 
@@ -221,43 +222,94 @@
 			// In rest state (no active cells), canvas is completely cleared with NO sign of the grid
 			ctx.clearRect(0, 0, width, height);
 
-			// Draw ONLY active / decompressing cells around the hovered portion
+			// Draw active cells sorted by Y so lower 3D prisms overlap naturally
+			activeCells.sort((a, b) => a.cy - b.cy);
+
 			for (let j = 0; j < activeCells.length; j++) {
 				const cell = activeCells[j];
 				const act = cell.activation;
 
-				// Dynamic Color Interpolation:
-				// Low act (entering / trailing decompression): slate charcoal with crisp visibility
-				// Peak act (near hover center): radiant warm gold
+				// 3D vertical displacement (raising up towards viewer & slight Y lift)
+				const lift = act * maxLift;
+				const scale = 1 + act * 0.04;
+
+				// Color interpolation:
 				const r = Math.round(BASE_R + (GOLD_R - BASE_R) * act);
 				const g = Math.round(BASE_G + (GOLD_G - BASE_G) * act);
 				const b = Math.round(BASE_B + (GOLD_B - BASE_B) * act);
 
-				// Stroke opacity scales from ~0.15 at edges to ~0.82 at peak
-				const strokeAlpha = Math.min(0.85, Math.max(0, act * 0.88)).toFixed(3);
-				const strokeWidth = 1 + act * 0.6;
+				const strokeAlpha = (act * 0.38).toFixed(3);
+				const sideAlpha = (act * 0.22).toFixed(3);
 
+				// Precalculate top (elevated) and base vertices
+				const topVerts: [number, number][] = [];
+				const baseVerts: [number, number][] = [];
+
+				for (let k = 0; k < 6; k++) {
+					const ox = hexCornerOffsets[k][0] * scale;
+					const oy = hexCornerOffsets[k][1] * scale;
+					topVerts.push([cell.cx + ox, cell.cy - lift + oy]);
+					baseVerts.push([cell.cx + hexCornerOffsets[k][0], cell.cy + hexCornerOffsets[k][1]]);
+				}
+
+				// A. Base shadow / ground footprint when raised
+				if (act > 0.08) {
+					const shadowAlpha = ((act - 0.08) * 0.06).toFixed(3);
+					ctx.beginPath();
+					for (let k = 0; k < 6; k++) {
+						if (k === 0) ctx.moveTo(baseVerts[k][0], baseVerts[k][1]);
+						else ctx.lineTo(baseVerts[k][0], baseVerts[k][1]);
+					}
+					ctx.closePath();
+					ctx.fillStyle = `rgba(0, 0, 0, ${shadowAlpha})`;
+					ctx.fill();
+				}
+
+				// B. 3D Extruded Side Walls (connecting elevated top face to ground base)
+				if (lift > 1.2) {
+					// Draw side bevel facets for visible downward-facing sides (indices 0->1, 1->2, 2->3, 3->4)
+					const sideEdges = [
+						[0, 1],
+						[1, 2],
+						[2, 3],
+						[3, 4]
+					];
+					for (let e = 0; e < sideEdges.length; e++) {
+						const [v1, v2] = sideEdges[e];
+						ctx.beginPath();
+						ctx.moveTo(topVerts[v1][0], topVerts[v1][1]);
+						ctx.lineTo(topVerts[v2][0], topVerts[v2][1]);
+						ctx.lineTo(baseVerts[v2][0], baseVerts[v2][1]);
+						ctx.lineTo(baseVerts[v1][0], baseVerts[v1][1]);
+						ctx.closePath();
+
+						// Subtle side facet shading with depth
+						const facetShade = e === 1 || e === 2 ? 0.035 : 0.02;
+						ctx.fillStyle = `rgba(180, 185, 195, ${(act * facetShade).toFixed(3)})`;
+						ctx.fill();
+						ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${sideAlpha})`;
+						ctx.lineWidth = 0.75;
+						ctx.stroke();
+					}
+				}
+
+				// C. Elevated Top Hexagon Face
 				ctx.beginPath();
 				for (let k = 0; k < 6; k++) {
-					const px = cell.cx + hexCornerOffsets[k][0];
-					const py = cell.cy + hexCornerOffsets[k][1];
-					if (k === 0) {
-						ctx.moveTo(px, py);
-					} else {
-						ctx.lineTo(px, py);
-					}
+					if (k === 0) ctx.moveTo(topVerts[k][0], topVerts[k][1]);
+					else ctx.lineTo(topVerts[k][0], topVerts[k][1]);
 				}
 				ctx.closePath();
 
-				// Luminous gold wash fill at center of hover
+				// Soft champagne fill wash on the elevated cap
 				if (act > 0.08) {
-					const fillAlpha = Math.min(0.22, (act - 0.08) * 0.2).toFixed(3);
+					const fillAlpha = Math.min(0.08, (act - 0.08) * 0.07).toFixed(3);
 					ctx.fillStyle = `rgba(212, 175, 55, ${fillAlpha})`;
 					ctx.fill();
 				}
 
 				ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${strokeAlpha})`;
-				ctx.lineWidth = strokeWidth;
+				ctx.lineWidth = 1;
 				ctx.stroke();
 			}
 
