@@ -11,12 +11,18 @@
 		mobileMenuOpen = !mobileMenuOpen;
 	}
 
-	function handleNavClick(target: string) {
+	function handleNavClick(e: MouseEvent, target: string) {
 		mobileMenuOpen = false;
 		if (typeof document !== 'undefined') {
 			const targetEl = document.querySelector(target);
 			if (targetEl) {
-				targetEl.scrollIntoView({ behavior: 'smooth' });
+				e.preventDefault();
+				targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				try {
+					history.pushState(null, '', target);
+				} catch {
+					// Fallback for restricted frame contexts
+				}
 			}
 		}
 	}
@@ -30,10 +36,10 @@
 >
 	<!-- Panda Astronaut Logo at top of sidebar -->
 	<div class="mb-8 flex flex-col items-end">
-		<button
-			type="button"
-			onclick={() => handleNavClick('#home')}
-			class="p-1 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4682B4] group"
+		<a
+			href="#home"
+			onclick={(e) => handleNavClick(e, '#home')}
+			class="p-1 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4682B4] group inline-block"
 			aria-label="Scroll to home — Demitri astronaut panda logo"
 		>
 			<img
@@ -43,7 +49,7 @@
 				height="40"
 				class="w-10 h-10 object-contain drop-shadow-sm select-none transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
 			/>
-		</button>
+		</a>
 		<span class="font-heading text-[0.65rem] tracking-widest text-[#000000] mt-1">DEMITRI</span>
 	</div>
 
@@ -53,10 +59,10 @@
 			{#each navItems as item}
 				{@const isActive = activeSection === item.target}
 				<li role="listitem">
-					<button
-						type="button"
+					<a
+						href={item.target}
 						data-target={item.target}
-						onclick={() => handleNavClick(item.target)}
+						onclick={(e) => handleNavClick(e, item.target)}
 						class="flex items-center gap-2 text-right cursor-pointer py-1 select-none font-mono text-[0.65rem] tracking-[0.12em] uppercase transition-colors duration-200 hover:text-[#4682B4] focus-visible:outline-none"
 						style="color: {isActive ? '#000000' : '#666666'}; font-weight: {isActive ? 600 : 400};"
 						aria-current={isActive ? 'page' : undefined}
@@ -67,7 +73,7 @@
 						{/if}
 						<span class="font-mono text-[0.55rem] text-[#B76E79]">{item.number}</span>
 						<span>{item.label}</span>
-					</button>
+					</a>
 				</li>
 			{/each}
 		</ul>
@@ -79,9 +85,9 @@
 	id="mobile-nav"
 	class="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-[#E5E5E5] px-5 py-3 flex items-center justify-between"
 >
-	<button
-		type="button"
-		onclick={() => handleNavClick('#home')}
+	<a
+		href="#home"
+		onclick={(e) => handleNavClick(e, '#home')}
 		class="flex items-center gap-3 cursor-pointer"
 		aria-label="Home — Demitri astronaut panda"
 	>
@@ -93,7 +99,7 @@
 			class="w-8 h-8 object-contain select-none"
 		/>
 		<span class="font-heading text-sm text-[#000000] tracking-wider">DEMITRI</span>
-	</button>
+	</a>
 
 	<!-- Lucide Menu Hamburger button -->
 	<button
@@ -158,9 +164,9 @@
 				{#each navItems as item}
 					{@const isActive = activeSection === item.target}
 					<li class="mobile-nav-item" role="listitem">
-						<button
-							type="button"
-							onclick={() => handleNavClick(item.target)}
+						<a
+							href={item.target}
+							onclick={(e) => handleNavClick(e, item.target)}
 							class="w-full flex items-center justify-between text-left py-3 cursor-pointer text-base font-body font-medium"
 							style="color: {isActive ? '#000000' : '#333333'};"
 						>
@@ -173,7 +179,7 @@
 								</span>
 							</span>
 							<span class="font-mono text-xs text-[#B76E79]">{item.number}</span>
-						</button>
+						</a>
 					</li>
 				{/each}
 			</ul>

@@ -4,11 +4,17 @@
 	let needleAngle = $state(0);
 	const navLinks = PORTFOLIO_CONTENT.navLinks;
 
-	function handleScrollTo(target: string) {
+	function handleScrollTo(e: MouseEvent, target: string) {
 		if (typeof document !== 'undefined') {
 			const el = document.querySelector(target);
 			if (el) {
-				el.scrollIntoView({ behavior: 'smooth' });
+				e.preventDefault();
+				el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				try {
+					history.pushState(null, '', target);
+				} catch {
+					// Fallback for restricted frame contexts
+				}
 			}
 		}
 	}
@@ -135,13 +141,13 @@
 		<!-- Middle Navigation Links -->
 		<div class="py-12 border-b border-[#222222] flex flex-wrap gap-8 sm:gap-12 items-center">
 			{#each navLinks as item}
-				<button
-					type="button"
-					onclick={() => handleScrollTo(item.target)}
+				<a
+					href={item.target}
+					onclick={(e) => handleScrollTo(e, item.target)}
 					class="font-body font-medium text-xs uppercase tracking-[0.1em] text-white hover:text-[#4682B4] cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4682B4]"
 				>
 					{item.label}
-				</button>
+				</a>
 			{/each}
 		</div>
 

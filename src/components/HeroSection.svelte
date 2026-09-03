@@ -60,10 +60,16 @@
 		}
 	});
 
-	function scrollToSection(id: string) {
+	function scrollToSection(e: MouseEvent, id: string) {
 		const target = document.querySelector(id);
 		if (target) {
-			target.scrollIntoView({ behavior: 'smooth' });
+			e.preventDefault();
+			target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			try {
+				history.pushState(null, '', id);
+			} catch {
+				// Fallback for restricted frame contexts
+			}
 		}
 	}
 </script>
@@ -129,24 +135,24 @@
 		<!-- CTAs (0 border-radius, flat colors per spec) -->
 		<div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mt-2">
 			<!-- View My Work -->
-			<button
-				type="button"
-				onclick={() => scrollToSection('#skills-projects')}
-				class="w-full sm:w-auto font-body font-semibold text-white bg-[#000000] hover:bg-[#4682B4] text-[0.75rem] tracking-[0.1em] uppercase px-8 py-4 cursor-pointer transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[#4682B4] focus-visible:outline-none"
+			<a
+				href="#skills-projects"
+				onclick={(e) => scrollToSection(e, '#skills-projects')}
+				class="w-full sm:w-auto font-body font-semibold text-white bg-[#000000] hover:bg-[#4682B4] text-[0.75rem] tracking-[0.1em] uppercase px-8 py-4 cursor-pointer text-center inline-block transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[#4682B4] focus-visible:outline-none"
 				style="border-radius: 0;"
 			>
 				{PORTFOLIO_CONTENT.hero.ctaWork}
-			</button>
+			</a>
 
 			<!-- Get In Touch -->
-			<button
-				type="button"
-				onclick={() => scrollToSection('#contact')}
-				class="w-full sm:w-auto font-body font-semibold text-[#000000] hover:text-white bg-transparent hover:bg-[#000000] border border-[#000000] text-[0.75rem] tracking-[0.1em] uppercase px-8 py-[15px] cursor-pointer transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[#4682B4] focus-visible:outline-none"
+			<a
+				href="#contact"
+				onclick={(e) => scrollToSection(e, '#contact')}
+				class="w-full sm:w-auto font-body font-semibold text-[#000000] hover:text-white bg-transparent hover:bg-[#000000] border border-[#000000] text-[0.75rem] tracking-[0.1em] uppercase px-8 py-[15px] cursor-pointer text-center inline-block transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[#4682B4] focus-visible:outline-none"
 				style="border-radius: 0;"
 			>
 				{PORTFOLIO_CONTENT.hero.ctaContact}
-			</button>
+			</a>
 		</div>
 	</div>
 

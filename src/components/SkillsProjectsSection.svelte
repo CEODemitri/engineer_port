@@ -183,7 +183,8 @@
 											href={project.liveLink}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="font-body font-medium text-xs text-[#4682B4] hover:underline flex items-center gap-1.5 uppercase"
+											onclick={(e) => e.stopPropagation()}
+											class="font-body font-medium text-xs text-[#4682B4] hover:underline flex items-center gap-1.5 uppercase pointer-events-auto"
 										>
 											<ExternalLink size={14} />
 											<span>LIVE PROJECT</span>
@@ -192,15 +193,19 @@
 											href={project.codeLink}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="font-body font-medium text-xs text-[#4682B4] hover:underline flex items-center gap-1.5 uppercase"
+											onclick={(e) => e.stopPropagation()}
+											class="font-body font-medium text-xs text-[#4682B4] hover:underline flex items-center gap-1.5 uppercase pointer-events-auto"
 										>
 											<Github size={14} />
 											<span>VIEW CODE</span>
 										</a>
 										<button
 											type="button"
-											onclick={() => toggleProject(project.id)}
-											class="ml-auto font-mono text-[0.65rem] text-[#666666] hover:text-black uppercase flex items-center gap-1"
+											onclick={(e) => {
+												e.stopPropagation();
+												toggleProject(project.id);
+											}}
+											class="ml-auto font-mono text-[0.65rem] text-[#666666] hover:text-black uppercase flex items-center gap-1 cursor-pointer pointer-events-auto"
 										>
 											<X size={14} />
 											<span>CLOSE</span>
