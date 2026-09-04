@@ -157,7 +157,7 @@
 			GOLD_B = 55;
 
 		const hoverRadius = width < 640 ? 220 : 320;
-		const maxLift = 16; // Maximum vertical rise in pixels for the 3D center elevation
+		const maxLift = 22; // Maximum vertical rise in pixels for the 3D center elevation
 
 		function render(now: number) {
 			if (!ctx || !isRunning) return;
@@ -231,7 +231,7 @@
 
 				// 3D vertical displacement (raising up towards viewer & slight Y lift)
 				const lift = act * maxLift;
-				const scale = 1 + act * 0.04;
+				const scale = 1 + act * 0.07;
 
 				// Color interpolation:
 				const r = Math.round(BASE_R + (GOLD_R - BASE_R) * act);
@@ -338,6 +338,6 @@
 
 <canvas
 	id="honeycomb-canvas"
-	class="fixed inset-0 pointer-events-none z-0 overflow-hidden w-full h-full select-none"
+	class="fixed inset-0 pointer-events-none z-10 overflow-hidden w-full h-full select-none"
 	aria-hidden="true"
 ></canvas>
