@@ -123,8 +123,8 @@
 		function spawnRipple(x: number, y: number, isStrong: boolean = true) {
 			const now = performance.now();
 			const isSmallScreen = width < 768;
-			const maxRadius = isSmallScreen ? 340 : 450;
-			const duration = isSmallScreen ? 1150 : 1350;
+			const maxRadius = isSmallScreen ? 300 : 400;
+			const duration = isSmallScreen ? 900 : 1050;
 			const strength = isStrong ? 1.0 : 0.85;
 
 			ripples.push({
@@ -137,7 +137,7 @@
 				strength
 			});
 
-			if (ripples.length > 8) {
+			if (ripples.length > 6) {
 				ripples.shift();
 			}
 		}
@@ -340,28 +340,28 @@
 
 				// Center lift physics
 				if (maxCenterTarget > cell.centerLift) {
-					cell.centerLift += (maxCenterTarget - cell.centerLift) * (0.35 * dt);
+					cell.centerLift += (maxCenterTarget - cell.centerLift) * (0.42 * dt);
 				} else {
-					cell.centerLift += (maxCenterTarget - cell.centerLift) * (0.09 * dt);
+					cell.centerLift += (maxCenterTarget - cell.centerLift) * (0.16 * dt);
 				}
-				if (cell.centerLift < 0.005) cell.centerLift = 0;
+				if (cell.centerLift < 0.01) cell.centerLift = 0;
 
 				// 2. Propagating Ripple Waves Outward from Center
 				let rippleAct = 0;
 				for (let rIdx = 0; rIdx < ripples.length; rIdx++) {
 					const ripple = ripples[rIdx];
 					const elapsed = now - ripple.startTime;
-					const progress = elapsed / ripple.duration;
+					const progress = Math.min(1.0, elapsed / ripple.duration);
 					const currentWaveRadius = progress * ripple.maxRadius;
 					const dist = Math.hypot(cell.cx - ripple.x, cell.cy - ripple.y);
 
-					const waveBand = isSmallScreen ? 75 : 95;
+					const waveBand = isSmallScreen ? 70 : 90;
 					const distToWave = Math.abs(dist - currentWaveRadius);
 
-					if (distToWave < waveBand) {
+					if (distToWave < waveBand && progress < 1.0) {
 						const waveFactor = 1 - distToWave / waveBand;
-						// Quadratic fadeout as ripple travels outward
-						const envelope = (1 - progress) * (1 - progress);
+						// Quadratic fadeout as ripple travels outward, reaching zero at end of animation
+						const envelope = Math.pow(1 - progress, 2.2);
 						const impulse = waveFactor * waveFactor * envelope * ripple.strength;
 						if (impulse > rippleAct) {
 							rippleAct = impulse;
@@ -373,13 +373,13 @@
 				const targetAct = Math.max(cell.centerLift, rippleAct);
 
 				if (targetAct > cell.activation) {
-					cell.activation += (targetAct - cell.activation) * (0.38 * dt);
+					cell.activation += (targetAct - cell.activation) * (0.45 * dt);
 				} else {
-					// Graceful fade away decay
-					cell.activation += (targetAct - cell.activation) * (0.058 * dt);
+					// Graceful and complete fade-away decay
+					cell.activation += (targetAct - cell.activation) * (0.12 * dt);
 				}
 
-				if (cell.activation < 0.005) {
+				if (cell.activation < 0.02) {
 					cell.activation = 0;
 				} else {
 					activeCells.push(cell);
@@ -389,7 +389,7 @@
 			// Clear entire canvas (100% transparent when idle / no active cells)
 			ctx.clearRect(0, 0, width, height);
 
-			// Render ONLY active/elevated hexagons — nothing is rendered when idle
+			// Render ONLY active/elevated hexagons — completely fades away to transparent
 			if (activeCells.length > 0) {
 				// Sort by Y for isometric depth stacking
 				activeCells.sort((a, b) => a.cy - b.cy);
@@ -397,17 +397,18 @@
 				for (let j = 0; j < activeCells.length; j++) {
 					const cell = activeCells[j];
 					const act = cell.activation;
+					const fadeFactor = Math.min(1.0, Math.max(0, (act - 0.02) / 0.98));
 
-					const lift = act * maxLift;
-					const scale = 1 + act * 0.05;
+					const lift = fadeFactor * maxLift;
+					const scale = 1 + fadeFactor * 0.05;
 
 					// Dynamic color: Slate Charcoal -> Warm Champagne Gold
-					const r = Math.round(BASE_R + (GOLD_R - BASE_R) * act);
-					const g = Math.round(BASE_G + (GOLD_G - BASE_G) * act);
-					const b = Math.round(BASE_B + (GOLD_B - BASE_B) * act);
+					const r = Math.round(BASE_R + (GOLD_R - BASE_R) * fadeFactor);
+					const g = Math.round(BASE_G + (GOLD_G - BASE_G) * fadeFactor);
+					const b = Math.round(BASE_B + (GOLD_B - BASE_B) * fadeFactor);
 
-					const strokeAlpha = Math.min(0.9, act * 0.95).toFixed(3);
-					const sideAlpha = (act * 0.42).toFixed(3);
+					const strokeAlpha = (Math.pow(fadeFactor, 1.25) * 0.9).toFixed(3);
+					const sideAlpha = (Math.pow(fadeFactor, 1.45) * 0.42).toFixed(3);
 
 					const topVerts: [number, number][] = [];
 					const baseVerts: [number, number][] = [];
@@ -420,8 +421,8 @@
 					}
 
 					// 1. Base footprint shadow (ambient occlusion on ground plane)
-					if (act > 0.05) {
-						const shadowAlpha = ((act - 0.05) * 0.09).toFixed(3);
+					if (fadeFactor > 0.08) {
+						const shadowAlpha = ((fadeFactor - 0.08) * 0.09).toFixed(3);
 						ctx.beginPath();
 						for (let k = 0; k < 6; k++) {
 							if (k === 0) ctx.moveTo(baseVerts[k][0], baseVerts[k][1]);
@@ -450,7 +451,7 @@
 							ctx.closePath();
 
 							const facetShade = e === 1 || e === 2 ? 0.06 : 0.035;
-							ctx.fillStyle = `rgba(160, 168, 180, ${(act * facetShade).toFixed(3)})`;
+							ctx.fillStyle = `rgba(160, 168, 180, ${(fadeFactor * facetShade).toFixed(3)})`;
 							ctx.fill();
 							ctx.strokeStyle = `rgba(70, 75, 85, ${sideAlpha})`;
 							ctx.lineWidth = 0.8;
@@ -467,14 +468,14 @@
 					ctx.closePath();
 
 					// Warm champagne gold wash on elevated surface
-					if (act > 0.05) {
-						const fillAlpha = Math.min(0.16, (act - 0.05) * 0.14).toFixed(3);
+					if (fadeFactor > 0.06) {
+						const fillAlpha = Math.min(0.16, (fadeFactor - 0.06) * 0.16).toFixed(3);
 						ctx.fillStyle = `rgba(212, 175, 55, ${fillAlpha})`;
 						ctx.fill();
 					}
 
 					ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${strokeAlpha})`;
-					ctx.lineWidth = 1 + act * 0.75;
+					ctx.lineWidth = 1 + fadeFactor * 0.75;
 					ctx.stroke();
 				}
 			}
