@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import Preloader from '../components/Preloader.svelte';
+	import HoneycombBackground from '../components/HoneycombBackground.svelte';
 	import ThreeBackground from '../components/ThreeBackground.svelte';
 	import Navigation from '../components/Navigation.svelte';
 	import HeroSection from '../components/HeroSection.svelte';
@@ -14,6 +15,7 @@
 	let preloaderDone = $state(false);
 
 	const sectionIds = ['#home', '#why-me', '#skills-projects', '#credentials', '#contact'];
+
 	let observer: IntersectionObserver | null = null;
 	let revealObserver: IntersectionObserver | null = null;
 
@@ -53,11 +55,13 @@
 
 		sections.forEach((section, index) => {
 			observer?.observe(section);
-
 			// Setup initial transition classes for sections after hero
 			if (index > 0) {
 				const isOdd = (index + 1) % 2 !== 0;
-				section.classList.add('transition-reveal', isOdd ? 'reveal-from-right' : 'reveal-from-left');
+				section.classList.add(
+					'transition-reveal',
+					isOdd ? 'reveal-from-right' : 'reveal-from-left'
+				);
 				revealObserver?.observe(section);
 			}
 		});
@@ -115,17 +119,20 @@
 <!-- Skip to content for keyboard accessibility -->
 <a href="#main-content" class="skip-to-content"> Skip to main content </a>
 
-<!-- Honeycomb Preloader (dismissable with click or auto-transition) -->
+<!-- Full-screen Honeycomb Preloader with left-to-right single wave ripple -->
 <Preloader onComplete={handlePreloaderComplete} />
 
-<!-- Persistent 3D Three.js Geometric Background (Subtle wireframe floating shapes) -->
+<!-- Interactive Full-screen Honeycomb Grid Background (Interactive 3D elevation + tap support) -->
+<HoneycombBackground />
+
+<!-- Persistent 3D Geometric Background (Subtle wireframe floating shapes) -->
 <ThreeBackground />
 
 <!-- Navigation (Desktop fixed side right / Mobile top bar with drawer) -->
 <Navigation {activeSection} />
 
 <!-- Main Content Landmark -->
-<main id="main-content" class="relative w-full overflow-x-hidden bg-white">
+<main id="main-content" class="relative w-full overflow-x-hidden bg-transparent">
 	<!-- 01: Hero Section -->
 	<HeroSection />
 
