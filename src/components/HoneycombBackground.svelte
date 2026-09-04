@@ -7,6 +7,16 @@
 		cx: number;
 		cy: number;
 		activation: number;
+		centerLift: number;
+	}
+
+	interface TouchPoint {
+		id: number | string;
+		x: number;
+		y: number;
+		isActive: boolean;
+		startTime: number;
+		releaseTime: number;
 	}
 
 	interface TapRipple {
@@ -23,11 +33,10 @@
 	let animId: number = 0;
 	let prefersReducedMotion = $state(false);
 
-	// Hexagon dimensions — generous architectural scale
+	// Hexagon dimensions — matching preloader scale
 	const R_DESKTOP = 48; // Circumscribed radius (~83.1px wide hexagons)
-	const R_MOBILE = 42; // Slightly more compact for mobile viewport density
+	const R_MOBILE = 42; // Mobile viewport density
 
-	// Precomputed corner offsets for pointy-topped hexagon (6 vertices)
 	function getHexOffsets(radius: number): [number, number][] {
 		const offsets: [number, number][] = [];
 		for (let k = 0; k < 6; k++) {
@@ -41,6 +50,7 @@
 		if (typeof window === 'undefined') return;
 
 		prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (prefersReducedMotion) return;
 
 		const canvas =
 			canvasEl || (document.getElementById('honeycomb-canvas') as HTMLCanvasElement | null);
@@ -95,55 +105,28 @@
 						row: r,
 						cx,
 						cy,
-						activation: 0
+						activation: 0,
+						centerLift: 0
 					});
 				}
 			}
 		}
 
-		// Pointer tracking coordinates with path interpolation
-		let mouseX = -9999;
-		let mouseY = -9999;
-		let prevMouseX = -9999;
-		let prevMouseY = -9999;
-		let isPointerActive = false;
-		let lastMoveTime = performance.now();
-
-		// Tap Ripple shockwave collection
-		let ripples: TapRipple[] = [];
+		// Active touch / pointer tracking
+		const activeTouches: Record<string, TouchPoint> = {};
+		const ripples: TapRipple[] = [];
 		let nextRippleId = 1;
 		let lastTapTime = 0;
 		let lastTapX = -9999;
 		let lastTapY = -9999;
 
-		function updatePointer(x: number, y: number) {
-			prevMouseX = isPointerActive ? mouseX : x;
-			prevMouseY = isPointerActive ? mouseY : y;
-			mouseX = x;
-			mouseY = y;
-			isPointerActive = true;
-			lastMoveTime = performance.now();
-		}
-
-		function triggerTap(x: number, y: number, isStrong: boolean = false) {
+		function spawnRipple(x: number, y: number, isStrong: boolean = true) {
 			const now = performance.now();
-
-			// Debounce duplicate identical-position events fired within 60ms (e.g. touchstart followed by click)
-			if (now - lastTapTime < 60 && Math.hypot(x - lastTapX, y - lastTapY) < 20) {
-				return;
-			}
-			lastTapTime = now;
-			lastTapX = x;
-			lastTapY = y;
-
-			updatePointer(x, y);
-
 			const isSmallScreen = width < 768;
-			const maxRadius = isSmallScreen ? 340 : 440;
-			const duration = isSmallScreen ? 1100 : 1300;
-			const strength = isStrong ? 1.0 : 0.88;
+			const maxRadius = isSmallScreen ? 340 : 450;
+			const duration = isSmallScreen ? 1150 : 1350;
+			const strength = isStrong ? 1.0 : 0.85;
 
-			// Add tap shockwave ripple (keep max 6 active ripples)
 			ripples.push({
 				id: nextRippleId++,
 				x,
@@ -154,107 +137,134 @@
 				strength
 			});
 
-			if (ripples.length > 6) {
+			if (ripples.length > 8) {
 				ripples.shift();
 			}
+		}
 
-			// Immediately boost direct hexagonal cells under the touch point for instantaneous tactile feedback
-			const instantRadius = isSmallScreen ? 140 : 180;
-			for (let i = 0; i < cells.length; i++) {
-				const cell = cells[i];
-				const dist = Math.hypot(cell.cx - x, cell.cy - y);
-				if (dist < instantRadius) {
-					const directImpact = (1 - dist / instantRadius) * 0.95;
-					cell.activation = Math.max(cell.activation, directImpact);
-				}
+		function handleTouchDown(id: number | string, x: number, y: number) {
+			const key = String(id);
+			const now = performance.now();
+
+			// Debounce duplicate events at identical positions
+			if (now - lastTapTime < 50 && Math.hypot(x - lastTapX, y - lastTapY) < 25) {
+				return;
 			}
-		}
+			lastTapTime = now;
+			lastTapX = x;
+			lastTapY = y;
 
-		function handlePointerMove(e: PointerEvent | MouseEvent) {
-			// On desktop mouse or pointer move
-			updatePointer(e.clientX, e.clientY);
-		}
-
-		function handlePointerDown(e: PointerEvent) {
-			triggerTap(e.clientX, e.clientY, true);
-		}
-
-		function handleTouchStart(e: TouchEvent) {
-			if (e.touches && e.touches.length > 0) {
-				for (let i = 0; i < Math.min(e.touches.length, 2); i++) {
-					const touch = e.touches[i];
-					triggerTap(touch.clientX, touch.clientY, true);
-				}
-			}
-		}
-
-		function handleTouchMove(e: TouchEvent) {
-			if (e.touches && e.touches.length > 0) {
-				const touch = e.touches[0];
-				updatePointer(touch.clientX, touch.clientY);
-			}
-		}
-
-		function handleTouchEnd(e: TouchEvent) {
-			if (e.changedTouches && e.changedTouches.length > 0) {
-				const touch = e.changedTouches[0];
-				triggerTap(touch.clientX, touch.clientY, false);
-			}
-		}
-
-		function handleClick(e: MouseEvent) {
-			triggerTap(e.clientX, e.clientY, false);
-		}
-
-		function handlePointerLeave() {
-			isPointerActive = false;
-			mouseX = -9999;
-			mouseY = -9999;
-		}
-
-		// Use capture: true so tap events anywhere on the viewport (including over cards/buttons) trigger background ripples
-		window.addEventListener('pointermove', handlePointerMove, { passive: true });
-		window.addEventListener('pointerdown', handlePointerDown, { passive: true, capture: true });
-		window.addEventListener('touchstart', handleTouchStart, { passive: true, capture: true });
-		window.addEventListener('touchmove', handleTouchMove, { passive: true, capture: true });
-		window.addEventListener('touchend', handleTouchEnd, { passive: true, capture: true });
-		window.addEventListener('click', handleClick, { passive: true, capture: true });
-		window.addEventListener('pointerleave', handlePointerLeave, { passive: true });
-		document.addEventListener('mouseleave', handlePointerLeave, { passive: true });
-		window.addEventListener('resize', setupGrid);
-
-		setupGrid();
-
-		if (prefersReducedMotion) {
-			// Clean static blueprint grid for reduced motion preference
-			ctx.clearRect(0, 0, width, height);
-			ctx.beginPath();
-			for (let i = 0; i < cells.length; i++) {
-				const cell = cells[i];
-				for (let k = 0; k < 6; k++) {
-					const px = cell.cx + hexCornerOffsets[k][0];
-					const py = cell.cy + hexCornerOffsets[k][1];
-					if (k === 0) ctx.moveTo(px, py);
-					else ctx.lineTo(px, py);
-				}
-				ctx.closePath();
-			}
-			ctx.strokeStyle = 'rgba(0, 0, 0, 0.085)';
-			ctx.lineWidth = 1;
-			ctx.stroke();
-
-			return () => {
-				window.removeEventListener('pointermove', handlePointerMove);
-				window.removeEventListener('pointerdown', handlePointerDown, { capture: true });
-				window.removeEventListener('touchstart', handleTouchStart, { capture: true });
-				window.removeEventListener('touchmove', handleTouchMove, { capture: true });
-				window.removeEventListener('touchend', handleTouchEnd, { capture: true });
-				window.removeEventListener('click', handleClick, { capture: true });
-				window.removeEventListener('pointerleave', handlePointerLeave);
-				document.removeEventListener('mouseleave', handlePointerLeave);
-				window.removeEventListener('resize', setupGrid);
+			activeTouches[key] = {
+				id: key,
+				x,
+				y,
+				isActive: true,
+				startTime: now,
+				releaseTime: 0
 			};
+
+			// Spawn expanding ripple
+			spawnRipple(x, y, true);
 		}
+
+		function handleTouchMovePos(id: number | string, x: number, y: number) {
+			const key = String(id);
+			const touch = activeTouches[key];
+			if (touch) {
+				const movedDist = Math.hypot(x - touch.x, y - touch.y);
+				touch.x = x;
+				touch.y = y;
+				if (movedDist > 40) {
+					spawnRipple(x, y, false);
+				}
+			} else {
+				activeTouches[key] = {
+					id: key,
+					x,
+					y,
+					isActive: true,
+					startTime: performance.now(),
+					releaseTime: 0
+				};
+				spawnRipple(x, y, false);
+			}
+		}
+
+		function handleTouchUp(id: number | string, x?: number, y?: number) {
+			const key = String(id);
+			const touch = activeTouches[key];
+			if (touch) {
+				touch.isActive = false;
+				touch.releaseTime = performance.now();
+				if (x !== undefined && y !== undefined) {
+					touch.x = x;
+					touch.y = y;
+				}
+			}
+		}
+
+		// Touch Event Listeners
+		function onTouchStart(e: TouchEvent) {
+			for (let i = 0; i < e.changedTouches.length; i++) {
+				const t = e.changedTouches[i];
+				handleTouchDown(t.identifier, t.clientX, t.clientY);
+			}
+		}
+
+		function onTouchMove(e: TouchEvent) {
+			for (let i = 0; i < e.changedTouches.length; i++) {
+				const t = e.changedTouches[i];
+				handleTouchMovePos(t.identifier, t.clientX, t.clientY);
+			}
+		}
+
+		function onTouchEnd(e: TouchEvent) {
+			for (let i = 0; i < e.changedTouches.length; i++) {
+				const t = e.changedTouches[i];
+				handleTouchUp(t.identifier, t.clientX, t.clientY);
+			}
+		}
+
+		// Pointer & Mouse Listeners
+		function onPointerDown(e: PointerEvent) {
+			if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+				handleTouchDown(`pointer-${e.pointerId}`, e.clientX, e.clientY);
+			}
+		}
+
+		function onPointerMove(e: PointerEvent) {
+			if (e.pointerType === 'mouse' && e.buttons > 0) {
+				handleTouchMovePos(`pointer-${e.pointerId}`, e.clientX, e.clientY);
+			}
+		}
+
+		function onPointerUp(e: PointerEvent) {
+			if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+				handleTouchUp(`pointer-${e.pointerId}`, e.clientX, e.clientY);
+			}
+		}
+
+		function onClick(e: MouseEvent) {
+			handleTouchDown(`click-${Date.now()}`, e.clientX, e.clientY);
+			setTimeout(() => {
+				handleTouchUp(`click-${Date.now()}`);
+			}, 120);
+		}
+
+		// Window event listeners with capture phase
+		window.addEventListener('touchstart', onTouchStart, { passive: true, capture: true });
+		window.addEventListener('touchmove', onTouchMove, { passive: true, capture: true });
+		window.addEventListener('touchend', onTouchEnd, { passive: true, capture: true });
+		window.addEventListener('touchcancel', onTouchEnd, { passive: true, capture: true });
+
+		window.addEventListener('pointerdown', onPointerDown, { passive: true, capture: true });
+		window.addEventListener('pointermove', onPointerMove, { passive: true, capture: true });
+		window.addEventListener('pointerup', onPointerUp, { passive: true, capture: true });
+		window.addEventListener('pointercancel', onPointerUp, { passive: true, capture: true });
+		window.addEventListener('click', onClick, { passive: true, capture: true });
+
+		window.addEventListener('resize', setupGrid);
+		setupGrid();
 
 		let lastTime = performance.now();
 		let isRunning = true;
@@ -267,7 +277,7 @@
 		const GOLD_R = 212,
 			GOLD_G = 175,
 			GOLD_B = 55;
-		const maxLift = 22; // 3D elevation in pixels
+		const maxLift = 24; // 3D elevation in pixels
 
 		function render(now: number) {
 			if (!ctx || !isRunning) return;
@@ -276,11 +286,13 @@
 			lastTime = now;
 
 			const isSmallScreen = width < 768;
-			const hoverRadius = isSmallScreen ? 220 : 340;
+			const touchRadius = isSmallScreen ? 130 : 170;
 
-			// Idle pointer timeout
-			if (isPointerActive && now - lastMoveTime > (isSmallScreen ? 2200 : 3500)) {
-				isPointerActive = false;
+			// Clean expired touches (released over 800ms ago)
+			for (const [id, touch] of Object.entries(activeTouches)) {
+				if (!touch.isActive && now - touch.releaseTime > 800) {
+					delete activeTouches[id];
+				}
 			}
 
 			// Clean expired ripples
@@ -290,47 +302,51 @@
 				}
 			}
 
-			// Check pointer sweep trajectory
-			const mouseMoved =
-				isPointerActive &&
-				prevMouseX > -100 &&
-				(Math.abs(mouseX - prevMouseX) > 2 || Math.abs(mouseY - prevMouseY) > 2);
-			const sweepSteps = mouseMoved ? 3 : 1;
-
 			const activeCells: HexCell[] = [];
-			const restingCells: HexCell[] = [];
+			const touchesList = Object.values(activeTouches);
 
 			for (let i = 0; i < cells.length; i++) {
 				const cell = cells[i];
 
-				// 1. Ambient gentle organic breathing pulse (diagonal propagation)
-				// Ensures the background is NEVER static or invisible even before user touches/moves
-				const ambientWave =
-					Math.sin(now * 0.0009 + (cell.cx * 0.0035 + cell.cy * 0.0028)) * 0.5 + 0.5;
-				const ambientAct = ambientWave * ambientWave * 0.16;
+				// 1. Center Point Rising & Deflating Physics
+				// While finger/pointer is held: center point rises quickly.
+				// Once finger/pointer is released or after tap impact: center point deflates smoothly back down.
+				let maxCenterTarget = 0;
+				for (let tIdx = 0; tIdx < touchesList.length; tIdx++) {
+					const touch = touchesList[tIdx];
+					const dist = Math.hypot(cell.cx - touch.x, cell.cy - touch.y);
+					if (dist < touchRadius) {
+						const norm = 1 - dist / touchRadius;
+						const profile = norm * norm * (3 - 2 * norm); // Smooth bell dome
 
-				// 2. Interactive hover/touch elevation
-				let pointerAct = 0;
-				if (isPointerActive && mouseX > -100 && mouseY > -100) {
-					let minDist = Math.hypot(cell.cx - mouseX, cell.cy - mouseY);
-					if (sweepSteps > 1) {
-						for (let s = 1; s < sweepSteps; s++) {
-							const t = s / sweepSteps;
-							const sx = prevMouseX + (mouseX - prevMouseX) * t;
-							const sy = prevMouseY + (mouseY - prevMouseY) * t;
-							const d = Math.hypot(cell.cx - sx, cell.cy - sy);
-							if (d < minDist) minDist = d;
+						if (touch.isActive) {
+							// Active touch held down: rises towards peak
+							const heldDuration = now - touch.startTime;
+							// Peak rise within 200ms, then subtle deflation settle
+							const riseFactor = Math.min(1.0, heldDuration / 180);
+							const deflationSettle =
+								heldDuration > 300 ? Math.max(0.45, 1.0 - (heldDuration - 300) * 0.0012) : 1.0;
+							const lift = profile * riseFactor * deflationSettle;
+							if (lift > maxCenterTarget) maxCenterTarget = lift;
+						} else {
+							// Released touch: deflates smoothly to zero
+							const timeSinceRelease = now - touch.releaseTime;
+							const releaseFade = Math.max(0, 1 - timeSinceRelease / 450);
+							const lift = profile * releaseFade * releaseFade;
+							if (lift > maxCenterTarget) maxCenterTarget = lift;
 						}
-					}
-
-					if (minDist < hoverRadius) {
-						const norm = 1 - minDist / hoverRadius;
-						// Smooth organic 3D dome profile: highest at center, smoothly tapering to zero
-						pointerAct = norm * norm * (3 - 2 * norm);
 					}
 				}
 
-				// 3. Tap Shockwave Ripples
+				// Center lift physics
+				if (maxCenterTarget > cell.centerLift) {
+					cell.centerLift += (maxCenterTarget - cell.centerLift) * (0.35 * dt);
+				} else {
+					cell.centerLift += (maxCenterTarget - cell.centerLift) * (0.09 * dt);
+				}
+				if (cell.centerLift < 0.005) cell.centerLift = 0;
+
+				// 2. Propagating Ripple Waves Outward from Center
 				let rippleAct = 0;
 				for (let rIdx = 0; rIdx < ripples.length; rIdx++) {
 					const ripple = ripples[rIdx];
@@ -344,6 +360,7 @@
 
 					if (distToWave < waveBand) {
 						const waveFactor = 1 - distToWave / waveBand;
+						// Quadratic fadeout as ripple travels outward
 						const envelope = (1 - progress) * (1 - progress);
 						const impulse = waveFactor * waveFactor * envelope * ripple.strength;
 						if (impulse > rippleAct) {
@@ -352,128 +369,114 @@
 					}
 				}
 
-				const targetAct = Math.max(pointerAct, ambientAct, rippleAct);
+				// Target activation combines center rise/deflate and propagating ripple
+				const targetAct = Math.max(cell.centerLift, rippleAct);
 
 				if (targetAct > cell.activation) {
-					cell.activation += (targetAct - cell.activation) * (0.22 * dt);
+					cell.activation += (targetAct - cell.activation) * (0.38 * dt);
 				} else {
-					cell.activation += (targetAct - cell.activation) * (0.042 * dt);
+					// Graceful fade away decay
+					cell.activation += (targetAct - cell.activation) * (0.058 * dt);
 				}
 
-				if (cell.activation < 0.015) {
+				if (cell.activation < 0.005) {
 					cell.activation = 0;
-					restingCells.push(cell);
 				} else {
 					activeCells.push(cell);
 				}
 			}
 
-			// 4. Clear and Render Canvas
+			// Clear entire canvas (100% transparent when idle / no active cells)
 			ctx.clearRect(0, 0, width, height);
 
-			// A. Crisp Architectural Resting Grid (Clean blueprint lines)
-			ctx.beginPath();
-			for (let i = 0; i < restingCells.length; i++) {
-				const cell = restingCells[i];
-				for (let k = 0; k < 6; k++) {
-					const px = cell.cx + hexCornerOffsets[k][0];
-					const py = cell.cy + hexCornerOffsets[k][1];
-					if (k === 0) ctx.moveTo(px, py);
-					else ctx.lineTo(px, py);
-				}
-				ctx.closePath();
-			}
-			ctx.strokeStyle = 'rgba(0, 0, 0, 0.085)';
-			ctx.lineWidth = 1;
-			ctx.stroke();
+			// Render ONLY active/elevated hexagons — nothing is rendered when idle
+			if (activeCells.length > 0) {
+				// Sort by Y for isometric depth stacking
+				activeCells.sort((a, b) => a.cy - b.cy);
 
-			// B. Draw Elevated 3D Cells (sorted by Y for natural isometric depth stacking)
-			activeCells.sort((a, b) => a.cy - b.cy);
+				for (let j = 0; j < activeCells.length; j++) {
+					const cell = activeCells[j];
+					const act = cell.activation;
 
-			for (let j = 0; j < activeCells.length; j++) {
-				const cell = activeCells[j];
-				const act = cell.activation;
+					const lift = act * maxLift;
+					const scale = 1 + act * 0.05;
 
-				const lift = act * maxLift;
-				const scale = 1 + act * 0.05;
+					// Dynamic color: Slate Charcoal -> Warm Champagne Gold
+					const r = Math.round(BASE_R + (GOLD_R - BASE_R) * act);
+					const g = Math.round(BASE_G + (GOLD_G - BASE_G) * act);
+					const b = Math.round(BASE_B + (GOLD_B - BASE_B) * act);
 
-				// Dynamic color interpolation: Charcoal Slate -> Warm Champagne Gold
-				const r = Math.round(BASE_R + (GOLD_R - BASE_R) * act);
-				const g = Math.round(BASE_G + (GOLD_G - BASE_G) * act);
-				const b = Math.round(BASE_B + (GOLD_B - BASE_B) * act);
+					const strokeAlpha = Math.min(0.9, act * 0.95).toFixed(3);
+					const sideAlpha = (act * 0.42).toFixed(3);
 
-				const strokeAlpha = Math.min(0.88, 0.16 + act * 0.72).toFixed(3);
-				const sideAlpha = (act * 0.38).toFixed(3);
+					const topVerts: [number, number][] = [];
+					const baseVerts: [number, number][] = [];
 
-				// Compute top (elevated) and base vertices
-				const topVerts: [number, number][] = [];
-				const baseVerts: [number, number][] = [];
+					for (let k = 0; k < 6; k++) {
+						const ox = hexCornerOffsets[k][0] * scale;
+						const oy = hexCornerOffsets[k][1] * scale;
+						topVerts.push([cell.cx + ox, cell.cy - lift + oy]);
+						baseVerts.push([cell.cx + hexCornerOffsets[k][0], cell.cy + hexCornerOffsets[k][1]]);
+					}
 
-				for (let k = 0; k < 6; k++) {
-					const ox = hexCornerOffsets[k][0] * scale;
-					const oy = hexCornerOffsets[k][1] * scale;
-					topVerts.push([cell.cx + ox, cell.cy - lift + oy]);
-					baseVerts.push([cell.cx + hexCornerOffsets[k][0], cell.cy + hexCornerOffsets[k][1]]);
-				}
+					// 1. Base footprint shadow (ambient occlusion on ground plane)
+					if (act > 0.05) {
+						const shadowAlpha = ((act - 0.05) * 0.09).toFixed(3);
+						ctx.beginPath();
+						for (let k = 0; k < 6; k++) {
+							if (k === 0) ctx.moveTo(baseVerts[k][0], baseVerts[k][1]);
+							else ctx.lineTo(baseVerts[k][0], baseVerts[k][1]);
+						}
+						ctx.closePath();
+						ctx.fillStyle = `rgba(0, 0, 0, ${shadowAlpha})`;
+						ctx.fill();
+					}
 
-				// 1. Base footprint shadow (ambient occlusion on ground plane)
-				if (act > 0.04) {
-					const shadowAlpha = ((act - 0.04) * 0.08).toFixed(3);
+					// 2. Extruded 3D Side Walls
+					if (lift > 1.0) {
+						const sideEdges = [
+							[0, 1],
+							[1, 2],
+							[2, 3],
+							[3, 4]
+						];
+						for (let e = 0; e < sideEdges.length; e++) {
+							const [v1, v2] = sideEdges[e];
+							ctx.beginPath();
+							ctx.moveTo(topVerts[v1][0], topVerts[v1][1]);
+							ctx.lineTo(topVerts[v2][0], topVerts[v2][1]);
+							ctx.lineTo(baseVerts[v2][0], baseVerts[v2][1]);
+							ctx.lineTo(baseVerts[v1][0], baseVerts[v1][1]);
+							ctx.closePath();
+
+							const facetShade = e === 1 || e === 2 ? 0.06 : 0.035;
+							ctx.fillStyle = `rgba(160, 168, 180, ${(act * facetShade).toFixed(3)})`;
+							ctx.fill();
+							ctx.strokeStyle = `rgba(70, 75, 85, ${sideAlpha})`;
+							ctx.lineWidth = 0.8;
+							ctx.stroke();
+						}
+					}
+
+					// 3. Elevated Top Hexagon Cap
 					ctx.beginPath();
 					for (let k = 0; k < 6; k++) {
-						if (k === 0) ctx.moveTo(baseVerts[k][0], baseVerts[k][1]);
-						else ctx.lineTo(baseVerts[k][0], baseVerts[k][1]);
+						if (k === 0) ctx.moveTo(topVerts[k][0], topVerts[k][1]);
+						else ctx.lineTo(topVerts[k][0], topVerts[k][1]);
 					}
 					ctx.closePath();
-					ctx.fillStyle = `rgba(0, 0, 0, ${shadowAlpha})`;
-					ctx.fill();
-				}
 
-				// 2. Extruded 3D Side Walls (connect elevated face down to base plane)
-				if (lift > 1.0) {
-					const sideEdges = [
-						[0, 1],
-						[1, 2],
-						[2, 3],
-						[3, 4]
-					];
-					for (let e = 0; e < sideEdges.length; e++) {
-						const [v1, v2] = sideEdges[e];
-						ctx.beginPath();
-						ctx.moveTo(topVerts[v1][0], topVerts[v1][1]);
-						ctx.lineTo(topVerts[v2][0], topVerts[v2][1]);
-						ctx.lineTo(baseVerts[v2][0], baseVerts[v2][1]);
-						ctx.lineTo(baseVerts[v1][0], baseVerts[v1][1]);
-						ctx.closePath();
-
-						// Side facet shading with depth
-						const facetShade = e === 1 || e === 2 ? 0.05 : 0.03;
-						ctx.fillStyle = `rgba(160, 168, 180, ${(act * facetShade).toFixed(3)})`;
+					// Warm champagne gold wash on elevated surface
+					if (act > 0.05) {
+						const fillAlpha = Math.min(0.16, (act - 0.05) * 0.14).toFixed(3);
+						ctx.fillStyle = `rgba(212, 175, 55, ${fillAlpha})`;
 						ctx.fill();
-						ctx.strokeStyle = `rgba(70, 75, 85, ${sideAlpha})`;
-						ctx.lineWidth = 0.8;
-						ctx.stroke();
 					}
-				}
 
-				// 3. Elevated Top Hexagon Cap
-				ctx.beginPath();
-				for (let k = 0; k < 6; k++) {
-					if (k === 0) ctx.moveTo(topVerts[k][0], topVerts[k][1]);
-					else ctx.lineTo(topVerts[k][0], topVerts[k][1]);
+					ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${strokeAlpha})`;
+					ctx.lineWidth = 1 + act * 0.75;
+					ctx.stroke();
 				}
-				ctx.closePath();
-
-				// Delicate champagne gold wash on elevated surface
-				if (act > 0.04) {
-					const fillAlpha = Math.min(0.14, (act - 0.04) * 0.12).toFixed(3);
-					ctx.fillStyle = `rgba(212, 175, 55, ${fillAlpha})`;
-					ctx.fill();
-				}
-
-				ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${strokeAlpha})`;
-				ctx.lineWidth = 1 + act * 0.75;
-				ctx.stroke();
 			}
 
 			animId = requestAnimationFrame(render);
@@ -483,14 +486,15 @@
 
 		return () => {
 			isRunning = false;
-			window.removeEventListener('pointermove', handlePointerMove);
-			window.removeEventListener('pointerdown', handlePointerDown, { capture: true });
-			window.removeEventListener('touchstart', handleTouchStart, { capture: true });
-			window.removeEventListener('touchmove', handleTouchMove, { capture: true });
-			window.removeEventListener('touchend', handleTouchEnd, { capture: true });
-			window.removeEventListener('click', handleClick, { capture: true });
-			window.removeEventListener('pointerleave', handlePointerLeave);
-			document.removeEventListener('mouseleave', handlePointerLeave);
+			window.removeEventListener('touchstart', onTouchStart);
+			window.removeEventListener('touchmove', onTouchMove);
+			window.removeEventListener('touchend', onTouchEnd);
+			window.removeEventListener('touchcancel', onTouchEnd);
+			window.removeEventListener('pointerdown', onPointerDown);
+			window.removeEventListener('pointermove', onPointerMove);
+			window.removeEventListener('pointerup', onPointerUp);
+			window.removeEventListener('pointercancel', onPointerUp);
+			window.removeEventListener('click', onClick);
 			window.removeEventListener('resize', setupGrid);
 			if (animId) {
 				cancelAnimationFrame(animId);
