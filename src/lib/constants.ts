@@ -30,7 +30,7 @@ export const PORTFOLIO_CONTENT = {
 		name: 'DEMITRI',
 		lastName: 'ECHOLS',
 		title: 'Creative Developer',
-		tagline: 'Marching towards the future using technology',
+		tagline: 'Marching towards the future with technology',
 		ctaWork: 'View My Work',
 		ctaContact: 'Contact Me',
 		scrollHint: 'Scroll to explore'

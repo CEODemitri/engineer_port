@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { PORTFOLIO_CONTENT } from '$lib/constants';
 
-	let needleAngle = $state(0);
 	const navLinks = PORTFOLIO_CONTENT.navLinks;
 
 	function handleScrollTo(e: MouseEvent, target: string) {
@@ -18,26 +17,15 @@
 			}
 		}
 	}
-
-	function handleMouseMove(e: MouseEvent) {
-		const target = e.currentTarget as HTMLElement | null;
-		if (!target) return;
-		const rect = target.getBoundingClientRect();
-		const cx = rect.left + rect.width / 2;
-		const cy = rect.top + rect.height / 2;
-		const rad = Math.atan2(e.clientY - cy, e.clientX - cx);
-		needleAngle = (rad * 180) / Math.PI;
-	}
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <footer
-	onmousemove={handleMouseMove}
-	class="relative w-full bg-[#000000] text-white pt-24 pb-16 px-6 lg:px-16 overflow-hidden select-none z-20"
+	id="footer"
+	class="snap-section relative min-h-screen w-full bg-[#000000] text-white py-20 px-6 lg:px-16 overflow-hidden select-none z-20 flex flex-col justify-center"
 	aria-label="Portfolio Footer"
 >
 	<div class="max-w-6xl w-full mx-auto flex flex-col justify-between min-h-[500px]">
-		<!-- Top Row: Logo, Brand & Unexpected Kinetic Telemetry Radar -->
+		<!-- Top Row: Logo & Brand (Open right space preserved) -->
 		<div
 			class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pb-16 border-b border-[#222222]"
 		>
@@ -69,73 +57,8 @@
 				</div>
 			</div>
 
-			<!-- Right Column: Surprise Decorative Element (Kinetic Orbital Telemetry Instrument) -->
-			<div class="lg:col-span-5 flex flex-col items-start lg:items-end">
-				<div class="p-4 border border-[#222222] bg-[#0A0A0A] flex flex-col items-center">
-					<div
-						class="flex items-center justify-between w-full mb-3 text-[0.6rem] font-mono text-[#666666] tracking-widest"
-					>
-						<span>SYS.RADAR // COORD</span>
-						<span class="text-[#39FF14]">37.7749° N</span>
-					</div>
-
-					<svg viewBox="0 0 160 160" width="140" height="140" class="overflow-visible">
-						<!-- Concentric radar circles (flat lines, no gradients) -->
-						<circle cx="80" cy="80" r="70" stroke="#222222" stroke-width="1" fill="none" />
-						<circle cx="80" cy="80" r="50" stroke="#222222" stroke-width="1" fill="none" />
-						<circle cx="80" cy="80" r="30" stroke="#222222" stroke-width="1" fill="none" />
-						<circle cx="80" cy="80" r="10" stroke="#333333" stroke-width="1" fill="none" />
-
-						<!-- Axis grid lines -->
-						<line
-							x1="80"
-							y1="10"
-							x2="80"
-							y2="150"
-							stroke="#222222"
-							stroke-width="1"
-							stroke-dasharray="2 2"
-						/>
-						<line
-							x1="10"
-							y1="80"
-							x2="150"
-							y2="80"
-							stroke="#222222"
-							stroke-width="1"
-							stroke-dasharray="2 2"
-						/>
-
-						<!-- Animated pulse wave -->
-						<circle
-							cx="80"
-							cy="80"
-							r="10"
-							stroke="#4682B4"
-							stroke-width="1.5"
-							fill="none"
-							class="animate-ping"
-							style="transform-origin: 80px 80px; animation-duration: 2.2s;"
-						/>
-
-						<!-- Needle pointing towards cursor -->
-						<g
-							style="transform: rotate({needleAngle}deg); transform-origin: 80px 80px; transition: transform 0.2s cubic-bezier(0, 0, 0.2, 1);"
-						>
-							<line x1="80" y1="80" x2="80" y2="20" stroke="#B76E79" stroke-width="2" />
-						</g>
-
-						<!-- Center pivot point -->
-						<circle cx="80" cy="80" r="3" fill="#FFFFFF" />
-					</svg>
-
-					<p
-						class="font-mono text-[0.6rem] text-[#666666] tracking-widest uppercase mt-3 text-center"
-					>
-						CONTINUOUS MONITORING & STABILITY
-					</p>
-				</div>
-			</div>
+			<!-- Right Column: Big open space preserved as requested -->
+			<div class="hidden lg:block lg:col-span-5"></div>
 		</div>
 
 		<!-- Middle Navigation Links -->

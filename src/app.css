@@ -49,7 +49,9 @@ html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	scroll-behavior: smooth;
-	scroll-padding-top: 2rem;
+	scroll-snap-type: y mandatory;
+	overflow-y: auto;
+	overflow-x: clip;
 }
 
 body {
@@ -57,7 +59,22 @@ body {
 	color: var(--color-darkgrey);
 	font-family: var(--font-body);
 	line-height: 1.7;
-	overflow-x: hidden;
+	overflow-x: clip;
+}
+
+/* ─── Scroll Snap Sections (All screen sizes) ─── */
+.snap-section {
+	scroll-snap-align: start;
+	scroll-snap-stop: normal;
+	min-height: 100vh;
+	min-height: 100dvh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+		scroll-snap-type: none;
+	}
 }
 
 /* ─── Typography Utility Classes ─── */

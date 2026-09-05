@@ -53,7 +53,7 @@
 <section
 	id="why-me"
 	data-section="02"
-	class="snap-section relative min-h-screen w-full flex items-center justify-center px-6 lg:px-16 py-20 lg:py-28 z-10 bg-transparent border-t border-[#E5E5E5]/60"
+	class="snap-section relative min-h-screen min-h-dvh w-full flex items-center justify-center px-6 lg:px-16 py-16 sm:py-20 lg:py-28 z-10 bg-transparent border-t border-[#E5E5E5]/60"
 	aria-label="Why Choose Demitri"
 >
 	<div

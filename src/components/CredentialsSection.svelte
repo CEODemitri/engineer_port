@@ -7,7 +7,7 @@
 <section
 	id="credentials"
 	data-section="04"
-	class="snap-section relative min-h-screen w-full flex items-center justify-center px-6 lg:px-16 py-24 lg:py-32 z-10 bg-transparent border-t border-[#E5E5E5]/60"
+	class="snap-section relative min-h-screen min-h-dvh w-full flex items-center justify-center px-6 lg:px-16 py-16 sm:py-20 lg:py-28 z-10 bg-transparent border-t border-[#E5E5E5]/60"
 	aria-label="Credentials and Trajectory"
 >
 	<div class="max-w-4xl w-full mx-auto">

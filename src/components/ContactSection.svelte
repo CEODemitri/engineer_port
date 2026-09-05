@@ -8,7 +8,7 @@
 <section
 	id="contact"
 	data-section="05"
-	class="snap-section relative min-h-screen w-full flex items-center justify-center px-6 py-24 lg:py-32 z-10 bg-transparent border-t border-[#E5E5E5]/60"
+	class="snap-section relative min-h-screen min-h-dvh w-full flex items-center justify-center px-6 py-16 sm:py-20 lg:py-28 z-10 bg-transparent border-t border-[#E5E5E5]/60"
 	aria-label="Contact Information"
 >
 	<div class="max-w-[640px] w-full mx-auto text-center flex flex-col items-center">

@@ -77,7 +77,7 @@
 <section
 	id="home"
 	data-section="01"
-	class="snap-section relative min-h-screen w-full flex flex-col items-center justify-center px-6 py-20 lg:py-28 z-10 select-none"
+	class="snap-section relative min-h-screen min-h-dvh w-full flex flex-col items-center justify-center px-6 py-20 lg:py-28 z-10 select-none"
 	aria-label="Hero Introduction"
 >
 	<div class="max-w-4xl w-full text-center flex flex-col items-center justify-center mx-auto">

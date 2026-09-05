@@ -38,7 +38,7 @@
 <section
 	id="skills-projects"
 	data-section="03"
-	class="snap-section relative min-h-screen w-full flex flex-col justify-center px-6 lg:px-16 py-24 lg:py-32 z-10 bg-transparent border-t border-[#E5E5E5]/60"
+	class="snap-section relative min-h-screen min-h-dvh w-full flex flex-col justify-center px-6 lg:px-16 py-16 sm:py-20 lg:py-28 z-10 bg-transparent border-t border-[#E5E5E5]/60"
 	aria-label="Skills and Featured Work"
 >
 	<div class="max-w-6xl w-full mx-auto">
