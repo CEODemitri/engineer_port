@@ -112,7 +112,7 @@
 			}
 		}
 
-		// Active touch / pointer tracking
+		// Mobile touch tracking
 		const activeTouches: Record<string, TouchPoint> = {};
 		const ripples: TapRipple[] = [];
 		let nextRippleId = 1;
@@ -120,12 +120,21 @@
 		let lastTapX = -9999;
 		let lastTapY = -9999;
 
+		// Desktop hover tracking
+		let hoverX = -9999;
+		let hoverY = -9999;
+		let prevHoverX = -9999;
+		let prevHoverY = -9999;
+		let isHoverActive = false;
+		let lastHoverTime = 0;
+		let lastHoverRippleTime = 0;
+
 		function spawnRipple(x: number, y: number, isStrong: boolean = true) {
 			const now = performance.now();
 			const isSmallScreen = width < 768;
-			const maxRadius = isSmallScreen ? 300 : 400;
-			const duration = isSmallScreen ? 900 : 1050;
-			const strength = isStrong ? 1.0 : 0.85;
+			const maxRadius = isSmallScreen ? 300 : 420;
+			const duration = isSmallScreen ? 1400 : 1800;
+			const strength = isStrong ? 0.75 : 0.55;
 
 			ripples.push({
 				id: nextRippleId++,
@@ -137,11 +146,12 @@
 				strength
 			});
 
-			if (ripples.length > 6) {
+			if (ripples.length > 7) {
 				ripples.shift();
 			}
 		}
 
+		// --- Mobile Touch Handlers ---
 		function handleTouchDown(id: number | string, x: number, y: number) {
 			const key = String(id);
 			const now = performance.now();
@@ -163,7 +173,6 @@
 				releaseTime: 0
 			};
 
-			// Spawn expanding ripple
 			spawnRipple(x, y, true);
 		}
 
@@ -203,7 +212,6 @@
 			}
 		}
 
-		// Touch Event Listeners
 		function onTouchStart(e: TouchEvent) {
 			for (let i = 0; i < e.changedTouches.length; i++) {
 				const t = e.changedTouches[i];
@@ -225,43 +233,55 @@
 			}
 		}
 
-		// Pointer & Mouse Listeners
-		function onPointerDown(e: PointerEvent) {
-			if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
-				handleTouchDown(`pointer-${e.pointerId}`, e.clientX, e.clientY);
+		// --- Desktop Hover Handlers ---
+		function handleHover(x: number, y: number) {
+			const now = performance.now();
+			prevHoverX = isHoverActive ? hoverX : x;
+			prevHoverY = isHoverActive ? hoverY : y;
+			hoverX = x;
+			hoverY = y;
+			isHoverActive = true;
+			lastHoverTime = now;
+
+			// Spawn subtle fluid ripples along movement trail on desktop
+			const movedDist = Math.hypot(x - prevHoverX, y - prevHoverY);
+			if (movedDist > 65 && now - lastHoverRippleTime > 320) {
+				lastHoverRippleTime = now;
+				spawnRipple(x, y, false);
 			}
+		}
+
+		function clearHover() {
+			isHoverActive = false;
+			hoverX = -9999;
+			hoverY = -9999;
 		}
 
 		function onPointerMove(e: PointerEvent) {
-			if (e.pointerType === 'mouse' && e.buttons > 0) {
-				handleTouchMovePos(`pointer-${e.pointerId}`, e.clientX, e.clientY);
+			// On desktop/laptop: any mouse or pen movement triggers hover effect easily
+			if (e.pointerType !== 'touch') {
+				handleHover(e.clientX, e.clientY);
 			}
 		}
 
-		function onPointerUp(e: PointerEvent) {
-			if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
-				handleTouchUp(`pointer-${e.pointerId}`, e.clientX, e.clientY);
-			}
+		function onMouseMove(e: MouseEvent) {
+			handleHover(e.clientX, e.clientY);
 		}
 
-		function onClick(e: MouseEvent) {
-			handleTouchDown(`click-${Date.now()}`, e.clientX, e.clientY);
-			setTimeout(() => {
-				handleTouchUp(`click-${Date.now()}`);
-			}, 120);
+		function onMouseLeave() {
+			clearHover();
 		}
 
-		// Window event listeners with capture phase
+		// Window event listeners with capture phase for seamless responsiveness across all elements
 		window.addEventListener('touchstart', onTouchStart, { passive: true, capture: true });
 		window.addEventListener('touchmove', onTouchMove, { passive: true, capture: true });
 		window.addEventListener('touchend', onTouchEnd, { passive: true, capture: true });
 		window.addEventListener('touchcancel', onTouchEnd, { passive: true, capture: true });
 
-		window.addEventListener('pointerdown', onPointerDown, { passive: true, capture: true });
 		window.addEventListener('pointermove', onPointerMove, { passive: true, capture: true });
-		window.addEventListener('pointerup', onPointerUp, { passive: true, capture: true });
-		window.addEventListener('pointercancel', onPointerUp, { passive: true, capture: true });
-		window.addEventListener('click', onClick, { passive: true, capture: true });
+		window.addEventListener('mousemove', onMouseMove, { passive: true, capture: true });
+		window.addEventListener('pointerleave', onMouseLeave, { passive: true });
+		document.addEventListener('mouseleave', onMouseLeave, { passive: true });
 
 		window.addEventListener('resize', setupGrid);
 		setupGrid();
@@ -287,10 +307,16 @@
 
 			const isSmallScreen = width < 768;
 			const touchRadius = isSmallScreen ? 130 : 170;
+			const hoverRadius = isSmallScreen ? 160 : 250;
 
-			// Clean expired touches (released over 800ms ago)
+			// Desktop hover idle fadeout — if mouse stops moving for > 1400ms, hover slowly fades away
+			if (isHoverActive && now - lastHoverTime > 1400) {
+				isHoverActive = false;
+			}
+
+			// Clean expired touches (released over 1400ms ago)
 			for (const [id, touch] of Object.entries(activeTouches)) {
-				if (!touch.isActive && now - touch.releaseTime > 800) {
+				if (!touch.isActive && now - touch.releaseTime > 1400) {
 					delete activeTouches[id];
 				}
 			}
@@ -308,9 +334,7 @@
 			for (let i = 0; i < cells.length; i++) {
 				const cell = cells[i];
 
-				// 1. Center Point Rising & Deflating Physics
-				// While finger/pointer is held: center point rises quickly.
-				// Once finger/pointer is released or after tap impact: center point deflates smoothly back down.
+				// 1. Mobile Touch: Center Point Rising & Deflating Physics
 				let maxCenterTarget = 0;
 				for (let tIdx = 0; tIdx < touchesList.length; tIdx++) {
 					const touch = touchesList[tIdx];
@@ -320,33 +344,42 @@
 						const profile = norm * norm * (3 - 2 * norm); // Smooth bell dome
 
 						if (touch.isActive) {
-							// Active touch held down: rises towards peak
+							// Active touch held down: rises gracefully towards peak
 							const heldDuration = now - touch.startTime;
-							// Peak rise within 200ms, then subtle deflation settle
-							const riseFactor = Math.min(1.0, heldDuration / 180);
+							const riseFactor = Math.min(1.0, heldDuration / 420);
 							const deflationSettle =
-								heldDuration > 300 ? Math.max(0.45, 1.0 - (heldDuration - 300) * 0.0012) : 1.0;
+								heldDuration > 450 ? Math.max(0.5, 1.0 - (heldDuration - 450) * 0.0007) : 1.0;
 							const lift = profile * riseFactor * deflationSettle;
 							if (lift > maxCenterTarget) maxCenterTarget = lift;
 						} else {
-							// Released touch: deflates smoothly to zero
+							// Released touch: deflates slowly and gracefully to zero
 							const timeSinceRelease = now - touch.releaseTime;
-							const releaseFade = Math.max(0, 1 - timeSinceRelease / 450);
+							const releaseFade = Math.max(0, 1 - timeSinceRelease / 1000);
 							const lift = profile * releaseFade * releaseFade;
 							if (lift > maxCenterTarget) maxCenterTarget = lift;
 						}
 					}
 				}
 
-				// Center lift physics
+				// Center lift physics — slowed down for graceful float
 				if (maxCenterTarget > cell.centerLift) {
-					cell.centerLift += (maxCenterTarget - cell.centerLift) * (0.42 * dt);
-				} else {
 					cell.centerLift += (maxCenterTarget - cell.centerLift) * (0.16 * dt);
+				} else {
+					cell.centerLift += (maxCenterTarget - cell.centerLift) * (0.05 * dt);
 				}
-				if (cell.centerLift < 0.01) cell.centerLift = 0;
+				if (cell.centerLift < 0.005) cell.centerLift = 0;
 
-				// 2. Propagating Ripple Waves Outward from Center
+				// 2. Desktop Hover: Effortless elevation under mouse cursor
+				let hoverAct = 0;
+				if (isHoverActive && hoverX > -100 && hoverY > -100) {
+					const dist = Math.hypot(cell.cx - hoverX, cell.cy - hoverY);
+					if (dist < hoverRadius) {
+						const norm = 1 - dist / hoverRadius;
+						hoverAct = norm * norm * (3 - 2 * norm);
+					}
+				}
+
+				// 3. Propagating Ripple Waves Outward from Center / Trails
 				let rippleAct = 0;
 				for (let rIdx = 0; rIdx < ripples.length; rIdx++) {
 					const ripple = ripples[rIdx];
@@ -369,17 +402,18 @@
 					}
 				}
 
-				// Target activation combines center rise/deflate and propagating ripple
-				const targetAct = Math.max(cell.centerLift, rippleAct);
+				// Target activation combines touch center rise/deflate, desktop hover, and ripples
+				const targetAct = Math.max(cell.centerLift, hoverAct, rippleAct);
 
 				if (targetAct > cell.activation) {
-					cell.activation += (targetAct - cell.activation) * (0.45 * dt);
+					// Slower, smooth and graceful rise
+					cell.activation += (targetAct - cell.activation) * (0.16 * dt);
 				} else {
-					// Graceful and complete fade-away decay
-					cell.activation += (targetAct - cell.activation) * (0.12 * dt);
+					// Slower, luxurious and complete fade-away decay
+					cell.activation += (targetAct - cell.activation) * (0.042 * dt);
 				}
 
-				if (cell.activation < 0.02) {
+				if (cell.activation < 0.015) {
 					cell.activation = 0;
 				} else {
 					activeCells.push(cell);
@@ -407,8 +441,8 @@
 					const g = Math.round(BASE_G + (GOLD_G - BASE_G) * fadeFactor);
 					const b = Math.round(BASE_B + (GOLD_B - BASE_B) * fadeFactor);
 
-					const strokeAlpha = (Math.pow(fadeFactor, 1.25) * 0.9).toFixed(3);
-					const sideAlpha = (Math.pow(fadeFactor, 1.45) * 0.42).toFixed(3);
+					const strokeAlpha = (Math.pow(fadeFactor, 1.25) * 0.675).toFixed(3);
+					const sideAlpha = (Math.pow(fadeFactor, 1.45) * 0.315).toFixed(3);
 
 					const topVerts: [number, number][] = [];
 					const baseVerts: [number, number][] = [];
@@ -422,7 +456,7 @@
 
 					// 1. Base footprint shadow (ambient occlusion on ground plane)
 					if (fadeFactor > 0.08) {
-						const shadowAlpha = ((fadeFactor - 0.08) * 0.09).toFixed(3);
+						const shadowAlpha = ((fadeFactor - 0.08) * 0.067).toFixed(3);
 						ctx.beginPath();
 						for (let k = 0; k < 6; k++) {
 							if (k === 0) ctx.moveTo(baseVerts[k][0], baseVerts[k][1]);
@@ -450,7 +484,7 @@
 							ctx.lineTo(baseVerts[v1][0], baseVerts[v1][1]);
 							ctx.closePath();
 
-							const facetShade = e === 1 || e === 2 ? 0.06 : 0.035;
+							const facetShade = e === 1 || e === 2 ? 0.045 : 0.026;
 							ctx.fillStyle = `rgba(160, 168, 180, ${(fadeFactor * facetShade).toFixed(3)})`;
 							ctx.fill();
 							ctx.strokeStyle = `rgba(70, 75, 85, ${sideAlpha})`;
@@ -469,7 +503,7 @@
 
 					// Warm champagne gold wash on elevated surface
 					if (fadeFactor > 0.06) {
-						const fillAlpha = Math.min(0.16, (fadeFactor - 0.06) * 0.16).toFixed(3);
+						const fillAlpha = Math.min(0.12, (fadeFactor - 0.06) * 0.12).toFixed(3);
 						ctx.fillStyle = `rgba(212, 175, 55, ${fillAlpha})`;
 						ctx.fill();
 					}
@@ -491,11 +525,10 @@
 			window.removeEventListener('touchmove', onTouchMove);
 			window.removeEventListener('touchend', onTouchEnd);
 			window.removeEventListener('touchcancel', onTouchEnd);
-			window.removeEventListener('pointerdown', onPointerDown);
 			window.removeEventListener('pointermove', onPointerMove);
-			window.removeEventListener('pointerup', onPointerUp);
-			window.removeEventListener('pointercancel', onPointerUp);
-			window.removeEventListener('click', onClick);
+			window.removeEventListener('mousemove', onMouseMove);
+			window.removeEventListener('pointerleave', onMouseLeave);
+			document.removeEventListener('mouseleave', onMouseLeave);
 			window.removeEventListener('resize', setupGrid);
 			if (animId) {
 				cancelAnimationFrame(animId);
