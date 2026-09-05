@@ -49,9 +49,8 @@ html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	scroll-behavior: smooth;
-	scroll-snap-type: y mandatory;
+	scroll-snap-type: y proximity;
 	overflow-y: auto;
-	overflow-x: clip;
 }
 
 body {
@@ -59,7 +58,7 @@ body {
 	color: var(--color-darkgrey);
 	font-family: var(--font-body);
 	line-height: 1.7;
-	overflow-x: clip;
+	overflow-x: hidden;
 }
 
 /* ─── Scroll Snap Sections (All screen sizes) ─── */

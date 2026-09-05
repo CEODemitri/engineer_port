@@ -21,7 +21,7 @@
 
 <footer
 	id="footer"
-	class="snap-section relative min-h-screen w-full bg-[#000000] text-white py-20 px-6 lg:px-16 overflow-hidden select-none z-20 flex flex-col justify-center"
+	class="snap-section relative min-h-screen min-h-dvh w-full bg-[#000000] text-white py-16 sm:py-20 px-6 lg:px-16 overflow-hidden select-none z-20 flex flex-col justify-center"
 	aria-label="Portfolio Footer"
 >
 	<div class="max-w-6xl w-full mx-auto flex flex-col justify-between min-h-[500px]">

@@ -44,12 +44,15 @@ export const PORTFOLIO_CONTENT = {
 			"My background in operations analytics means I approach every project from the angle that matters most to you: measurable results. I don't just write code: I solve the business problem behind it.",
 			"Whether you're a startup that needs a full product built fast, or an established team that needs AI integrated into existing systems, I'm the person who ships it — and stays to make sure it works."
 		],
-		githubUsername: 'ceodemitri',
+		githubUsername: 'CEODemitri',
 		fallbackStats: {
-			stars: 12,
-			commits: 1280,
+			stars: 1,
+			commits: 1011,
 			repositories: 60,
-			followers: 4
+			publicRepositories: 49,
+			languagesCount: 12,
+			followers: 1,
+			yearsActive: 4
 		}
 	},
 	skills: [
