@@ -143,7 +143,7 @@
 						<span
 							class="font-mono text-[0.6rem] text-[#888888] mt-2 block border-t border-[#F0F0F0] pt-1"
 						>
-							VERIFIED GIT ACTIVITY
+							PUBLIC &amp; PRIVATE REPOS
 						</span>
 					</div>
 

@@ -47,7 +47,7 @@ export const PORTFOLIO_CONTENT = {
 		githubUsername: 'CEODemitri',
 		fallbackStats: {
 			stars: 1,
-			commits: 1011,
+			commits: 2500,
 			repositories: 60,
 			publicRepositories: 49,
 			languagesCount: 12,
