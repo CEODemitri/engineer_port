@@ -78,7 +78,7 @@
 		<div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
 			<p class="font-body text-xs text-[#FFFFFF]/50">&copy; 2024 Demitri. All rights reserved.</p>
 			<p class="font-mono text-xs text-[#FFFFFF]/40 tracking-wider uppercase">
-				ENGINEERED WITH SVELTEKIT &amp; GSAP
+				ENGINEERED WITH SVELTEKIT &amp; TAILWIND
 			</p>
 		</div>
 	</div>
