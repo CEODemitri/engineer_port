@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PORTFOLIO_CONTENT } from '$lib/constants';
-	import { ExternalLink, Github, X } from './icons';
+	import { ExternalLink, Github } from './icons';
 
 	let expandedProjectId = $state<number | null>(null);
 
@@ -16,15 +16,6 @@
 		} else {
 			expandedProjectId = id;
 		}
-	}
-
-	function getCardTransform(cardId: number, expandedId: number | null): string {
-		if (expandedId === null || expandedId === cardId) return 'translate(0px, 0px)';
-		if (expandedId === 1) return 'translateX(20px)';
-		if (expandedId === 2) return 'translateY(20px)';
-		if (expandedId === 3) return 'translateX(-20px)';
-		if (expandedId === 4) return 'translateY(-20px)';
-		return 'translate(0px, 0px)';
 	}
 
 	function handleKeyDown(event: KeyboardEvent, id: number) {
@@ -81,139 +72,273 @@
 			</div>
 		</div>
 
-		<!-- ─── Subsection 2: Projects Grid (4 phone-app-sized squares with expansion push) ─── -->
+		<!-- ─── Subsection 2: Projects Grid (Japanese Magazine Editorial Cover Cards) ─── -->
 		<div>
-			<h3 class="font-heading text-sm text-[#000000] uppercase tracking-wider mb-8">
-				PRODUCTION REPOSITORIES
-			</h3>
+			<div class="flex items-center justify-between mb-8">
+				<h3 class="font-heading text-sm text-[#000000] uppercase tracking-wider">
+					FEATURED ARCHITECTURE & PRODUCTION REPOSITORIES
+				</h3>
+				<span
+					class="font-mono text-[0.65rem] text-[#666666] tracking-wider uppercase hidden sm:inline-block"
+				>
+					EDITORIAL VOL. 01 — 04 // 4 JAPANESE ELEMENTS
+				</span>
+			</div>
 
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 items-start">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 items-stretch">
 				{#each projects as project}
 					{@const isExpanded = expandedProjectId === project.id}
-					<div
-						data-id={project.id}
-						class="project-card-wrapper transition-transform duration-400 ease-out"
-						style="transform: {getCardTransform(project.id, expandedProjectId)};"
-					>
-						<!-- Compact Square State (Phone App Sized: 120x120 thumbnail with header) -->
-						<div
-							class="spec-card bg-[#F5F5F5] border border-[#E5E5E5] p-5 cursor-pointer select-none transition-none group"
-							onclick={() => toggleProject(project.id)}
-							onkeydown={(e) => handleKeyDown(e, project.id)}
-							tabindex="0"
-							role="button"
-							aria-expanded={isExpanded}
-							aria-label="{project.name} - Click to {isExpanded ? 'collapse' : 'expand details'}"
+					<div data-id={project.id} class="project-card-wrapper h-full flex flex-col">
+						<!-- Editorial Book / Magazine Cover Card -->
+						<article
+							id="project-card-{project.id}"
+							class="spec-card magazine-card bg-white border border-[#E5E5E5] flex flex-col h-full relative select-none transition-all duration-300 hover:border-[#B76E79] shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_30px_rgba(183,110,121,0.12)] group"
 							style="border-radius: 0;"
 						>
-							<div class="flex items-center gap-5">
-								<!-- 120px x 120px Thumbnail (Phone app size) -->
-								<div
-									class="w-[120px] h-[120px] min-w-[120px] bg-white border border-[#E5E5E5] overflow-hidden flex items-center justify-center relative"
-								>
-									<img
-										src={project.thumbnail}
-										alt="{project.name} thumbnail"
-										width="120"
-										height="120"
-										class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-									/>
-									<span
-										class="absolute top-1 right-1 font-mono text-[0.6rem] bg-black text-white px-1.5 py-0.5"
+							<!-- ── Top Header Strip: LIVELEARNLOVE + Japanese Element ── -->
+							<header
+								class="px-5 sm:px-6 pt-5 pb-3 bg-white flex items-start justify-between border-b border-[#F0F0F0] relative z-10"
+							>
+								<div>
+									<h4
+										class="font-heading text-lg sm:text-xl text-[#2B181E] tracking-[0.05em] uppercase leading-none"
 									>
-										0{project.id}
-									</span>
+										LIVELEARNLOVE
+									</h4>
+									<!-- Subtitle below in Japanese: Earth, Fire, Water, Air (one for each of the 4 projects) -->
+									<div class="flex items-center gap-1.5 mt-1.5">
+										<span
+											class="font-mincho text-xs text-[#6B4B52] font-semibold tracking-widest leading-none"
+											title="Element: {project.element.english}"
+										>
+											{project.element.kanji}
+										</span>
+									</div>
 								</div>
 
-								<!-- Basic Info and CTA to expand -->
-								<div class="flex-1">
-									<h4
-										class="font-heading text-base md:text-lg text-[#000000] uppercase group-hover:text-[#4682B4]"
-									>
-										{project.name}
-									</h4>
-									<p class="font-body text-xs text-[#666666] line-clamp-2 mt-1 mb-3">
-										{project.tagline}
-									</p>
-									<div class="flex items-center justify-between">
-										<span class="font-mono text-[0.65rem] text-[#B76E79] uppercase">
-											{isExpanded ? 'CLICK TO COLLAPSE [-]' : 'EXPAND ARCHITECTURE [+]'}
+								<!-- Dynamic Volume Number: 1, 2, 3, 4 (Remains permanent for each card) -->
+								<div class="text-right flex flex-col items-end leading-none">
+									<div class="flex items-baseline gap-1">
+										<span
+											class="font-mincho italic text-xs sm:text-sm text-[#7A3E4E] font-medium tracking-tight"
+										>
+											vol.
 										</span>
+										<span
+											class="font-mincho text-3xl sm:text-4xl font-bold text-[#7A3E4E] leading-none tracking-tighter"
+										>
+											{project.vol}
+										</span>
+									</div>
+									<span class="font-mono text-[0.62rem] text-[#888888] tracking-wider mt-1 block">
+										{project.editionDate}
+									</span>
+								</div>
+							</header>
+
+							<!-- ── Middle Visual Area: Project's Video / Image as Blue Background ── -->
+							<div
+								class="relative w-full aspect-[4/3] bg-[#2E4A62] overflow-hidden group/media cursor-pointer"
+								onclick={() => toggleProject(project.id)}
+								onkeydown={(e) => handleKeyDown(e, project.id)}
+								role="button"
+								tabindex="0"
+								aria-label="Toggle details for {project.name}"
+							>
+								{#if project.video}
+									<video
+										src={project.video}
+										autoplay
+										loop
+										muted
+										playsinline
+										class="w-full h-full object-cover group-hover/media:scale-105 transition-transform duration-500"
+									></video>
+								{:else}
+									<img
+										src={project.image}
+										alt="{project.name} preview"
+										class="w-full h-full object-cover group-hover/media:scale-105 transition-transform duration-500"
+										loading="lazy"
+										onerror={(e) => {
+											const img = e.currentTarget as HTMLImageElement;
+											if (img && img.src !== project.thumbnail) img.src = project.thumbnail;
+										}}
+									/>
+								{/if}
+
+								<!-- Poetic Vertical Japanese Script (matching "ちいさな旅。" from reference photo) -->
+								<div
+									class="absolute top-5 right-5 writing-vertical-rl font-mincho text-white text-sm sm:text-base tracking-[0.25em] font-medium drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)] select-none pointer-events-none opacity-95"
+								>
+									{project.element.verticalPhrase}
+								</div>
+
+								<!-- Lower Banner Strip (matching "はじめよう！旅ログ。" from reference photo) -->
+								<div
+									class="absolute bottom-0 inset-x-0 bg-[#1E1B22]/90 backdrop-blur-xs text-white px-4 py-2.5 flex items-center justify-between border-t border-white/10"
+									onclick={(e) => e.stopPropagation()}
+									onkeydown={(e) => e.stopPropagation()}
+									role="region"
+									aria-label="Project actions"
+								>
+									<div class="pr-2 truncate">
+										<p
+											class="font-heading text-xs sm:text-sm uppercase tracking-wider text-white truncate"
+										>
+											{project.name}
+										</p>
+										<p class="font-body text-[0.68rem] text-[#CCCCCC] truncate">
+											{project.tagline}
+										</p>
+									</div>
+									<div class="flex items-center gap-2 shrink-0">
+										{#if project.liveLink}
+											<a
+												href={project.liveLink}
+												target="_blank"
+												rel="noopener noreferrer"
+												aria-label="Open live demo of {project.name}"
+												class="w-7 h-7 flex items-center justify-center bg-white/10 hover:bg-[#4682B4] text-white transition-colors duration-200 cursor-pointer"
+												title="Live Project Demo"
+											>
+												<ExternalLink size={13} />
+											</a>
+										{/if}
+										{#if project.codeLink}
+											<a
+												href={project.codeLink}
+												target="_blank"
+												rel="noopener noreferrer"
+												aria-label="Open source code of {project.name}"
+												class="w-7 h-7 flex items-center justify-center bg-white/10 hover:bg-[#4682B4] text-white transition-colors duration-200 cursor-pointer"
+												title="View Repository"
+											>
+												<Github size={13} />
+											</a>
+										{/if}
 									</div>
 								</div>
 							</div>
 
-							<!-- Expanded View Details -->
-							{#if isExpanded}
-								<!-- svelte-ignore a11y_click_events_have_key_events -->
-								<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+							<!-- ── Bottom Editorial Section: Larger Japanese Category Kanji + 3 English Rows ── -->
+							<div
+								class="p-5 sm:p-6 bg-white flex flex-col justify-between flex-1 border-t border-[#F0F0F0]"
+							>
+								<!-- The larger Japanese font: "ui, design, web, software" categories (Kanji only on card) -->
+								<div class="mb-4">
+									<h5
+										class="font-mincho text-2xl sm:text-3xl font-bold text-[#2B181E] tracking-tight leading-none select-none"
+										title="{project.category.english} Category"
+									>
+										{project.category.kanji}
+									</h5>
+								</div>
+
+								<!-- Final rows on the card in English (separated by commas):
+								     Row 1: Tech stack
+								     Row 2: Commits
+								     Row 3: Days alive / last touched -->
 								<div
-									role="region"
-									aria-label="Project details"
-									class="mt-6 pt-6 border-t border-[#E5E5E5] flex flex-col gap-4 animate-in fade-in duration-300"
-									onclick={(e) => e.stopPropagation()}
+									class="space-y-2 border-t border-[#EAEAEA] pt-3 font-body text-xs sm:text-[0.8rem] text-[#333333]"
 								>
-									<p class="font-body text-sm text-[#333333] leading-relaxed">
-										{project.description}
-									</p>
-
-									{#if project.metrics}
-										<div class="p-3 bg-white border border-[#E5E5E5] flex items-center gap-2">
-											<span class="w-1.5 h-1.5 bg-[#39FF14] inline-block" aria-hidden="true"></span>
-											<span class="font-mono text-xs text-[#000000]">
-												{project.metrics}
-											</span>
-										</div>
-									{/if}
-
-									<!-- Tech Stack Labels -->
-									<div class="flex flex-wrap gap-2 pt-2">
-										{#each project.tech as tech}
-											<span
-												class="font-mono text-[0.65rem] uppercase text-[#666666] bg-white border border-[#E5E5E5] px-2.5 py-1"
-											>
-												{tech}
-											</span>
-										{/each}
+									<!-- Row 1: Tech Stack -->
+									<div class="flex items-baseline gap-2">
+										<span
+											class="font-mono text-[0.65rem] uppercase tracking-wider text-[#888888] min-w-[58px] shrink-0 font-medium"
+										>
+											STACK:
+										</span>
+										<span class="text-[#222222] font-medium leading-relaxed">
+											{project.techRow}
+										</span>
 									</div>
 
-									<!-- Action Links (Steel blue hover per spec) -->
-									<div class="flex items-center gap-6 pt-4 border-t border-[#E5E5E5]">
+									<!-- Row 2: Commits -->
+									<div class="flex items-baseline gap-2">
+										<span
+											class="font-mono text-[0.65rem] uppercase tracking-wider text-[#888888] min-w-[58px] shrink-0 font-medium"
+										>
+											COMMITS:
+										</span>
+										<span class="text-[#444444] leading-relaxed">
+											{project.commitsRow}
+										</span>
+									</div>
+
+									<!-- Row 3: Days Alive / Last Touched -->
+									<div class="flex items-baseline gap-2">
+										<span
+											class="font-mono text-[0.65rem] uppercase tracking-wider text-[#888888] min-w-[58px] shrink-0 font-medium"
+										>
+											TIMELINE:
+										</span>
+										<span class="text-[#444444] leading-relaxed">
+											{project.activityRow}
+										</span>
+									</div>
+								</div>
+
+								<!-- Expand / Collapse Technical Details Toggle -->
+								<div class="mt-5 pt-3 border-t border-[#F0F0F0] flex items-center justify-between">
+									<button
+										type="button"
+										onclick={() => toggleProject(project.id)}
+										class="font-mono text-[0.68rem] text-[#B76E79] hover:text-[#7A3E4E] uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
+										aria-expanded={isExpanded}
+									>
+										<span>{isExpanded ? '[- COLLAPSE SPEC]' : '[+ SPECIFICATION & METRICS]'}</span>
+									</button>
+
+									<div class="flex items-center gap-3">
 										<a
 											href={project.liveLink}
 											target="_blank"
 											rel="noopener noreferrer"
-											onclick={(e) => e.stopPropagation()}
-											class="font-body font-medium text-xs text-[#4682B4] hover:underline flex items-center gap-1.5 uppercase pointer-events-auto"
+											class="font-mono text-[0.65rem] text-[#4682B4] hover:underline uppercase flex items-center gap-1"
 										>
-											<ExternalLink size={14} />
-											<span>LIVE PROJECT</span>
+											<span>DEMO</span>
+											<ExternalLink size={10} />
 										</a>
 										<a
 											href={project.codeLink}
 											target="_blank"
 											rel="noopener noreferrer"
-											onclick={(e) => e.stopPropagation()}
-											class="font-body font-medium text-xs text-[#4682B4] hover:underline flex items-center gap-1.5 uppercase pointer-events-auto"
+											class="font-mono text-[0.65rem] text-[#4682B4] hover:underline uppercase flex items-center gap-1"
 										>
-											<Github size={14} />
-											<span>VIEW CODE</span>
+											<span>REPO</span>
+											<Github size={10} />
 										</a>
-										<button
-											type="button"
-											onclick={(e) => {
-												e.stopPropagation();
-												toggleProject(project.id);
-											}}
-											class="ml-auto font-mono text-[0.65rem] text-[#666666] hover:text-black uppercase flex items-center gap-1 cursor-pointer pointer-events-auto"
-										>
-											<X size={14} />
-											<span>CLOSE</span>
-										</button>
 									</div>
 								</div>
-							{/if}
-						</div>
+
+								<!-- Detailed Technical Specs Tray (Expanded) -->
+								{#if isExpanded}
+									<div
+										class="mt-4 pt-4 border-t border-[#E5E5E5] space-y-3 animate-in fade-in duration-200"
+										role="region"
+										aria-label="{project.name} technical details"
+									>
+										<p class="font-body text-xs text-[#444444] leading-relaxed">
+											{project.description}
+										</p>
+										{#if project.metrics}
+											<div
+												class="p-2.5 bg-[#F9F9F9] border border-[#E5E5E5] flex items-center gap-2"
+											>
+												<span
+													class="w-1.5 h-1.5 bg-[#39FF14] inline-block shrink-0"
+													aria-hidden="true"
+												></span>
+												<span class="font-mono text-[0.7rem] text-[#111111]">
+													{project.metrics}
+												</span>
+											</div>
+										{/if}
+									</div>
+								{/if}
+							</div>
+						</article>
 					</div>
 				{/each}
 			</div>

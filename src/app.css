@@ -4,6 +4,7 @@
 	--font-heading: 'Archivo Black', -apple-system, BlinkMacSystemFont, sans-serif;
 	--font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 	--font-mono: 'JetBrains Mono', monospace;
+	--font-mincho: 'Shippori Mincho', 'Noto Serif JP', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
 
 	--color-white: #ffffff;
 	--color-offwhite: #fafafa;
@@ -21,6 +22,7 @@
 	--font-heading: 'Archivo Black', -apple-system, BlinkMacSystemFont, sans-serif;
 	--font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 	--font-mono: 'JetBrains Mono', monospace;
+	--font-mincho: 'Shippori Mincho', 'Noto Serif JP', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
 
 	--color-white: #ffffff;
 	--color-offwhite: #fafafa;
@@ -187,4 +189,14 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
 	background: var(--color-mediumgrey);
+}
+
+/* ─── Japanese Editorial Typography ─── */
+.font-mincho {
+	font-family: var(--font-mincho);
+}
+
+.writing-vertical-rl {
+	writing-mode: vertical-rl;
+	text-orientation: upright;
 }

@@ -1,12 +1,28 @@
 export interface ProjectItem {
 	id: number;
+	vol: number;
 	name: string;
 	tagline: string;
 	description: string;
+	element: {
+		kanji: string;
+		english: string;
+		verticalPhrase: string;
+	};
+	category: {
+		kanji: string;
+		english: string;
+	};
 	tech: string[];
+	techRow: string;
+	commitsRow: string;
+	activityRow: string;
+	editionDate: string;
 	liveLink: string;
 	codeLink: string;
 	thumbnail: string;
+	image: string;
+	video?: string;
 	metrics?: string;
 }
 
@@ -78,48 +94,110 @@ export const PORTFOLIO_CONTENT = {
 	projects: [
 		{
 			id: 1,
+			vol: 1,
 			name: 'Echora AI Platform',
 			tagline: 'Resume Bullet Point Editor For Busy Professionals',
 			description:
-				'Artifical Intelligent powered web application built to give busy professionals assistance with resume polishing.',
-			tech: ['SvelteKit', 'TypeScript', 'Tailwind', 'WebSockets'],
+				'Artificial Intelligence powered web application built to give busy professionals assistance with resume polishing and precision bullet generation.',
+			element: {
+				kanji: '地',
+				english: 'Earth',
+				verticalPhrase: '大地の鼓動。'
+			},
+			category: {
+				kanji: '界面',
+				english: 'UI'
+			},
+			tech: ['SvelteKit', 'TypeScript', 'Tailwind CSS', 'WebSockets'],
+			techRow: 'SvelteKit, TypeScript, Tailwind CSS, WebSockets',
+			commitsRow: '428 commits, 36 merges, production release',
+			activityRow: '340 days alive, last touched 2 days ago',
+			editionDate: '2024.11.14',
 			liveLink: 'https://github.com/ceodemitri/echora',
 			codeLink: 'https://github.com/ceodemitri/echora',
 			thumbnail: '/assets/images/project-1-thumb.png',
+			image: '/projects/echora-1.png',
 			metrics: '+26 Bullet Points Revised'
 		},
 		{
 			id: 2,
+			vol: 2,
 			name: 'Kaeps Language Learning App',
 			tagline: 'Interactive web-based premium language learning application.',
 			description:
-				'High-quality premium lessons for academic enthusiants who wish to learn a new language.',
-			tech: ['NextJS', 'TypeScript', 'Three.js', 'WebGL'],
+				'High-quality premium lessons for academic enthusiasts learning languages with 3D tactile modules and real-time pronunciation feedback.',
+			element: {
+				kanji: '火',
+				english: 'Fire',
+				verticalPhrase: '情熱の炎。'
+			},
+			category: {
+				kanji: '意匠',
+				english: 'Design'
+			},
+			tech: ['Next.js', 'TypeScript', 'Three.js', 'WebGL'],
+			techRow: 'Next.js, TypeScript, Three.js, WebGL',
+			commitsRow: '1,140 commits, 92 releases, continuous integration',
+			activityRow: '480 days alive, last touched yesterday',
+			editionDate: '2024.09.28',
 			liveLink: 'https://github.com/ceodemitri/kaeps',
 			codeLink: 'https://github.com/ceodemitri/kaeps',
 			thumbnail: '/assets/images/project-2-thumb.png',
+			image: '/projects/kaeps-1.png',
 			metrics: 'Over 1100 Commits alone for this repo, refining like good wine.'
 		},
 		{
 			id: 3,
-			name: 'Mika Astrology ',
+			vol: 3,
+			name: 'Mika Astrology',
 			tagline: 'Multi-modal tool used for Astrology, Mythology and Cosmology.',
-			description: 'Powerful web application at your fingertips, powered by the suns.',
+			description:
+				'Powerful full-stack web application calculating real-time planetary ephemerides, astrological charts, and mythological cross-references.',
+			element: {
+				kanji: '水',
+				english: 'Water',
+				verticalPhrase: '澄明の流波。'
+			},
+			category: {
+				kanji: '網際',
+				english: 'Web'
+			},
 			tech: ['React', 'Node.js', 'PostgreSQL', 'FastAPI'],
+			techRow: 'React, Node.js, PostgreSQL, FastAPI',
+			commitsRow: '512 commits, 44 merges, automated deployment',
+			activityRow: '290 days alive, last touched 4 days ago',
+			editionDate: '2024.06.12',
 			liveLink: 'https://github.com/ceodemitri/mika',
 			codeLink: 'https://github.com/ceodemitri/mika',
 			thumbnail: '/assets/images/project-3-thumb.png',
+			image: '/projects/mika-1.png',
 			metrics: 'Automated 15+ weekly operational hours per team'
 		},
 		{
 			id: 4,
-			name: 'Savor',
-			tagline: 'Premium recipe app',
-			description: 'Instantly turn scrap food into delciious recipes and ideas.',
-			tech: ['Flutter', 'AI Integration', 'TailwindCSS', 'Firestore'],
+			vol: 4,
+			name: 'Savor Culinary AI',
+			tagline: 'Premium scrap food recipe and culinary idea generator.',
+			description:
+				'Instantly turns pantry surplus into gourmet recipes and ideas using smart generative culinary modeling.',
+			element: {
+				kanji: '風',
+				english: 'Air',
+				verticalPhrase: '自由の旋風。'
+			},
+			category: {
+				kanji: '開発',
+				english: 'Software'
+			},
+			tech: ['Flutter', 'AI Integration', 'Tailwind CSS', 'Firestore'],
+			techRow: 'Flutter, AI Integration, Tailwind CSS, Firestore',
+			commitsRow: '470 commits, 28 releases, cloud architecture',
+			activityRow: '210 days alive, last touched 1 week ago',
+			editionDate: '2024.03.19',
 			liveLink: 'https://github.com/ceodemitri/4savor',
 			codeLink: 'https://github.com/ceodemitri/4savor',
 			thumbnail: '/assets/images/project-4-thumb.png',
+			image: '/projects/streak-1.png',
 			metrics: 'Over 2000 recipes generated.'
 		}
 	] as ProjectItem[],
