@@ -85,9 +85,9 @@
 				</span>
 			</div>
 
-			<!-- Compact Grid: 1-col on mobile (sized to fit screen), 2-col on tablet/web with bounded width -->
+			<!-- Compact Grid: 1-col on mobile (sized to fit screen with generous spacing), 2-col on tablet/web with bounded width -->
 			<div
-				class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-3xl lg:max-w-4xl mx-auto items-start"
+				class="grid grid-cols-1 md:grid-cols-2 gap-y-24 sm:gap-6 md:gap-6 max-w-3xl lg:max-w-4xl mx-auto items-start"
 			>
 				{#each projects as project}
 					{@const isExpanded = expandedProjectId === project.id}
