@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { PORTFOLIO_CONTENT } from '$lib/constants';
+	import StickManLogo from './StickManLogo.svelte';
 
 	const navLinks = PORTFOLIO_CONTENT.navLinks;
 
@@ -31,15 +32,9 @@
 		>
 			<!-- Left Column: Brand & Logo -->
 			<div class="lg:col-span-7 flex flex-col sm:flex-row items-start gap-8">
-				<!-- Large 80px Panda Astronaut Logo (Inverted / White Outline on Black) -->
-				<div class="p-2 border border-[#333333] bg-[#0A0A0A] flex items-center justify-center">
-					<img
-						src="/assets/images/panda-astronaut.png"
-						alt="Demitri logo — panda wearing astronaut helmet"
-						width="80"
-						height="80"
-						class="w-20 h-20 object-contain invert hue-rotate-180 brightness-150"
-					/>
+				<!-- Large Stick Man Logo in Footer (White stroke on Black card) -->
+				<div class="p-3 border border-[#333333] bg-[#0A0A0A] flex items-center justify-center">
+					<StickManLogo section="footer" size={76} color="#FFFFFF" class="text-white" />
 				</div>
 
 				<div class="flex flex-col">

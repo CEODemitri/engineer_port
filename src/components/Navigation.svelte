@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { PORTFOLIO_CONTENT, type NavItem } from '$lib/constants';
 	import { Menu, X } from './icons';
+	import StickManLogo from './StickManLogo.svelte';
 
 	let { activeSection = '#home' }: { activeSection?: string } = $props();
 	let mobileMenuOpen = $state(false);
@@ -34,20 +35,20 @@
 	class="hidden lg:flex fixed right-6 xl:right-10 top-1/2 -translate-y-1/2 z-40 flex-col items-end pointer-events-auto"
 	aria-label="Desktop Primary Navigation"
 >
-	<!-- Panda Astronaut Logo at top of sidebar -->
+	<!-- Dynamic Stick Man Logo at top of sidebar (pose changes per active section) -->
 	<div class="mb-8 flex flex-col items-end">
 		<a
 			href="#home"
 			onclick={(e) => handleNavClick(e, '#home')}
-			class="p-1 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4682B4] group inline-block"
-			aria-label="Scroll to home — Demitri astronaut panda logo"
+			class="p-1 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4682B4] group inline-flex flex-col items-center"
+			aria-label="Scroll to home — Demitri dynamic stick man logo"
 		>
-			<img
-				src="/assets/images/panda-astronaut.png"
-				alt="Demitri logo — panda wearing astronaut helmet"
-				width="40"
-				height="40"
-				class="w-10 h-10 object-contain drop-shadow-sm select-none transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
+			<StickManLogo
+				section={activeSection}
+				size={42}
+				color="#000000"
+				showBadge={true}
+				class="transition-all duration-300 group-hover:scale-110"
 			/>
 		</a>
 		<span class="font-heading text-[0.65rem] tracking-widest text-[#000000] mt-1">DEMITRI</span>
@@ -88,15 +89,14 @@
 	<a
 		href="#home"
 		onclick={(e) => handleNavClick(e, '#home')}
-		class="flex items-center gap-3 cursor-pointer"
-		aria-label="Home — Demitri astronaut panda"
+		class="flex items-center gap-3 cursor-pointer group"
+		aria-label="Home — Demitri stick man logo"
 	>
-		<img
-			src="/assets/images/panda-astronaut.png"
-			alt="Demitri logo — panda wearing astronaut helmet"
-			width="32"
-			height="32"
-			class="w-8 h-8 object-contain select-none"
+		<StickManLogo
+			section={activeSection}
+			size={32}
+			color="#000000"
+			class="transition-transform duration-200 group-hover:scale-105"
 		/>
 		<span class="font-heading text-sm text-[#000000] tracking-wider">DEMITRI</span>
 	</a>
@@ -140,13 +140,7 @@
 	<div>
 		<div class="flex items-center justify-between pb-6 border-b border-[#E5E5E5]">
 			<div class="flex items-center gap-3">
-				<img
-					src="/assets/images/panda-astronaut.png"
-					alt="Demitri logo"
-					width="32"
-					height="32"
-					class="w-8 h-8 object-contain"
-				/>
+				<StickManLogo section={activeSection} size={32} color="#000000" />
 				<span class="font-heading text-sm text-[#000000] tracking-wider">DEMITRI</span>
 			</div>
 			<button
