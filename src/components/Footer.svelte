@@ -76,7 +76,7 @@
 
 		<!-- Bottom Row: Copyright and System Footnote -->
 		<div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-			<p class="font-body text-xs text-[#FFFFFF]/50">&copy; 2024 Demitri. All rights reserved.</p>
+			<p class="font-body text-xs text-[#FFFFFF]/50">&copy; 2026 Demitri. All rights reserved.</p>
 			<p class="font-mono text-xs text-[#FFFFFF]/40 tracking-wider uppercase">
 				ENGINEERED WITH SVELTEKIT &amp; TAILWIND
 			</p>
