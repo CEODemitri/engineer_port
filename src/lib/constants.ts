@@ -8,6 +8,8 @@ export interface ProjectItem {
 		kanji: string;
 		english: string;
 		verticalPhrase: string;
+		color: string;
+		glassRgba: string;
 	};
 	category: {
 		kanji: string;
@@ -102,7 +104,9 @@ export const PORTFOLIO_CONTENT = {
 			element: {
 				kanji: '地',
 				english: 'Earth',
-				verticalPhrase: '大地の鼓動。'
+				verticalPhrase: '大地の鼓動。',
+				color: '#8E5336',
+				glassRgba: 'rgba(142, 83, 54, 0.46)'
 			},
 			category: {
 				kanji: '界面',
@@ -129,7 +133,9 @@ export const PORTFOLIO_CONTENT = {
 			element: {
 				kanji: '火',
 				english: 'Fire',
-				verticalPhrase: '情熱の炎。'
+				verticalPhrase: '情熱の炎。',
+				color: '#B83A24',
+				glassRgba: 'rgba(184, 58, 36, 0.46)'
 			},
 			category: {
 				kanji: '意匠',
@@ -156,7 +162,9 @@ export const PORTFOLIO_CONTENT = {
 			element: {
 				kanji: '水',
 				english: 'Water',
-				verticalPhrase: '澄明の流波。'
+				verticalPhrase: '澄明の流波。',
+				color: '#1B5B8E',
+				glassRgba: 'rgba(27, 91, 142, 0.46)'
 			},
 			category: {
 				kanji: '網際',
@@ -183,7 +191,9 @@ export const PORTFOLIO_CONTENT = {
 			element: {
 				kanji: '風',
 				english: 'Air',
-				verticalPhrase: '自由の旋風。'
+				verticalPhrase: '自由の旋風。',
+				color: '#2B8476',
+				glassRgba: 'rgba(43, 132, 118, 0.46)'
 			},
 			category: {
 				kanji: '開発',

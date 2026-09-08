@@ -29,13 +29,13 @@
 <section
 	id="skills-projects"
 	data-section="03"
-	class="snap-section relative min-h-screen min-h-dvh w-full flex flex-col justify-center px-6 lg:px-16 py-16 sm:py-20 lg:py-28 z-10 bg-transparent border-t border-[#E5E5E5]/60"
+	class="snap-section relative min-h-screen min-h-dvh w-full flex flex-col justify-center px-4 sm:px-6 lg:px-12 py-10 sm:py-14 lg:py-20 z-10 bg-transparent border-t border-[#E5E5E5]/60"
 	aria-label="Skills and Featured Work"
 >
-	<div class="max-w-6xl w-full mx-auto">
+	<div class="max-w-5xl w-full mx-auto">
 		<!-- Section Header -->
-		<div class="mb-14">
-			<div class="flex items-center gap-2 mb-3">
+		<div class="mb-8 sm:mb-10">
+			<div class="flex items-center gap-2 mb-2">
 				<span class="w-1.5 h-1.5 bg-[#B76E79]" aria-hidden="true"></span>
 				<span class="font-mono text-xs text-[#B76E79] uppercase tracking-[0.15em]">
 					03 // SKILLS & WORK
@@ -43,25 +43,25 @@
 			</div>
 			<h2
 				class="font-heading text-[#000000] tracking-[-0.01em] uppercase leading-tight"
-				style="font-size: clamp(1.75rem, 4vw, 2.5rem);"
+				style="font-size: clamp(1.5rem, 3.5vw, 2.25rem);"
 			>
 				ENGINEERING DISCIPLINE & PRODUCTION WORK
 			</h2>
-			<p class="font-mono text-xs text-[#666666] tracking-wider uppercase mt-2">
-				SELECT A PROJECT SQUARE TO EXPAND FULL ARCHITECTURE AND REPOSITORIES
+			<p class="font-mono text-[0.7rem] sm:text-xs text-[#666666] tracking-wider uppercase mt-1.5">
+				SELECT A PROJECT CARD TO EXPAND SPECIFICATION AND REPOSITORIES
 			</p>
 		</div>
 
 		<!-- ─── Subsection 1: Floating Text Skills (Scattered organic arrangement) ─── -->
-		<div class="mb-20">
-			<h3 class="font-heading text-sm text-[#000000] uppercase tracking-wider mb-6">
+		<div class="mb-10 sm:mb-12">
+			<h3 class="font-heading text-xs sm:text-sm text-[#000000] uppercase tracking-wider mb-4">
 				CORE STACK & CAPABILITIES
 			</h3>
-			<div class="flex flex-wrap gap-3 sm:gap-4 items-center" aria-label="Technical skills list">
+			<div class="flex flex-wrap gap-2 sm:gap-3 items-center" aria-label="Technical skills list">
 				{#each skills as skill, idx}
 					<span
 						role="presentation"
-						class="skill-badge inline-block bg-transparent border border-[#E5E5E5] hover:border-[#4682B4] hover:text-black hover:-translate-y-1 px-4 py-2 font-body font-medium text-sm text-[#333333] cursor-default select-none transition-all duration-200"
+						class="skill-badge inline-block bg-transparent border border-[#E5E5E5] hover:border-[#4682B4] hover:text-black hover:-translate-y-0.5 px-3 py-1.5 font-body font-medium text-xs sm:text-sm text-[#333333] cursor-default select-none transition-all duration-200"
 						style="border-radius: 0; transform: translateY({verticalOffsets[
 							idx % verticalOffsets.length
 						]}px);"
@@ -74,41 +74,48 @@
 
 		<!-- ─── Subsection 2: Projects Grid (Japanese Magazine Editorial Cover Cards) ─── -->
 		<div>
-			<div class="flex items-center justify-between mb-8">
-				<h3 class="font-heading text-sm text-[#000000] uppercase tracking-wider">
+			<div class="flex items-center justify-between mb-5 sm:mb-6">
+				<h3 class="font-heading text-xs sm:text-sm text-[#000000] uppercase tracking-wider">
 					FEATURED ARCHITECTURE & PRODUCTION REPOSITORIES
 				</h3>
 				<span
-					class="font-mono text-[0.65rem] text-[#666666] tracking-wider uppercase hidden sm:inline-block"
+					class="font-mono text-[0.62rem] text-[#666666] tracking-wider uppercase hidden sm:inline-block"
 				>
 					EDITORIAL VOL. 01 — 04 // 4 JAPANESE ELEMENTS
 				</span>
 			</div>
 
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+			<!-- Compact Grid: 1-col on mobile (sized to fit screen), 2-col on tablet/web with bounded width -->
+			<div
+				class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-3xl lg:max-w-4xl mx-auto items-start"
+			>
 				{#each projects as project}
 					{@const isExpanded = expandedProjectId === project.id}
-					<div data-id={project.id} class="project-card-wrapper h-full flex flex-col">
+					<div
+						data-id={project.id}
+						class="project-card-wrapper w-full max-w-[340px] sm:max-w-[360px] md:max-w-[380px] mx-auto flex flex-col"
+					>
 						<!-- Editorial Book / Magazine Cover Card -->
 						<article
 							id="project-card-{project.id}"
-							class="spec-card magazine-card bg-white border border-[#E5E5E5] flex flex-col h-full relative select-none transition-all duration-300 hover:border-[#B76E79] shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_30px_rgba(183,110,121,0.12)] group"
+							class="spec-card magazine-card bg-white border border-[#E5E5E5] flex flex-col w-full relative select-none transition-all duration-300 hover:border-[#B76E79] shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(183,110,121,0.12)] group"
 							style="border-radius: 0;"
 						>
 							<!-- ── Top Header Strip: LIVELEARNLOVE + Japanese Element ── -->
 							<header
-								class="px-5 sm:px-6 pt-5 pb-3 bg-white flex items-start justify-between border-b border-[#F0F0F0] relative z-10"
+								class="px-4 py-3 sm:px-5 sm:py-3.5 bg-white flex items-start justify-between border-b border-[#F0F0F0] relative z-10"
 							>
 								<div>
 									<h4
-										class="font-heading text-lg sm:text-xl text-[#2B181E] tracking-[0.05em] uppercase leading-none"
+										class="font-heading text-sm sm:text-base text-[#2B181E] tracking-[0.04em] uppercase leading-none"
 									>
 										LIVELEARNLOVE
 									</h4>
-									<!-- Subtitle below in Japanese: Earth, Fire, Water, Air (one for each of the 4 projects) -->
-									<div class="flex items-center gap-1.5 mt-1.5">
+									<!-- Subtitle below in Japanese: Earth, Fire, Water, Air (tinted with element color) -->
+									<div class="flex items-center gap-1.5 mt-1">
 										<span
-											class="font-mincho text-xs text-[#6B4B52] font-semibold tracking-widest leading-none"
+											class="font-mincho text-[0.72rem] font-semibold tracking-widest leading-none"
+											style="color: {project.element.color};"
 											title="Element: {project.element.english}"
 										>
 											{project.element.kanji}
@@ -118,27 +125,27 @@
 
 								<!-- Dynamic Volume Number: 1, 2, 3, 4 (Remains permanent for each card) -->
 								<div class="text-right flex flex-col items-end leading-none">
-									<div class="flex items-baseline gap-1">
+									<div class="flex items-baseline gap-0.5">
 										<span
-											class="font-mincho italic text-xs sm:text-sm text-[#7A3E4E] font-medium tracking-tight"
+											class="font-mincho italic text-[0.68rem] sm:text-xs text-[#7A3E4E] font-medium tracking-tight"
 										>
 											vol.
 										</span>
 										<span
-											class="font-mincho text-3xl sm:text-4xl font-bold text-[#7A3E4E] leading-none tracking-tighter"
+											class="font-mincho text-2xl sm:text-3xl font-bold text-[#7A3E4E] leading-none tracking-tighter"
 										>
 											{project.vol}
 										</span>
 									</div>
-									<span class="font-mono text-[0.62rem] text-[#888888] tracking-wider mt-1 block">
+									<span class="font-mono text-[0.58rem] text-[#888888] tracking-wider mt-0.5 block">
 										{project.editionDate}
 									</span>
 								</div>
 							</header>
 
-							<!-- ── Middle Visual Area: Project's Video / Image as Blue Background ── -->
+							<!-- ── Middle Visual Area: Project's Video / Image (10% Taller: 16/11 aspect) ── -->
 							<div
-								class="relative w-full aspect-[4/3] bg-[#2E4A62] overflow-hidden group/media cursor-pointer"
+								class="relative w-full aspect-[16/11] bg-[#1E293B] overflow-hidden group/media cursor-pointer"
 								onclick={() => toggleProject(project.id)}
 								onkeydown={(e) => handleKeyDown(e, project.id)}
 								role="button"
@@ -152,13 +159,13 @@
 										loop
 										muted
 										playsinline
-										class="w-full h-full object-cover group-hover/media:scale-105 transition-transform duration-500"
+										class="w-full h-full object-cover group-hover/media:scale-105 transition-transform duration-700"
 									></video>
 								{:else}
 									<img
 										src={project.image}
 										alt="{project.name} preview"
-										class="w-full h-full object-cover group-hover/media:scale-105 transition-transform duration-500"
+										class="w-full h-full object-cover group-hover/media:scale-105 transition-transform duration-700"
 										loading="lazy"
 										onerror={(e) => {
 											const img = e.currentTarget as HTMLImageElement;
@@ -167,16 +174,29 @@
 									/>
 								{/if}
 
-								<!-- Poetic Vertical Japanese Script (matching "ちいさな旅。" from reference photo) -->
+								<!-- ── Element-Tinted Frosted Glass Pane (Dissolves smoothly on hover) ── -->
 								<div
-									class="absolute top-5 right-5 writing-vertical-rl font-mincho text-white text-sm sm:text-base tracking-[0.25em] font-medium drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)] select-none pointer-events-none opacity-95"
+									class="element-glass-overlay absolute inset-0 z-10 pointer-events-none"
+									style="background: linear-gradient(135deg, {project.element
+										.glassRgba} 0%, rgba(15, 23, 42, 0.32) 100%);
+									       box-shadow: inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.35), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.25);"
+								>
+									<!-- Delicate diagonal gloss reflection -->
+									<div
+										class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.08] to-transparent pointer-events-none"
+									></div>
+								</div>
+
+								<!-- Poetic Vertical Japanese Script (z-20 so it remains legible above the glass) -->
+								<div
+									class="absolute top-2.5 right-2.5 z-20 writing-vertical-rl font-mincho text-white text-xs sm:text-sm tracking-[0.2em] font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] select-none pointer-events-none opacity-95"
 								>
 									{project.element.verticalPhrase}
 								</div>
 
 								<!-- Lower Banner Strip (matching "はじめよう！旅ログ。" from reference photo) -->
 								<div
-									class="absolute bottom-0 inset-x-0 bg-[#1E1B22]/90 backdrop-blur-xs text-white px-4 py-2.5 flex items-center justify-between border-t border-white/10"
+									class="absolute bottom-0 inset-x-0 z-20 bg-[#1E1B22]/90 backdrop-blur-xs text-white px-3 py-1.5 flex items-center justify-between border-t border-white/10"
 									onclick={(e) => e.stopPropagation()}
 									onkeydown={(e) => e.stopPropagation()}
 									role="region"
@@ -184,25 +204,25 @@
 								>
 									<div class="pr-2 truncate">
 										<p
-											class="font-heading text-xs sm:text-sm uppercase tracking-wider text-white truncate"
+											class="font-heading text-[0.72rem] sm:text-xs uppercase tracking-wider text-white truncate"
 										>
 											{project.name}
 										</p>
-										<p class="font-body text-[0.68rem] text-[#CCCCCC] truncate">
+										<p class="font-body text-[0.62rem] text-[#CCCCCC] truncate">
 											{project.tagline}
 										</p>
 									</div>
-									<div class="flex items-center gap-2 shrink-0">
+									<div class="flex items-center gap-1.5 shrink-0">
 										{#if project.liveLink}
 											<a
 												href={project.liveLink}
 												target="_blank"
 												rel="noopener noreferrer"
 												aria-label="Open live demo of {project.name}"
-												class="w-7 h-7 flex items-center justify-center bg-white/10 hover:bg-[#4682B4] text-white transition-colors duration-200 cursor-pointer"
+												class="w-6 h-6 flex items-center justify-center bg-white/10 hover:bg-[#4682B4] text-white transition-colors duration-200 cursor-pointer"
 												title="Live Project Demo"
 											>
-												<ExternalLink size={13} />
+												<ExternalLink size={11} />
 											</a>
 										{/if}
 										{#if project.codeLink}
@@ -211,10 +231,10 @@
 												target="_blank"
 												rel="noopener noreferrer"
 												aria-label="Open source code of {project.name}"
-												class="w-7 h-7 flex items-center justify-center bg-white/10 hover:bg-[#4682B4] text-white transition-colors duration-200 cursor-pointer"
+												class="w-6 h-6 flex items-center justify-center bg-white/10 hover:bg-[#4682B4] text-white transition-colors duration-200 cursor-pointer"
 												title="View Repository"
 											>
-												<Github size={13} />
+												<Github size={11} />
 											</a>
 										{/if}
 									</div>
@@ -223,12 +243,12 @@
 
 							<!-- ── Bottom Editorial Section: Larger Japanese Category Kanji + 3 English Rows ── -->
 							<div
-								class="p-5 sm:p-6 bg-white flex flex-col justify-between flex-1 border-t border-[#F0F0F0]"
+								class="p-4 sm:p-4.5 bg-white flex flex-col justify-between flex-1 border-t border-[#F0F0F0]"
 							>
 								<!-- The larger Japanese font: "ui, design, web, software" categories (Kanji only on card) -->
-								<div class="mb-4">
+								<div class="mb-2">
 									<h5
-										class="font-mincho text-2xl sm:text-3xl font-bold text-[#2B181E] tracking-tight leading-none select-none"
+										class="font-mincho text-xl sm:text-2xl font-bold text-[#2B181E] tracking-tight leading-none select-none"
 										title="{project.category.english} Category"
 									>
 										{project.category.kanji}
@@ -240,74 +260,74 @@
 								     Row 2: Commits
 								     Row 3: Days alive / last touched -->
 								<div
-									class="space-y-2 border-t border-[#EAEAEA] pt-3 font-body text-xs sm:text-[0.8rem] text-[#333333]"
+									class="space-y-1.5 border-t border-[#EAEAEA] pt-2 font-body text-[0.7rem] sm:text-[0.75rem] text-[#333333] leading-snug"
 								>
 									<!-- Row 1: Tech Stack -->
-									<div class="flex items-baseline gap-2">
+									<div class="flex items-baseline gap-1.5">
 										<span
-											class="font-mono text-[0.65rem] uppercase tracking-wider text-[#888888] min-w-[58px] shrink-0 font-medium"
+											class="font-mono text-[0.58rem] sm:text-[0.62rem] uppercase tracking-wider text-[#888888] min-w-[50px] shrink-0 font-medium"
 										>
 											STACK:
 										</span>
-										<span class="text-[#222222] font-medium leading-relaxed">
+										<span class="text-[#222222] font-medium leading-snug">
 											{project.techRow}
 										</span>
 									</div>
 
 									<!-- Row 2: Commits -->
-									<div class="flex items-baseline gap-2">
+									<div class="flex items-baseline gap-1.5">
 										<span
-											class="font-mono text-[0.65rem] uppercase tracking-wider text-[#888888] min-w-[58px] shrink-0 font-medium"
+											class="font-mono text-[0.58rem] sm:text-[0.62rem] uppercase tracking-wider text-[#888888] min-w-[50px] shrink-0 font-medium"
 										>
 											COMMITS:
 										</span>
-										<span class="text-[#444444] leading-relaxed">
+										<span class="text-[#444444] leading-snug">
 											{project.commitsRow}
 										</span>
 									</div>
 
 									<!-- Row 3: Days Alive / Last Touched -->
-									<div class="flex items-baseline gap-2">
+									<div class="flex items-baseline gap-1.5">
 										<span
-											class="font-mono text-[0.65rem] uppercase tracking-wider text-[#888888] min-w-[58px] shrink-0 font-medium"
+											class="font-mono text-[0.58rem] sm:text-[0.62rem] uppercase tracking-wider text-[#888888] min-w-[50px] shrink-0 font-medium"
 										>
 											TIMELINE:
 										</span>
-										<span class="text-[#444444] leading-relaxed">
+										<span class="text-[#444444] leading-snug">
 											{project.activityRow}
 										</span>
 									</div>
 								</div>
 
 								<!-- Expand / Collapse Technical Details Toggle -->
-								<div class="mt-5 pt-3 border-t border-[#F0F0F0] flex items-center justify-between">
+								<div class="mt-3 pt-2 border-t border-[#F0F0F0] flex items-center justify-between">
 									<button
 										type="button"
 										onclick={() => toggleProject(project.id)}
-										class="font-mono text-[0.68rem] text-[#B76E79] hover:text-[#7A3E4E] uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
+										class="font-mono text-[0.62rem] sm:text-[0.65rem] text-[#B76E79] hover:text-[#7A3E4E] uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
 										aria-expanded={isExpanded}
 									>
-										<span>{isExpanded ? '[- COLLAPSE SPEC]' : '[+ SPECIFICATION & METRICS]'}</span>
+										<span>{isExpanded ? '[- COLLAPSE SPEC]' : '[+ SPEC & METRICS]'}</span>
 									</button>
 
-									<div class="flex items-center gap-3">
+									<div class="flex items-center gap-2.5">
 										<a
 											href={project.liveLink}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="font-mono text-[0.65rem] text-[#4682B4] hover:underline uppercase flex items-center gap-1"
+											class="font-mono text-[0.62rem] text-[#4682B4] hover:underline uppercase flex items-center gap-0.5"
 										>
 											<span>DEMO</span>
-											<ExternalLink size={10} />
+											<ExternalLink size={9} />
 										</a>
 										<a
 											href={project.codeLink}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="font-mono text-[0.65rem] text-[#4682B4] hover:underline uppercase flex items-center gap-1"
+											class="font-mono text-[0.62rem] text-[#4682B4] hover:underline uppercase flex items-center gap-0.5"
 										>
 											<span>REPO</span>
-											<Github size={10} />
+											<Github size={9} />
 										</a>
 									</div>
 								</div>
@@ -315,22 +335,20 @@
 								<!-- Detailed Technical Specs Tray (Expanded) -->
 								{#if isExpanded}
 									<div
-										class="mt-4 pt-4 border-t border-[#E5E5E5] space-y-3 animate-in fade-in duration-200"
+										class="mt-3 pt-3 border-t border-[#E5E5E5] space-y-2 animate-in fade-in duration-200"
 										role="region"
 										aria-label="{project.name} technical details"
 									>
-										<p class="font-body text-xs text-[#444444] leading-relaxed">
+										<p class="font-body text-[0.72rem] text-[#444444] leading-relaxed">
 											{project.description}
 										</p>
 										{#if project.metrics}
-											<div
-												class="p-2.5 bg-[#F9F9F9] border border-[#E5E5E5] flex items-center gap-2"
-											>
+											<div class="p-2 bg-[#F9F9F9] border border-[#E5E5E5] flex items-center gap-2">
 												<span
 													class="w-1.5 h-1.5 bg-[#39FF14] inline-block shrink-0"
 													aria-hidden="true"
 												></span>
-												<span class="font-mono text-[0.7rem] text-[#111111]">
+												<span class="font-mono text-[0.68rem] text-[#111111]">
 													{project.metrics}
 												</span>
 											</div>
