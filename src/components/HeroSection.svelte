@@ -4,28 +4,57 @@
 
 	let h1El = $state<HTMLElement | null>(null);
 	let h2El = $state<HTMLElement | null>(null);
+	let halloEl = $state<HTMLElement | null>(null);
 	let measureSpan = $state<HTMLElement | null>(null);
+	let demMeasureSpan = $state<HTMLElement | null>(null);
+	let halloMeasureSpan = $state<HTMLElement | null>(null);
 	let letterSpacing = $state('0.285em');
+	let halloLetterSpacing = $state('0.4em');
+	let halloTranslate = $state('0px');
 
 	let resizeObserver: ResizeObserver | null = null;
 
 	function syncWidth() {
-		if (!h1El || !measureSpan) return;
-		const targetWidth = h1El.getBoundingClientRect().width;
-		const baseWidth = measureSpan.getBoundingClientRect().width;
+		if (h1El && measureSpan) {
+			const targetWidth = h1El.getBoundingClientRect().width;
+			const baseWidth = measureSpan.getBoundingClientRect().width;
 
-		if (targetWidth > 0 && baseWidth > 0) {
-			// "ECHOLS" has 6 letters and 5 inter-letter gaps.
-			// The visual width of "ECHOLS" is: baseWidth + 5 * spacing.
-			// Target width is the rendered width of "DEMITRI".
-			// Therefore, required spacing = (targetWidth - baseWidth) / 5.
-			// Setting `margin-right: -{letterSpacing}` subtracts the trailing space
-			// after the final "S" added by CSS letter-spacing, ensuring exact alignment.
-			const spacingPx = Math.max(0, (targetWidth - baseWidth) / 5);
-			letterSpacing = `${spacingPx.toFixed(2)}px`;
-			if (h2El) {
-				h2El.style.letterSpacing = letterSpacing;
-				h2El.style.marginRight = `-${letterSpacing}`;
+			if (targetWidth > 0 && baseWidth > 0) {
+				// "ECHOLS" has 6 letters and 5 inter-letter gaps.
+				// The visual width of "ECHOLS" is: baseWidth + 5 * spacing.
+				// Target width is the rendered width of "DEMITRI".
+				// Therefore, required spacing = (targetWidth - baseWidth) / 5.
+				// Setting `margin-right: -{letterSpacing}` subtracts the trailing space
+				// after the final "S" added by CSS letter-spacing, ensuring exact alignment.
+				const spacingPx = Math.max(0, (targetWidth - baseWidth) / 5);
+				letterSpacing = `${spacingPx.toFixed(2)}px`;
+				if (h2El) {
+					h2El.style.letterSpacing = letterSpacing;
+					h2El.style.marginRight = `-${letterSpacing}`;
+				}
+			}
+		}
+
+		if (demMeasureSpan && halloMeasureSpan && h1El) {
+			const targetDemWidth = demMeasureSpan.getBoundingClientRect().width;
+			const baseHalloWidth = halloMeasureSpan.getBoundingClientRect().width;
+			const targetDemitriWidth = h1El.getBoundingClientRect().width;
+
+			if (targetDemWidth > 0 && baseHalloWidth > 0 && targetDemitriWidth > 0) {
+				// "Hallo ich bin" has 13 characters and 12 inter-letter gaps.
+				// Adjusted so the letters span from the start of 'D' to the end of 'm' in DEMITRI.
+				const spacingPx = Math.max(0, (targetDemWidth - baseHalloWidth) / 12);
+				halloLetterSpacing = `${spacingPx.toFixed(2)}px`;
+
+				// Shift leftwards from centered position so the left edge of 'Hallo ich bin' aligns with 'D'
+				const shiftPx = -((targetDemitriWidth - targetDemWidth) / 2);
+				halloTranslate = `${shiftPx.toFixed(2)}px`;
+
+				if (halloEl) {
+					halloEl.style.letterSpacing = halloLetterSpacing;
+					halloEl.style.marginRight = `-${halloLetterSpacing}`;
+					halloEl.style.transform = `translateX(${halloTranslate})`;
+				}
 			}
 		}
 	}
@@ -88,6 +117,15 @@
 			</span>
 		</div>
 
+		<!-- Hallo ich bin greeting (small italic serif font, not bold, subtle, left-aligned at 'D' and ending at 'm') -->
+		<p
+			bind:this={halloEl}
+			class="font-serif italic font-normal text-[#555555] leading-none select-none mb-2 sm:mb-2.5 inline-block w-fit whitespace-nowrap will-change-transform"
+			style="font-family: 'EB Garamond', 'Noto Serif JP', 'Times New Roman', Georgia, serif; font-size: clamp(0.75rem, 1.15vw, 0.95rem); letter-spacing: {halloLetterSpacing}; margin-right: -{halloLetterSpacing}; transform: translateX({halloTranslate});"
+		>
+			Hallo ich bin
+		</p>
+
 		<!-- Big Bold Brand Name -->
 		<h1
 			bind:this={h1El}
@@ -114,6 +152,26 @@
 			aria-hidden="true"
 		>
 			{PORTFOLIO_CONTENT.hero.lastName}
+		</span>
+
+		<!-- Invisible reference element for unspaced base width of "DEM" in h1's size & tracking -->
+		<span
+			bind:this={demMeasureSpan}
+			class="font-heading uppercase leading-none invisible absolute pointer-events-none -z-50 select-none opacity-0 whitespace-nowrap"
+			style="font-size: clamp(3rem, 8vw, 7rem); letter-spacing: -0.02em;"
+			aria-hidden="true"
+		>
+			DEM
+		</span>
+
+		<!-- Invisible reference element for unspaced base width of "Hallo ich bin" -->
+		<span
+			bind:this={halloMeasureSpan}
+			class="font-serif italic font-normal leading-none invisible absolute pointer-events-none -z-50 select-none opacity-0 whitespace-nowrap"
+			style="font-family: 'EB Garamond', 'Noto Serif JP', 'Times New Roman', Georgia, serif; font-size: clamp(0.75rem, 1.15vw, 0.95rem); letter-spacing: 0px;"
+			aria-hidden="true"
+		>
+			Hallo ich bin
 		</span>
 
 		<!-- Title -->
