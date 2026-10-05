@@ -45,14 +45,22 @@
 		let animId = 0;
 		let isRunning = true;
 
+		let resizeObserver: ResizeObserver | null = null;
 		const resize = () => {
 			if (!canvas) return;
 			const rect = canvas.getBoundingClientRect();
 			const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2);
-			w = canvas.width = (rect.width || 160) * dpr;
-			h = canvas.height = (rect.height || 140) * dpr;
+			w = canvas.width = Math.round((rect.width || 160) * dpr);
+			h = canvas.height = Math.round((rect.height || 140) * dpr);
 		};
 		resize();
+
+		if (typeof ResizeObserver !== 'undefined') {
+			resizeObserver = new ResizeObserver(() => {
+				resize();
+			});
+			resizeObserver.observe(canvas);
+		}
 		window.addEventListener('resize', resize);
 
 		const phi = (1 + Math.sqrt(5)) / 2;
@@ -126,8 +134,8 @@
 			const cx = w / 2;
 			const cy = h / 2;
 			const minDim = Math.min(w, h);
-			const scale = minDim * 0.22;
-			const fov = 300;
+			const scale = minDim * 0.44;
+			const fov = 380;
 
 			const cosX = Math.cos(rotX);
 			const sinX = Math.sin(rotX);
@@ -192,6 +200,7 @@
 
 		return () => {
 			isRunning = false;
+			if (resizeObserver) resizeObserver.disconnect();
 			window.removeEventListener('resize', resize);
 			if (animId) cancelAnimationFrame(animId);
 		};
@@ -277,10 +286,10 @@
 				</div>
 
 				<!-- Stats Grid: 2x2 Clean Minimalist Block Display -->
-				<div class="grid grid-cols-2 gap-6">
+				<div class="grid grid-cols-2 gap-6 auto-rows-fr">
 					<!-- Metric 1: Total Repositories -->
 					<div
-						class="flex flex-col justify-between border border-[#E5E5E5] p-4"
+						class="flex flex-col justify-between border border-[#E5E5E5] p-4 h-full"
 						style="background-color: #b8b8b8;"
 					>
 						<div>
@@ -306,17 +315,17 @@
 
 					<!-- Metric 2: 3D Wireframe Animation (No pill, no label, shadowy light grey wireframe filling entire space) -->
 					<div
-						class="relative flex min-h-[120px] h-full w-full items-center justify-center overflow-hidden border border-[#E5E5E5] bg-white p-0"
+						class="relative flex h-full w-full items-center justify-center overflow-hidden border border-[#E5E5E5] bg-white p-0"
 					>
 						<canvas
 							bind:this={wireframeCanvas}
-							class="block h-full min-h-[120px] w-full"
+							class="absolute inset-0 block h-full w-full"
 							aria-hidden="true"
 						></canvas>
 					</div>
 
 					<!-- Metric 3: Active Tech Stacks / Environments -->
-					<div class="flex flex-col justify-between border border-[#E5E5E5] bg-white p-4">
+					<div class="flex flex-col justify-between border border-[#E5E5E5] bg-white p-4 h-full">
 						<div>
 							<span
 								id="metric-tech-stacks-count"
@@ -338,7 +347,7 @@
 					</div>
 
 					<!-- Metric 4: Years Active Shipping Software -->
-					<div class="flex flex-col justify-between border border-[#E5E5E5] bg-white p-4">
+					<div class="flex flex-col justify-between border border-[#E5E5E5] bg-white p-4 h-full">
 						<div>
 							<span
 								id="metric-years-active-count"
