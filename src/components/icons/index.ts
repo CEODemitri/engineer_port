@@ -7,3 +7,7 @@ export { default as Mail } from './Mail.svelte';
 export { default as Phone } from './Phone.svelte';
 export { default as ExternalLink } from './ExternalLink.svelte';
 export { default as ArrowUpRight } from './ArrowUpRight.svelte';
+export { default as Copy } from './Copy.svelte';
+export { default as Check } from './Check.svelte';
+export { default as Download } from './Download.svelte';
+export { default as QrCode } from './QrCode.svelte';
