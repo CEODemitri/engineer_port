@@ -22,7 +22,6 @@ const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache to prevent GitHub rate 
 
 export const GET: RequestHandler = async () => {
 	const now = Date.now();
-
 	if (cachedStats && now - cacheTimestamp < CACHE_TTL_MS) {
 		return json({ ...cachedStats, fromCache: true });
 	}
@@ -50,10 +49,9 @@ export const GET: RequestHandler = async () => {
 		// 2. Fetch author commits count via Search API
 		let commitsCount = 1011;
 		try {
-			const commitRes = await fetch(
-				`https://api.github.com/search/commits?q=author:${username}`,
-				{ headers }
-			);
+			const commitRes = await fetch(`https://api.github.com/search/commits?q=author:${username}`, {
+				headers
+			});
 			if (commitRes.ok) {
 				const commitData = await commitRes.json();
 				if (typeof commitData.total_count === 'number' && commitData.total_count > 0) {
@@ -98,8 +96,8 @@ export const GET: RequestHandler = async () => {
 			console.warn('GitHub repos fallback:', reposErr);
 		}
 
-		// User confirmed having 60 total repositories (49 public + 11 private/collaborative)
-		const totalRepositories = Math.max(60, publicRepos);
+		// User confirmed 64 total repositories (49 public + 15 private/collaborative)
+		const totalRepositories = Math.max(64, publicRepos);
 		const privateRepositories = Math.max(0, totalRepositories - publicRepos);
 		const languagesList = Object.keys(languageMap);
 		const createdYear = new Date(createdAt).getFullYear();
@@ -125,13 +123,12 @@ export const GET: RequestHandler = async () => {
 		return json({ ...cachedStats, fromCache: false });
 	} catch (error) {
 		console.error('Failed to query GitHub stats:', error);
-
 		// Graceful return of verified Demitri profile data if network is unavailable
 		const fallback: CachedStats = {
 			username,
-			totalRepositories: 60,
+			totalRepositories: 64,
 			publicRepositories: 49,
-			privateRepositories: 11,
+			privateRepositories: 15,
 			commits: 1011,
 			languagesCount: 12,
 			languages: ['Svelte', 'JavaScript', 'TypeScript', 'Python', 'Java', 'Ruby', 'C#', 'Rust'],

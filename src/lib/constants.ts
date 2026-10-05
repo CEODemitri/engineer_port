@@ -66,7 +66,7 @@ export const PORTFOLIO_CONTENT = {
 		fallbackStats: {
 			stars: 1,
 			commits: 2500,
-			repositories: 60,
+			repositories: 64,
 			publicRepositories: 49,
 			languagesCount: 12,
 			followers: 1,

@@ -89,7 +89,7 @@
 					<div class="flex items-center gap-2">
 						<Github size={18} class="text-[#000000]" />
 						<span class="font-heading text-xs uppercase tracking-wider text-[#000000]">
-							GITHUB TELEMETRY
+							GITHUB 
 						</span>
 					</div>
 
@@ -110,7 +110,10 @@
 				<!-- Stats Grid: 2x2 Clean Minimalist Block Display -->
 				<div class="grid grid-cols-2 gap-6">
 					<!-- Metric 1: Total Repositories -->
-					<div class="p-4 bg-white border border-[#E5E5E5] flex flex-col justify-between">
+					<div
+						class="p-4 border border-[#E5E5E5] flex flex-col justify-between"
+						style="background-color: #b8b8b8;"
+					>
 						<div>
 							<span
 								id="metric-repositories-count"
@@ -125,7 +128,8 @@
 							</span>
 						</div>
 						<span
-							class="font-mono text-[0.6rem] text-[#888888] mt-2 block border-t border-[#F0F0F0] pt-1"
+							class="font-mono text-[0.6rem] mt-2 block border-t border-[#F0F0F0] pt-1"
+							style="color: #ffffff;"
 						>
 							{publicRepos} PUBLIC • {Math.max(0, totalRepos - publicRepos)} PRIVATE
 						</span>
