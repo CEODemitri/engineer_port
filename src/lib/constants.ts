@@ -49,9 +49,9 @@ export const PORTFOLIO_CONTENT = {
 		lastName: 'ECHOLS',
 		title: 'Creative Developer',
 		tagline: 'Marching towards the future with technology',
-		ctaWork: 'View My Work',
+		ctaWork: 'My Work',
 		ctaContact: 'Contact Me',
-		scrollHint: 'Scroll to explore'
+		scrollHint: 'Scroll to Explore'
 	},
 	whyMe: {
 		sectionNumber: '02',
