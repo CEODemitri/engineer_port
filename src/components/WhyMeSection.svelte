@@ -7,7 +7,7 @@
 	let isLive = $state(false);
 
 	const fallback = PORTFOLIO_CONTENT.whyMe.fallbackStats;
-	let totalRepos = $state(fallback.repositories);
+	let totalRepos = $state(64);
 	let techEnvironments = $state(fallback.languagesCount || 12);
 	let yearsActive = $state(fallback.yearsActive || 4);
 
@@ -22,7 +22,11 @@
 			const res = await fetch('/api/github-stats');
 			if (res.ok) {
 				const data = await res.json();
-				if (typeof data.totalRepositories === 'number') totalRepos = data.totalRepositories;
+				if (typeof data.totalRepositories === 'number') {
+					totalRepos = Math.max(64, data.totalRepositories);
+				} else {
+					totalRepos = 64;
+				}
 				if (typeof data.languagesCount === 'number') techEnvironments = data.languagesCount;
 				if (typeof data.yearsActive === 'number') yearsActive = data.yearsActive;
 				isLive = true;

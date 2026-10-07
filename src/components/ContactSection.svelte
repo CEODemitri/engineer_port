@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import QRCode from 'qrcode';
 	import { PORTFOLIO_CONTENT } from '$lib/constants';
-	import { Mail, Phone, Github, Linkedin, Twitter, Copy, Check, Download } from './icons';
+	import { Github, Linkedin, Twitter, Download } from './icons';
 
 	const contact = PORTFOLIO_CONTENT.contact;
 
@@ -16,12 +16,13 @@
 					? `${window.location.origin}/#home`
 					: 'https://demitri.dev/#home';
 
+			// Slightly greyed white QR code with sharp contrast on light background
 			qrDataUrl = await QRCode.toDataURL(targetUrl, {
 				margin: 0,
-				width: 380,
+				width: 340,
 				color: {
-					dark: '#000000',
-					light: '#FFFFFF'
+					dark: '#2A2A2E',
+					light: '#00000000'
 				}
 			});
 		} catch (e) {
@@ -97,169 +98,255 @@
 <section
 	id="contact"
 	data-section="05"
-	class="snap-section relative box-border flex h-screen h-dvh min-h-screen min-h-dvh w-full flex-col items-center justify-center overflow-hidden border-t border-[#E5E5E5]/60 bg-transparent px-4 pt-16 pb-6 sm:px-6 lg:py-6 lg:px-12"
+	class="snap-section relative box-border flex h-screen h-dvh max-h-screen max-h-dvh w-full flex-col items-center justify-center overflow-hidden border-t border-[#E5E5E5]/60 bg-transparent px-4 pt-14 pb-4 sm:px-6 sm:pt-16 sm:pb-6 lg:py-6 lg:px-12"
 	aria-label="Contact Business Card"
 >
 	<div class="my-auto flex w-full max-w-4xl flex-col items-center justify-center">
 		<!-- Section Header -->
-		<div class="mb-3 w-full text-left sm:mb-4">
-			<span class="font-mono text-xs uppercase tracking-[0.15em] text-[#B76E79]">
-				{contact.sectionNumber} // {contact.sectionTitle}
-			</span>
+		<div class="mb-2.5 flex w-full max-w-3xl items-center justify-between px-1 sm:mb-3">
+			<div class="flex items-center gap-2">
+				<span class="h-1.5 w-1.5 bg-[#000000]"></span>
+				<span class="font-mono text-xs uppercase tracking-[0.2em] text-[#000000]">
+					{contact.sectionNumber} // {contact.sectionTitle}
+				</span>
+			</div>
 		</div>
 
-		<!-- Clean Expanded Business Card (Optimized for 100vh spatial presence) -->
+		<!-- ─── White Mode Stencil Business Card (Layered Shadows & Tones of White) ─── -->
 		<div
-			class="relative w-full border border-[#000000] bg-white p-6 shadow-[0_16px_48px_rgba(0,0,0,0.07)] sm:p-8 md:p-10 lg:p-12"
+			class="relative w-full max-w-3xl overflow-hidden border border-[#E2E2E6] bg-[#FFFFFF] p-5 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.06),0_2px_8px_rgba(0,0,0,0.03)]"
 			role="region"
 			aria-label="Demitri Echols Business Card"
 		>
-			<!-- Card Header -->
-			<div class="border-b border-[#E5E5E5] pb-5 sm:pb-6">
-				<h2
-					class="font-heading text-2xl uppercase tracking-tight text-[#000000] sm:text-3xl md:text-4xl"
-				>
-					DEMITRI ECHOLS
-				</h2>
-				<p class="font-body mt-1.5 text-sm font-medium text-[#4682B4] sm:text-base">
-					Creative Developer &amp; Software Engineer
-				</p>
-			</div>
-
-			<!-- Card Content: Larger QR Code & Direct Contact Info -->
+			<!-- ─── Stencil Overlays (White Tones & Subtle Shadows connecting patterns) ─── -->
+			<!-- Big Overlapping White/Shadow Stencil Shapes -->
 			<div
-				class="grid grid-cols-1 items-center gap-6 border-b border-[#E5E5E5] py-6 sm:grid-cols-12 sm:gap-10 sm:py-8"
+				class="pointer-events-none absolute -top-16 -left-16 h-56 w-56 rounded-full bg-[#F7F7F9] border border-[#EDEDF0] shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)] opacity-90 sm:h-72 sm:w-72"
+				aria-hidden="true"
+			></div>
+
+			<div
+				class="pointer-events-none absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-[#F3F3F6] border border-[#E8E8EC] shadow-[0_8px_24px_rgba(0,0,0,0.03)] opacity-80 sm:h-80 sm:w-80"
+				aria-hidden="true"
+			></div>
+
+			<!-- Secondary Stencil Quadrant connecting the layout -->
+			<div
+				class="pointer-events-none absolute top-1/4 left-1/3 h-48 w-48 rotate-12 border border-[#E5E5E8] bg-[#FAFAFC]/60 opacity-60"
+				aria-hidden="true"
+			></div>
+
+			<!-- Subtle Asian Architectural Watermarks in white shadow tones -->
+			<span
+				class="font-mincho pointer-events-none absolute left-8 bottom-4 select-none text-7xl font-light text-[#E2E2E6]/60 sm:text-8xl"
+				aria-hidden="true"
 			>
-				<!-- Large QR Code directly on card -->
-				<div class="flex flex-col items-center justify-center sm:col-span-5">
+				印
+			</span>
+			<span
+				class="font-mincho pointer-events-none absolute right-12 top-4 select-none text-6xl font-light text-[#E8E8EC]/70 sm:text-7xl"
+				aria-hidden="true"
+			>
+				結
+			</span>
+
+			<!-- ─── Card Core Content (Strict 3-Zone Architecture) ─── -->
+			<div
+				class="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center min-h-[300px] sm:min-h-[340px]"
+			>
+				<!-- 1. TOP-LEFT ANCHOR: Smaller Name & Role Title -->
+				<div
+					class="md:col-span-4 flex flex-col items-start justify-start self-start text-left pt-1"
+				>
+					<div
+						class="flex items-center gap-1.5 font-mono text-[0.65rem] uppercase tracking-widest text-[#888888] mb-1"
+					>
+						<span>{'{ DEV }'}</span>
+						<span>/</span>
+						<span>USA</span>
+					</div>
+
+					<h2
+						class="font-heading text-xl sm:text-2xl lg:text-[1.75rem] uppercase leading-tight tracking-tight text-[#000000]"
+					>
+						DEMITRI ECHOLS
+					</h2>
+
+					<p class="font-body text-xs sm:text-sm font-medium text-[#4682B4] mt-1">
+						Creative Developer
+					</p>
+
+					<p class="font-mono text-[0.65rem] text-[#777777] uppercase tracking-wider mt-0.5">
+						Software Engineer
+					</p>
+
+					<div class="mt-4 pt-3 border-t border-[#EAEAEA] w-full max-w-[180px]">
+						<span class="font-mono text-[0.6rem] uppercase tracking-widest text-[#999999] block">
+							LOCATION
+						</span>
+						<span class="font-mono text-xs text-[#222222] font-medium block"> USA // REMOTE </span>
+					</div>
+				</div>
+
+				<!-- 2. CENTER: QR Code with Ghosted QR Cutout Overlaps Behind -->
+				<div class="md:col-span-4 flex flex-col items-center justify-center relative py-2">
+					<!-- Layer 1: Ghosted QR Stencil Cutout Layer 1 (Offset Top-Left, low opacity) -->
+					{#if qrDataUrl}
+						<div
+							class="pointer-events-none absolute -top-2 -left-2 sm:-top-3 sm:-left-3 h-28 w-28 sm:h-36 sm:w-36 opacity-10 blur-[0.5px]"
+							aria-hidden="true"
+						>
+							<img src={qrDataUrl} alt="" class="h-full w-full object-contain filter grayscale" />
+						</div>
+
+						<!-- Layer 2: Ghosted QR Stencil Cutout Layer 2 (Offset Bottom-Right, lower opacity) -->
+						<div
+							class="pointer-events-none absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 h-28 w-28 sm:h-36 sm:w-36 opacity-15"
+							aria-hidden="true"
+						>
+							<img src={qrDataUrl} alt="" class="h-full w-full object-contain filter contrast-50" />
+						</div>
+					{/if}
+
+					<!-- Primary Center QR Code (Slightly greyed white card framing) -->
 					<a
 						href="#home"
 						onclick={handleQrClick}
-						class="group relative block cursor-pointer transition-transform duration-200 hover:scale-[1.03]"
-						title="Tap to jump to homepage"
-						aria-label="QR Code to Demitri Homepage"
+						class="group relative z-10 block cursor-pointer border border-[#E2E2E6] bg-[#FFFFFF] p-2.5 sm:p-3 shadow-[0_8px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:border-[#000000] hover:scale-105"
+						title="Tap to visit homepage"
+						aria-label="QR Code linking to Demitri portfolio homepage"
 					>
 						{#if qrDataUrl}
 							<img
 								src={qrDataUrl}
-								alt="QR Code to Homepage"
-								class="h-36 w-36 object-contain sm:h-44 sm:w-44 md:h-48 md:w-48"
-								width="192"
-								height="192"
+								alt="Homepage QR Code"
+								class="h-36 w-36 object-contain sm:h-44 sm:w-44"
+								width="176"
+								height="176"
 								loading="eager"
 							/>
 						{:else}
-							<div class="h-36 w-36 bg-neutral-100 sm:h-44 sm:w-44 md:h-48 md:w-48"></div>
+							<div class="h-36 w-36 sm:h-44 sm:w-44 bg-[#FAFAFA]"></div>
 						{/if}
+
+						<!-- Stencil Corner Brackets -->
+						<div
+							class="pointer-events-none absolute -top-1 -left-1 font-mono text-[9px] text-[#000000] leading-none"
+						>
+							⌜
+						</div>
+						<div
+							class="pointer-events-none absolute -top-1 -right-1 font-mono text-[9px] text-[#000000] leading-none"
+						>
+							⌝
+						</div>
+						<div
+							class="pointer-events-none absolute -bottom-1 -left-1 font-mono text-[9px] text-[#000000] leading-none"
+						>
+							⌞
+						</div>
+						<div
+							class="pointer-events-none absolute -bottom-1 -right-1 font-mono text-[9px] text-[#000000] leading-none"
+						>
+							⌟
+						</div>
 					</a>
 				</div>
 
-				<!-- Contact Details & Centered Actions -->
-				<div class="flex flex-col gap-4 sm:col-span-7 sm:gap-5">
-					<!-- Email -->
-					<div class="flex items-center justify-between gap-3">
-						<a
-							href="mailto:{contact.email}"
-							class="group flex min-w-0 items-center gap-3 text-left transition-colors"
-							aria-label="Send email to {contact.email}"
-						>
-							<Mail size={20} class="shrink-0 text-[#4682B4]" />
-							<span
-								class="font-body truncate text-sm font-medium text-[#000000] transition-colors group-hover:text-[#4682B4] sm:text-base md:text-lg"
+				<!-- 3. RIGHT SIDE: Social Icons Column Above Lower-Right Contact Square -->
+				<div class="md:col-span-4 flex flex-col items-end justify-between self-stretch">
+					<!-- Top-Right Column of Social Icons (Stacked vertically) -->
+					<div class="flex flex-row md:flex-col items-center md:items-end gap-3.5 mb-4">
+						{#each contact.socials as social}
+							<a
+								href={social.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="group flex items-center gap-2 text-xs font-mono text-[#555555] hover:text-[#000000] transition-colors py-0.5"
+								aria-label="{social.label} ({social.handle})"
+								title={social.label}
 							>
-								{contact.email}
-							</span>
-						</a>
+								<span
+									class="hidden sm:inline text-[0.65rem] uppercase opacity-70 group-hover:opacity-100 font-mono"
+								>
+									{social.label === 'Twitter/X' ? 'X.COM' : social.label}
+								</span>
+								<div
+									class="p-1.5 bg-[#F7F7F9] border border-[#E5E5E8] group-hover:border-[#000000] group-hover:bg-[#FFFFFF] transition-all"
+								>
+									{#if social.label === 'GitHub'}
+										<Github size={15} />
+									{:else if social.label === 'LinkedIn'}
+										<Linkedin size={15} />
+									{:else if social.label === 'Twitter/X'}
+										<Twitter size={15} />
+									{/if}
+								</div>
+							</a>
+						{/each}
+					</div>
+
+					<!-- Lower-Right Contact Info -->
+					<div class="flex flex-col items-end justify-end text-right w-full mt-auto space-y-2.5">
+						<!-- Email -->
 						<button
 							type="button"
 							onclick={() => copyToClipboard(contact.email, 'email')}
-							class="shrink-0 cursor-pointer p-1.5 text-[#666666] transition-colors hover:text-[#000000]"
-							title="Copy email to clipboard"
-							aria-label="Copy email"
+							class="group flex flex-col items-end text-right cursor-pointer transition-all hover:opacity-80 py-0.5"
+							title="Click to copy {contact.email}"
+							aria-label="Click to copy email {contact.email}"
 						>
-							{#if copiedField === 'email'}
-								<Check size={18} class="text-[#39FF14]" />
-							{:else}
-								<Copy size={18} />
-							{/if}
+							<div class="flex items-center justify-end gap-2">
+								{#if copiedField === 'email'}
+									<span
+										class="font-mono text-[0.6rem] uppercase tracking-wider text-[#39FF14] bg-[#000000] px-1.5 py-0.5 font-bold"
+									>
+										COPIED ✓
+									</span>
+								{/if}
+								<span
+									class="font-body text-xs sm:text-sm text-[#000000] font-medium group-hover:text-[#4682B4] transition-colors"
+								>
+									{contact.email}
+								</span>
+							</div>
 						</button>
-					</div>
 
-					<!-- Phone -->
-					<div class="flex items-center justify-between gap-3">
-						<a
-							href="tel:{contact.phone}"
-							class="group flex min-w-0 items-center gap-3 text-left transition-colors"
-							aria-label="Call {contact.phone}"
-						>
-							<Phone size={20} class="shrink-0 text-[#4682B4]" />
-							<span
-								class="font-body truncate text-sm font-medium text-[#000000] transition-colors group-hover:text-[#4682B4] sm:text-base md:text-lg"
-							>
-								{contact.phone}
-							</span>
-						</a>
+						<!-- Phone -->
 						<button
 							type="button"
 							onclick={() => copyToClipboard(contact.phone, 'phone')}
-							class="shrink-0 cursor-pointer p-1.5 text-[#666666] transition-colors hover:text-[#000000]"
-							title="Copy phone number to clipboard"
-							aria-label="Copy phone"
+							class="group flex flex-col items-end text-right cursor-pointer transition-all hover:opacity-80 py-0.5"
+							title="Click to copy {contact.phone}"
+							aria-label="Click to copy phone {contact.phone}"
 						>
-							{#if copiedField === 'phone'}
-								<Check size={18} class="text-[#39FF14]" />
-							{:else}
-								<Copy size={18} />
-							{/if}
+							<div class="flex items-center justify-end gap-2">
+								{#if copiedField === 'phone'}
+									<span
+										class="font-mono text-[0.6rem] uppercase tracking-wider text-[#39FF14] bg-[#000000] px-1.5 py-0.5 font-bold"
+									>
+										COPIED ✓
+									</span>
+								{/if}
+								<span
+									class="font-mono text-xs text-[#222222] font-medium group-hover:text-[#4682B4] transition-colors"
+								>
+									{contact.phone}
+								</span>
+							</div>
 						</button>
-					</div>
 
-					<!-- Centered Save Contact Action -->
-					<div class="flex w-full justify-center pt-2 sm:justify-start">
+						<!-- Save to Contacts Button -->
 						<button
 							type="button"
 							onclick={downloadVCard}
-							class="inline-flex cursor-pointer items-center justify-center gap-2 border border-[#000000] bg-[#000000] px-6 py-2.5 font-mono text-xs uppercase tracking-wider text-white transition-colors hover:bg-[#333333] focus-visible:outline-none sm:text-sm"
+							class="mt-1 flex items-center justify-end gap-1.5 bg-[#000000] hover:bg-[#333333] text-white py-1.5 px-3 font-mono text-[0.65rem] uppercase tracking-wider transition-colors cursor-pointer"
 							aria-label="Download vCard contact file (.vcf)"
 						>
-							<Download size={15} class="text-[#B76E79]" />
+							<Download size={13} class="text-[#B76E79]" />
 							<span>Save to Contacts (.vcf)</span>
 						</button>
 					</div>
-				</div>
-			</div>
-
-			<!-- Card Footer: Socials on row 1, Location on its own dedicated row -->
-			<div class="flex flex-col gap-3 pt-4 sm:pt-5 text-xs">
-				<!-- Row 1: Socials (single row, no wrap) -->
-				<div
-					class="flex items-center justify-center gap-6 sm:gap-8 flex-nowrap whitespace-nowrap overflow-x-auto py-0.5"
-				>
-					{#each contact.socials as social}
-						<a
-							href={social.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="group inline-flex items-center gap-2 font-body text-xs font-medium text-[#333333] transition-colors hover:text-[#39FF14] shrink-0 sm:text-sm"
-							aria-label="{social.label} ({social.handle})"
-						>
-							{#if social.label === 'GitHub'}
-								<Github size={18} />
-							{:else if social.label === 'LinkedIn'}
-								<Linkedin size={18} />
-							{:else if social.label === 'Twitter/X'}
-								<Twitter size={18} />
-							{/if}
-							<span>{social.label}</span>
-						</a>
-					{/each}
-				</div>
-
-				<!-- Row 2: USA // REMOTE on its own separate row -->
-				<div
-					class="text-center font-mono text-[0.65rem] uppercase tracking-widest text-[#999999] sm:text-xs"
-				>
-					USA // REMOTE
 				</div>
 			</div>
 		</div>
