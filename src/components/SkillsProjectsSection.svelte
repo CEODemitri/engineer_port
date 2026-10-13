@@ -155,6 +155,7 @@
 								{#if project.video}
 									<video
 										src={project.video}
+										poster={project.image}
 										autoplay
 										loop
 										muted

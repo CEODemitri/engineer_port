@@ -207,7 +207,8 @@ export const PORTFOLIO_CONTENT = {
 			liveLink: 'https://github.com/ceodemitri/4savor',
 			codeLink: 'https://github.com/ceodemitri/4savor',
 			thumbnail: '/assets/images/project-4-thumb.png',
-			image: '/projects/streak-1.png',
+			image: '/projects/4savor.png',
+			video: '/4savor.mp4',
 			metrics: 'Over 2000 recipes generated.'
 		}
 	] as ProjectItem[],
