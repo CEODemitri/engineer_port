@@ -214,25 +214,25 @@ export const PORTFOLIO_CONTENT = {
 	] as ProjectItem[],
 	credentials: [
 		{
-			year: '2025',
+			year: '2025 — PRESENT',
 			title: "Bachelor's in Software Engineering",
 			institution: 'Western Governors University',
 			description:
-				'Currently pursuing — focused on distributed systems, algorithms, and secure software lifecycle.'
+				'Actively pursuing degree coursework with an ongoing focus on distributed systems, algorithms, secure software lifecycles, and advanced computer science foundations.'
 		},
 		{
-			year: '2024',
+			year: '2024 — ONGOING',
 			title: 'Operations Analytics Background',
 			institution: 'Enterprise Operations & Systems',
 			description:
-				'Measurable results approach to engineering: data-driven architecture, root-cause optimization, and performance KPIs.'
+				'A permanent, daily engineering practice: continuously driving measurable business results through data-driven architecture, root-cause optimization, and performance KPIs.'
 		},
 		{
-			year: '2023',
+			year: '2023 — ONGOING',
 			title: '360+ Technical Certifications',
 			institution: 'Google, IBM, and LinkedIn Learning',
 			description:
-				'Comprehensive credentials covering cloud architecture, modern full-stack development, and data engineering.'
+				'An ongoing commitment to continuous learning: constantly pursuing new certifications, mastering cutting-edge cloud architectures, AI models, and full-stack disciplines.'
 		},
 		{
 			year: '2021',

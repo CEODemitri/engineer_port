@@ -47,7 +47,7 @@
 						{PORTFOLIO_CONTENT.tagline}
 					</p>
 					<p class="font-mono text-xs text-[#B76E79] mt-2 uppercase tracking-widest">
-						SOLVING BUSINESS PROBLEMS WITH CODE
+						SOLVING BUSINESS PROBLEMS WITH CREATIVE TECH
 					</p>
 				</div>
 			</div>
