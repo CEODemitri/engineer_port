@@ -13,12 +13,6 @@
 	<div class="max-w-4xl w-full mx-auto">
 		<!-- Section Header -->
 		<div class="mb-14 lg:mb-18">
-			<div class="flex items-center gap-2 mb-3">
-				<span class="w-1.5 h-1.5 bg-[#B76E79]" aria-hidden="true"></span>
-				<span class="font-mono text-xs text-[#B76E79] uppercase tracking-[0.15em]">
-					04 // CREDENTIALS
-				</span>
-			</div>
 			<h2
 				class="font-heading text-[#000000] tracking-[-0.01em] uppercase leading-tight"
 				style="font-size: clamp(1.75rem, 4vw, 2.5rem);"

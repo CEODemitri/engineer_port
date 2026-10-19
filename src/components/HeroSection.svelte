@@ -6,11 +6,9 @@
 	let h2El = $state<HTMLElement | null>(null);
 	let halloEl = $state<HTMLElement | null>(null);
 	let measureSpan = $state<HTMLElement | null>(null);
-	let demMeasureSpan = $state<HTMLElement | null>(null);
 	let halloMeasureSpan = $state<HTMLElement | null>(null);
 	let letterSpacing = $state('0.285em');
 	let halloLetterSpacing = $state('0.4em');
-	let halloTranslate = $state('0px');
 
 	let resizeObserver: ResizeObserver | null = null;
 
@@ -29,22 +27,19 @@
 			}
 		}
 
-		if (demMeasureSpan && halloMeasureSpan && h1El) {
-			const targetDemWidth = demMeasureSpan.getBoundingClientRect().width;
+		if (halloMeasureSpan && h1El) {
+			const targetWidth = h1El.getBoundingClientRect().width;
 			const baseHalloWidth = halloMeasureSpan.getBoundingClientRect().width;
-			const targetDemitriWidth = h1El.getBoundingClientRect().width;
 
-			if (targetDemWidth > 0 && baseHalloWidth > 0 && targetDemitriWidth > 0) {
-				const spacingPx = Math.max(0, (targetDemWidth - baseHalloWidth) / 12);
+			if (targetWidth > 0 && baseHalloWidth > 0) {
+				const gaps = 12; // "HALLO ICH BIN" length 13 - 1
+				const spacingPx = Math.max(0, (targetWidth - baseHalloWidth) / gaps);
 				halloLetterSpacing = `${spacingPx.toFixed(2)}px`;
-
-				const shiftPx = -((targetDemitriWidth - targetDemWidth) / 2);
-				halloTranslate = `${shiftPx.toFixed(2)}px`;
 
 				if (halloEl) {
 					halloEl.style.letterSpacing = halloLetterSpacing;
 					halloEl.style.marginRight = `-${halloLetterSpacing}`;
-					halloEl.style.transform = `translateX(${halloTranslate})`;
+					halloEl.style.transform = 'translateX(0px)';
 				}
 			}
 		}
@@ -111,32 +106,16 @@
 	</span>
 
 	<span
-		bind:this={demMeasureSpan}
-		class="font-heading pointer-events-none -z-50 invisible absolute select-none opacity-0 whitespace-nowrap uppercase leading-none"
-		style="font-size: clamp(3.25rem, 8.5vw, 7.5rem); letter-spacing: -0.02em;"
-		aria-hidden="true"
-	>
-		DEM
-	</span>
-
-	<span
 		bind:this={halloMeasureSpan}
-		class="font-serif pointer-events-none -z-50 invisible absolute select-none opacity-0 whitespace-nowrap font-normal italic leading-none"
-		style="font-family: 'EB Garamond', 'Noto Serif JP', 'Times New Roman', Georgia, serif; font-size: clamp(0.75rem, 1.15vw, 0.95rem); letter-spacing: 0px;"
+		class="font-mono text-[0.7rem] sm:text-xs pointer-events-none -z-50 invisible absolute select-none opacity-0 whitespace-nowrap font-medium uppercase leading-none"
+		style="letter-spacing: 0px;"
 		aria-hidden="true"
 	>
-		Hallo ich bin
+		HALLO ICH BIN
 	</span>
 
-	<!-- Top Section Marker -->
-	<div class="w-full max-w-5xl flex items-center justify-between pt-2">
-		<div class="flex items-center gap-2">
-			<span class="w-1.5 h-1.5 bg-[#B76E79]"></span>
-			<span class="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[#B76E79]">
-				01 // HOME
-			</span>
-		</div>
-
+	<!-- Top Header Metadata -->
+	<div class="w-full max-w-5xl flex items-center justify-end pt-2">
 		<div
 			class="hidden sm:flex items-center gap-2 font-mono text-[0.65rem] tracking-wider uppercase text-[#999999]"
 		>
@@ -152,13 +131,13 @@
 	<div
 		class="my-auto flex w-full max-w-5xl flex-col items-center justify-center text-center py-8 sm:py-12"
 	>
-		<!-- "Hallo ich bin" Greeting -->
+		<!-- "HALLO ICH BIN" Greeting -->
 		<p
 			bind:this={halloEl}
-			class="font-serif will-change-transform mb-3 inline-block w-fit select-none font-normal italic leading-none text-[#555555] whitespace-nowrap sm:mb-3.5"
-			style="font-family: 'EB Garamond', 'Noto Serif JP', 'Times New Roman', Georgia, serif; font-size: clamp(0.75rem, 1.15vw, 0.95rem); letter-spacing: {halloLetterSpacing}; margin-right: -{halloLetterSpacing}; transform: translateX({halloTranslate});"
+			class="font-mono text-[0.7rem] sm:text-xs will-change-transform mb-3 inline-block w-fit select-none font-medium uppercase leading-none text-[#666666] whitespace-nowrap sm:mb-3.5"
+			style="letter-spacing: {halloLetterSpacing}; margin-right: -{halloLetterSpacing}; transform: translateX(0px);"
 		>
-			Hallo ich bin
+			HALLO ICH BIN
 		</p>
 
 		<!-- Primary Brand Wordmark: DEMITRI -->

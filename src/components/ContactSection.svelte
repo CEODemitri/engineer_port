@@ -102,16 +102,6 @@
 	aria-label="Contact Business Card"
 >
 	<div class="my-auto flex w-full max-w-4xl flex-col items-center justify-center">
-		<!-- Section Header -->
-		<div class="mb-2.5 flex w-full max-w-3xl items-center justify-between px-1 sm:mb-3">
-			<div class="flex items-center gap-2">
-				<span class="h-1.5 w-1.5 bg-[#000000]"></span>
-				<span class="font-mono text-xs uppercase tracking-[0.2em] text-[#000000]">
-					{contact.sectionNumber} // {contact.sectionTitle}
-				</span>
-			</div>
-		</div>
-
 		<!-- ─── White Mode Stencil Business Card (Layered Shadows & Tones of White) ─── -->
 		<div
 			class="relative w-full max-w-3xl overflow-hidden border border-[#E2E2E6] bg-[#FFFFFF] p-5 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.06),0_2px_8px_rgba(0,0,0,0.03)]"

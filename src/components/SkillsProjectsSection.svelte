@@ -35,12 +35,6 @@
 	<div class="max-w-5xl w-full mx-auto">
 		<!-- Section Header -->
 		<div class="mb-8 sm:mb-10">
-			<div class="flex items-center gap-2 mb-2">
-				<span class="w-1.5 h-1.5 bg-[#B76E79]" aria-hidden="true"></span>
-				<span class="font-mono text-xs text-[#B76E79] uppercase tracking-[0.15em]">
-					03 // SKILLS & WORK
-				</span>
-			</div>
 			<h2
 				class="font-heading text-[#000000] tracking-[-0.01em] uppercase leading-tight"
 				style="font-size: clamp(1.5rem, 3.5vw, 2.25rem);"

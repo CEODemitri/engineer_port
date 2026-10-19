@@ -233,14 +233,6 @@
 	>
 		<!-- Left Column: Story & Philosophy -->
 		<div class="flex flex-col items-start lg:col-span-7">
-			<!-- Section Header Badge -->
-			<div class="mb-3 flex items-center gap-2">
-				<span class="h-1.5 w-1.5 bg-[#B76E79]" aria-hidden="true"></span>
-				<span class="font-mono text-xs uppercase tracking-[0.15em] text-[#B76E79]">
-					{whyMe.sectionNumber} // {whyMe.sectionTitle}
-				</span>
-			</div>
-
 			<!-- Heading -->
 			<h2
 				class="font-heading uppercase leading-tight tracking-[-0.01em] text-[#000000]"

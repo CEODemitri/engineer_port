@@ -339,13 +339,6 @@
 
 		<!-- Center Minimalist Typography Branding -->
 		<div class="relative z-10 flex flex-col items-center justify-center px-6 text-center">
-			<div class="mb-3 flex items-center gap-2">
-				<span class="w-1.5 h-1.5 bg-[#B76E79] animate-pulse" aria-hidden="true"></span>
-				<span class="font-mono text-[0.65rem] sm:text-xs text-[#B76E79] uppercase tracking-[0.2em]"
-					>SYS.INIT // WAVE RIPPLE</span
-				>
-			</div>
-
 			<h1
 				class="font-heading text-3xl sm:text-4xl md:text-5xl text-white tracking-widest uppercase transition-transform duration-300"
 			>
