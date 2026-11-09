@@ -75,21 +75,21 @@
 		}
 	});
 
-	let mouseX = $state(50);
-	let mouseY = $state(50);
-	let isHovering = $state(false);
+	let contactMouseX = $state(50);
+	let contactMouseY = $state(50);
+	let isContactHovering = $state(false);
 
-	function handleMouseMove(e: MouseEvent) {
+	function handleContactMouseMove(e: MouseEvent) {
 		const target = e.currentTarget as HTMLElement;
 		if (!target) return;
 		const rect = target.getBoundingClientRect();
-		mouseX = Math.round(((e.clientX - rect.left) / rect.width) * 100);
-		mouseY = Math.round(((e.clientY - rect.top) / rect.height) * 100);
-		isHovering = true;
+		contactMouseX = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+		contactMouseY = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+		isContactHovering = true;
 	}
 
-	function handleMouseLeave() {
-		isHovering = false;
+	function handleContactMouseLeave() {
+		isContactHovering = false;
 	}
 
 	function scrollToSection(e: MouseEvent, id: string) {
@@ -157,45 +157,23 @@
 			HALLO ICH BIN
 		</p>
 
-		<!-- Interactive Wordmark Cluster with Liquid Metallic Rose-Gold Specular Glint -->
-		<div
-			role="region"
-			aria-label="Interactive Wordmark"
-			class="relative inline-flex flex-col items-center justify-center cursor-default p-2 -m-2 group/glint"
-			onmousemove={handleMouseMove}
-			onmouseleave={handleMouseLeave}
+		<!-- Primary Brand Wordmark: DEMITRI -->
+		<h1
+			bind:this={h1El}
+			class="font-heading inline-block w-fit select-none uppercase leading-[0.92] tracking-[-0.025em] text-[#000000]"
+			style="font-size: clamp(3.25rem, 8.5vw, 7.5rem);"
 		>
-			<!-- Primary Brand Wordmark: DEMITRI with brushed metallic specular reflection -->
-			<h1
-				bind:this={h1El}
-				class="font-heading inline-block w-fit select-none uppercase leading-[0.92] tracking-[-0.025em] text-[#000000] transition-[filter] duration-200"
-				style="font-size: clamp(3.25rem, 8.5vw, 7.5rem); {isHovering
-					? `background: radial-gradient(circle 280px at ${mouseX}% ${mouseY}%, #B76E79 0%, #d49a9f 28%, #1a1a1a 62%, #000000 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;`
-					: ''}"
-			>
-				{PORTFOLIO_CONTENT.hero.name}
-			</h1>
+			{PORTFOLIO_CONTENT.hero.name}
+		</h1>
 
-			<!-- Family Name: ECHOLS (Width-locked to DEMITRI with continuous metallic shimmer) -->
-			<h2
-				bind:this={h2El}
-				class="font-heading mt-2 sm:mt-3 inline-block w-fit select-none whitespace-nowrap uppercase leading-[0.92] text-[#000000] transition-[filter] duration-200"
-				style="font-size: clamp(2.25rem, 6.5vw, 5.5rem); letter-spacing: {letterSpacing}; margin-right: -{letterSpacing}; {isHovering
-					? `background: radial-gradient(circle 280px at ${mouseX}% ${mouseY}%, #B76E79 0%, #d49a9f 28%, #1a1a1a 62%, #000000 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;`
-					: ''}"
-			>
-				{PORTFOLIO_CONTENT.hero.lastName}
-			</h2>
-
-			<!-- Subtle brushed anodized ambient aura behind the letterforms -->
-			<div
-				class="pointer-events-none absolute inset-0 -z-10 transition-opacity duration-300"
-				style="opacity: {isHovering
-					? '0.22'
-					: '0'}; background: radial-gradient(circle 240px at {mouseX}% {mouseY}%, rgba(183, 110, 121, 0.35) 0%, rgba(183, 110, 121, 0.08) 50%, transparent 75%); filter: blur(28px);"
-				aria-hidden="true"
-			></div>
-		</div>
+		<!-- Family Name: ECHOLS (Width-locked to DEMITRI) -->
+		<h2
+			bind:this={h2El}
+			class="font-heading mt-2 sm:mt-3 inline-block w-fit select-none whitespace-nowrap uppercase leading-[0.92] text-[#000000]"
+			style="font-size: clamp(2.25rem, 6.5vw, 5.5rem); letter-spacing: {letterSpacing}; margin-right: -{letterSpacing};"
+		>
+			{PORTFOLIO_CONTENT.hero.lastName}
+		</h2>
 
 		<!-- Divider line for architectural structure -->
 		<div class="w-16 h-[1px] bg-[#E5E5E5] my-6 sm:my-8"></div>
@@ -227,9 +205,31 @@
 			<a
 				href="#contact"
 				onclick={(e) => scrollToSection(e, '#contact')}
-				class="w-full sm:w-auto font-body font-semibold text-[#000000] hover:text-white bg-transparent hover:bg-[#000000] border border-[#000000] text-[0.75rem] tracking-[0.12em] uppercase px-8 py-[13px] cursor-pointer text-center inline-block transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[#4682B4] focus-visible:outline-none"
+				onmousemove={handleContactMouseMove}
+				onmouseleave={handleContactMouseLeave}
+				class="relative overflow-hidden w-full sm:w-auto font-body font-semibold text-[#000000] border border-[#000000] text-[0.75rem] tracking-[0.12em] uppercase px-8 py-[13px] cursor-pointer text-center inline-flex items-center justify-center transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#4682B4] focus-visible:outline-none group/contact"
+				style={isContactHovering
+					? `border-color: #8A4650; box-shadow: 0 0 20px rgba(138, 70, 80, 0.45), inset 0 0 14px rgba(60, 24, 30, 0.55);`
+					: ''}
 			>
-				{PORTFOLIO_CONTENT.hero.ctaContact}
+				<!-- Darker, deep gunmetal & burnished metallic rose-gold liquid surface glint -->
+				<div
+					class="pointer-events-none absolute inset-0 transition-opacity duration-300 -z-10"
+					style="opacity: {isContactHovering
+						? '1'
+						: '0'}; background: radial-gradient(circle 90px at {contactMouseX}% {contactMouseY}%, rgba(138, 70, 80, 0.5) 0%, rgba(94, 42, 50, 0.35) 35%, rgba(30, 15, 18, 0.25) 65%, rgba(0, 0, 0, 0.1) 100%);"
+					aria-hidden="true"
+				></div>
+
+				<!-- Specular metallic text sheen with deeper industrial bronze/rose core -->
+				<span
+					class="relative z-10 transition-colors duration-200"
+					style={isContactHovering
+						? `background: radial-gradient(circle 90px at ${contactMouseX}% ${contactMouseY}%, #C97D87 0%, #8A4650 35%, #4A1F26 70%, #111111 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;`
+						: ''}
+				>
+					{PORTFOLIO_CONTENT.hero.ctaContact}
+				</span>
 			</a>
 		</div>
 	</div>
