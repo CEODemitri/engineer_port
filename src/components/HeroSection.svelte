@@ -75,6 +75,23 @@
 		}
 	});
 
+	let mouseX = $state(50);
+	let mouseY = $state(50);
+	let isHovering = $state(false);
+
+	function handleMouseMove(e: MouseEvent) {
+		const target = e.currentTarget as HTMLElement;
+		if (!target) return;
+		const rect = target.getBoundingClientRect();
+		mouseX = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+		mouseY = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+		isHovering = true;
+	}
+
+	function handleMouseLeave() {
+		isHovering = false;
+	}
+
 	let contactMouseX = $state(50);
 	let contactMouseY = $state(50);
 	let isContactHovering = $state(false);
@@ -157,23 +174,45 @@
 			HALLO ICH BIN
 		</p>
 
-		<!-- Primary Brand Wordmark: DEMITRI -->
-		<h1
-			bind:this={h1El}
-			class="font-heading inline-block w-fit select-none uppercase leading-[0.92] tracking-[-0.025em] text-[#000000]"
-			style="font-size: clamp(3.25rem, 8.5vw, 7.5rem);"
+		<!-- Interactive Wordmark Cluster with Liquid Metallic Rose-Gold Specular Glint -->
+		<div
+			role="region"
+			aria-label="Interactive Wordmark"
+			class="relative inline-flex flex-col items-center justify-center cursor-default p-2 -m-2 group/glint"
+			onmousemove={handleMouseMove}
+			onmouseleave={handleMouseLeave}
 		>
-			{PORTFOLIO_CONTENT.hero.name}
-		</h1>
+			<!-- Primary Brand Wordmark: DEMITRI with brushed metallic specular reflection -->
+			<h1
+				bind:this={h1El}
+				class="font-heading inline-block w-fit select-none uppercase leading-[0.92] tracking-[-0.025em] text-[#000000] transition-[filter] duration-200"
+				style="font-size: clamp(3.25rem, 8.5vw, 7.5rem); {isHovering
+					? `background: radial-gradient(circle 280px at ${mouseX}% ${mouseY}%, #C97D87 0%, #8A4650 30%, #2A161B 65%, #000000 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;`
+					: ''}"
+			>
+				{PORTFOLIO_CONTENT.hero.name}
+			</h1>
 
-		<!-- Family Name: ECHOLS (Width-locked to DEMITRI) -->
-		<h2
-			bind:this={h2El}
-			class="font-heading mt-2 sm:mt-3 inline-block w-fit select-none whitespace-nowrap uppercase leading-[0.92] text-[#000000]"
-			style="font-size: clamp(2.25rem, 6.5vw, 5.5rem); letter-spacing: {letterSpacing}; margin-right: -{letterSpacing};"
-		>
-			{PORTFOLIO_CONTENT.hero.lastName}
-		</h2>
+			<!-- Family Name: ECHOLS (Width-locked to DEMITRI with continuous metallic shimmer) -->
+			<h2
+				bind:this={h2El}
+				class="font-heading mt-2 sm:mt-3 inline-block w-fit select-none whitespace-nowrap uppercase leading-[0.92] text-[#000000] transition-[filter] duration-200"
+				style="font-size: clamp(2.25rem, 6.5vw, 5.5rem); letter-spacing: {letterSpacing}; margin-right: -{letterSpacing}; {isHovering
+					? `background: radial-gradient(circle 280px at ${mouseX}% ${mouseY}%, #C97D87 0%, #8A4650 30%, #2A161B 65%, #000000 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;`
+					: ''}"
+			>
+				{PORTFOLIO_CONTENT.hero.lastName}
+			</h2>
+
+			<!-- Subtle brushed anodized ambient aura behind the letterforms -->
+			<div
+				class="pointer-events-none absolute inset-0 -z-10 transition-opacity duration-300"
+				style="opacity: {isHovering
+					? '0.28'
+					: '0'}; background: radial-gradient(circle 240px at {mouseX}% {mouseY}%, rgba(138, 70, 80, 0.45) 0%, rgba(138, 70, 80, 0.12) 50%, transparent 75%); filter: blur(28px);"
+				aria-hidden="true"
+			></div>
+		</div>
 
 		<!-- Divider line for architectural structure -->
 		<div class="w-16 h-[1px] bg-[#E5E5E5] my-6 sm:my-8"></div>
