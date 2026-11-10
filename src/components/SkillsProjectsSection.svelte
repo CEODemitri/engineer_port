@@ -17,8 +17,62 @@
 	let fadingSlot = $state<number | null>(null);
 	let slotTimer: any = null;
 
+	// Dynamic timeline calculator ensuring factual, up-to-date days alive and last touch
+	function getDynamicActivityRow(project: (typeof projects)[0]): string {
+		if (project.repoCreatedAt) {
+			const created = new Date(project.repoCreatedAt);
+			const pushed = project.repoPushedAt ? new Date(project.repoPushedAt) : null;
+			const now = new Date();
+
+			const daysAlive = Math.max(
+				1,
+				Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24))
+			);
+
+			let lastTouchStr = 'recently';
+			if (pushed) {
+				const diffDays = Math.max(
+					0,
+					Math.floor((now.getTime() - pushed.getTime()) / (1000 * 60 * 60 * 24))
+				);
+				if (diffDays === 0) {
+					lastTouchStr = 'today';
+				} else if (diffDays === 1) {
+					lastTouchStr = 'yesterday';
+				} else if (diffDays < 7) {
+					lastTouchStr = `${diffDays} days ago`;
+				} else if (diffDays < 30) {
+					const weeks = Math.floor(diffDays / 7);
+					lastTouchStr = `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+				} else if (diffDays < 365) {
+					const months = Math.floor(diffDays / 30.4);
+					lastTouchStr = `${months} month${months > 1 ? 's' : ''} ago`;
+				} else {
+					const years = Math.floor(diffDays / 365);
+					lastTouchStr = `${years} year${years > 1 ? 's' : ''} ago`;
+				}
+			}
+			return `${daysAlive} days alive, last touched ${lastTouchStr}`;
+		}
+		return project.activityRow;
+	}
+
 	onMount(() => {
 		if (typeof window !== 'undefined') {
+			// Fetch live updates for Mika from GitHub API to keep timeline 100% dynamic and factual
+			fetch('https://api.github.com/repos/ceodemitri/mika')
+				.then((res) => (res.ok ? res.json() : null))
+				.then((data) => {
+					if (data && data.pushed_at) {
+						const mika = projects.find((p) => p.id === 3);
+						if (mika) {
+							mika.repoPushedAt = data.pushed_at;
+							if (data.created_at) mika.repoCreatedAt = data.created_at;
+						}
+					}
+				})
+				.catch((err) => console.warn('Mika live GitHub sync:', err));
+
 			slotTimer = setInterval(() => {
 				// Pick a random slot to replace
 				const slotIdx = Math.floor(Math.random() * MOBILE_SLOT_COUNT);
@@ -365,7 +419,7 @@
 											TIMELINE:
 										</span>
 										<span class="text-[#444444] leading-snug">
-											{project.activityRow}
+											{getDynamicActivityRow(project)}
 										</span>
 									</div>
 								</div>

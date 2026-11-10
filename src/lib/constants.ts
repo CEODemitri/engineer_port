@@ -26,6 +26,8 @@ export interface ProjectItem {
 	image: string;
 	video?: string;
 	metrics?: string;
+	repoCreatedAt?: string;
+	repoPushedAt?: string;
 }
 
 export interface CredentialItem {
@@ -172,14 +174,16 @@ export const PORTFOLIO_CONTENT = {
 			},
 			tech: ['React', 'Node.js', 'PostgreSQL', 'FastAPI'],
 			techRow: 'React, Node.js, PostgreSQL, FastAPI',
-			commitsRow: '512 commits, 44 merges, automated deployment',
-			activityRow: '290 days alive, last touched 4 days ago',
-			editionDate: '2024.06.12',
-			liveLink: 'https://github.com/ceodemitri/mika',
+			commitsRow: '129+ commits, production release, CI/CD',
+			activityRow: '798 days alive, last touched 6 months ago',
+			editionDate: '2024.09.02',
+			liveLink: 'https://mika-sigma.vercel.app',
 			codeLink: 'https://github.com/ceodemitri/mika',
 			thumbnail: '/assets/images/project-3-thumb.png',
 			image: '/projects/mika-1.png',
-			metrics: 'Automated 15+ weekly operational hours per team'
+			metrics: 'Automated 15+ weekly operational hours per team',
+			repoCreatedAt: '2024-09-02T14:06:42Z',
+			repoPushedAt: '2026-05-10T20:29:29Z'
 		},
 		{
 			id: 4,
