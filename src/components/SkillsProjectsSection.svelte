@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount, onDestroy } from 'svelte';
 	import { PORTFOLIO_CONTENT } from '$lib/constants';
 	import { ExternalLink, Github } from './icons';
 
@@ -7,8 +8,48 @@
 	const skills = PORTFOLIO_CONTENT.skills;
 	const projects = PORTFOLIO_CONTENT.projects;
 
-	// Organic vertical offset offsets for scattered look
+	// Organic vertical offset offsets for scattered look on desktop
 	const verticalOffsets = [0, 8, -6, 12, -10, 4, -4, 14, -8, 6, -12, 10, -6, 8, -4, 12, 0, -8];
+
+	// Mobile lightweight display: active subset with smooth randomized transitions
+	const MOBILE_SLOT_COUNT = 6;
+	let mobileSlots = $state<number[]>([0, 1, 2, 3, 4, 5]);
+	let fadingSlot = $state<number | null>(null);
+	let slotTimer: any = null;
+
+	onMount(() => {
+		if (typeof window !== 'undefined') {
+			slotTimer = setInterval(() => {
+				// Pick a random slot to replace
+				const slotIdx = Math.floor(Math.random() * MOBILE_SLOT_COUNT);
+				fadingSlot = slotIdx;
+
+				setTimeout(() => {
+					// Find available skills not currently in mobileSlots
+					const currentIndices = new Set(mobileSlots);
+					const availableIndices = skills.map((_, i) => i).filter((i) => !currentIndices.has(i));
+
+					if (availableIndices.length > 0) {
+						const nextSkillIdx =
+							availableIndices[Math.floor(Math.random() * availableIndices.length)];
+						mobileSlots[slotIdx] = nextSkillIdx;
+						mobileSlots = [...mobileSlots];
+					}
+
+					// Fade back in
+					setTimeout(() => {
+						if (fadingSlot === slotIdx) {
+							fadingSlot = null;
+						}
+					}, 50);
+				}, 400);
+			}, 2400);
+		}
+	});
+
+	onDestroy(() => {
+		if (slotTimer) clearInterval(slotTimer);
+	});
 
 	function toggleProject(id: number) {
 		if (expandedProjectId === id) {
@@ -46,12 +87,47 @@
 			</p>
 		</div>
 
-		<!-- ─── Subsection 1: Floating Text Skills (Scattered organic arrangement) ─── -->
+		<!-- ─── Subsection 1: Floating Text Skills (Scattered organic arrangement on desktop, sleek cycling fade on mobile) ─── -->
 		<div class="mb-10 sm:mb-12">
-			<h3 class="font-heading text-xs sm:text-sm text-[#000000] uppercase tracking-wider mb-4">
-				CORE STACK & CAPABILITIES
-			</h3>
-			<div class="flex flex-wrap gap-2 sm:gap-3 items-center" aria-label="Technical skills list">
+			<div class="flex items-center justify-between mb-4">
+				<h3 class="font-heading text-xs sm:text-sm text-[#000000] uppercase tracking-wider">
+					CORE STACK & CAPABILITIES
+				</h3>
+				<!-- Mobile indicator showing live cycling status -->
+				<span
+					class="font-mono text-[0.6rem] text-[#B76E79] uppercase tracking-widest sm:hidden flex items-center gap-1.5"
+				>
+					<span class="w-1.5 h-1.5 bg-[#B76E79] animate-pulse"></span>
+					DYNAMIC STACK // {skills.length} TECHNOLOGIES
+				</span>
+			</div>
+
+			<!-- Mobile view: Sleek, non-chunky, lightweight rotating badges that fade in and out with replacement skills -->
+			<div
+				class="grid grid-cols-2 xs:grid-cols-3 gap-2 sm:hidden"
+				aria-label="Core skills rotating display"
+			>
+				{#each mobileSlots as skillIndex, slotIdx (slotIdx)}
+					{@const isFading = fadingSlot === slotIdx}
+					<div
+						class="skill-badge-mobile relative flex items-center justify-between bg-white/70 border border-[#E5E5E5] px-3 py-2 text-xs font-mono font-medium text-[#222222] select-none transition-all duration-500 overflow-hidden {isFading
+							? 'opacity-0 translate-y-1 scale-95 border-[#B76E79]'
+							: 'opacity-100 translate-y-0 scale-100 border-[#E5E5E5]'}"
+						style="border-radius: 0;"
+					>
+						<span class="truncate">{skills[skillIndex]}</span>
+						<span class="font-mono text-[0.55rem] text-[#999999] ml-1 shrink-0">
+							{(skillIndex + 1).toString().padStart(2, '0')}
+						</span>
+					</div>
+				{/each}
+			</div>
+
+			<!-- Desktop view: Full scattered organic cloud -->
+			<div
+				class="hidden sm:flex flex-wrap gap-2.5 sm:gap-3 items-center"
+				aria-label="Technical skills list"
+			>
 				{#each skills as skill, idx}
 					<span
 						role="presentation"
